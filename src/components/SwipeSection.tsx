@@ -4,7 +4,7 @@ import { Users } from 'lucide-react';
 
 const SwipeSection = () => {
   return (
-    <section className="py-20 px-6 bg-white">
+    <section className="py-20 px-6 bg-white font-albert-sans">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left side - Travel Card */}
@@ -56,37 +56,55 @@ const SwipeSection = () => {
             {/* Features list */}
             <div className="space-y-4 flex-grow">
               <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center mt-1">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
+                <div className="w-6 h-6 flex items-center justify-center mt-1">
+                  <img 
+                    src="/lovable-uploads/1653725a-49c8-488a-9b8c-7f0895a49dd5.png" 
+                    alt="bullet point" 
+                    className="w-4 h-4"
+                  />
                 </div>
-                <span className="font-albert-sans text-gray-900 text-lg">Swipe to vote on places, stays, activities and all things fun!</span>
+                <span className="font-satoshi text-gray-900 text-lg">Swipe to vote on places, stays, activities and all things fun!</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center mt-1">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
+                <div className="w-6 h-6 flex items-center justify-center mt-1">
+                  <img 
+                    src="/lovable-uploads/1653725a-49c8-488a-9b8c-7f0895a49dd5.png" 
+                    alt="bullet point" 
+                    className="w-4 h-4"
+                  />
                 </div>
-                <span className="font-albert-sans text-gray-900 text-lg">Instantly compare hotels, flights, cabs and other trip options</span>
+                <span className="font-satoshi text-gray-900 text-lg">Instantly compare hotels, flights, cabs and other trip options</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center mt-1">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
+                <div className="w-6 h-6 flex items-center justify-center mt-1">
+                  <img 
+                    src="/lovable-uploads/1653725a-49c8-488a-9b8c-7f0895a49dd5.png" 
+                    alt="bullet point" 
+                    className="w-4 h-4"
+                  />
                 </div>
-                <span className="font-albert-sans text-gray-900 text-lg">See what your group's loving — in real time</span>
+                <span className="font-satoshi text-gray-900 text-lg">See what your group's loving — in real time</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center mt-1">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
+                <div className="w-6 h-6 flex items-center justify-center mt-1">
+                  <img 
+                    src="/lovable-uploads/1653725a-49c8-488a-9b8c-7f0895a49dd5.png" 
+                    alt="bullet point" 
+                    className="w-4 h-4"
+                  />
                 </div>
-                <span className="font-albert-sans text-gray-900 text-lg">Get AI-powered itineraries built on what everyone's preferences.</span>
+                <span className="font-satoshi text-gray-900 text-lg">Get AI-powered itineraries built on what everyone's preferences.</span>
               </div>
             </div>
             
             {/* CTA Button */}
-            <button className="inline-flex items-center gap-3 text-white font-albert-sans font-medium text-lg px-8 py-4 rounded-full transition-colors" style={{ backgroundColor: '#92B193' }}>
+            <button className="inline-flex items-center gap-3 text-white font-plus-jakarta font-semibold text-lg px-8 py-4 rounded-full transition-colors" style={{ backgroundColor: '#92B193' }}>
               Create Groups
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <div className="w-4 h-1 rounded-full" style={{ backgroundColor: '#92B193' }}></div>
-              </div>
+              <img 
+                src="/lovable-uploads/bfe7e292-b113-429a-9a8e-a3bc4130d317.png" 
+                alt="arrow" 
+                className="w-6 h-6"
+              />
             </button>
           </div>
         </div>

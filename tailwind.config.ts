@@ -21,6 +21,7 @@ export default {
 			fontFamily: {
 				'satoshi': ['Satoshi', 'sans-serif'],
 				'albert-sans': ['Albert Sans', 'sans-serif'],
+				'plus-jakarta': ['Plus Jakarta Sans', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
