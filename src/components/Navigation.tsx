@@ -13,14 +13,14 @@ const Navigation = () => {
         </div>
         
         {/* Navigation Menu */}
-        <nav className="hidden md:flex items-center space-x-1 bg-white/10 backdrop-blur-sm rounded-full px-2 py-2">
+        <nav className="hidden md:flex items-center space-x-1 bg-white rounded-full px-2 py-2">
           {navItems.map((item, index) => (
             <button
               key={item}
               className={`px-6 py-2 rounded-full font-satoshi font-medium text-sm transition-all duration-200 ${
                 index === 0 
                   ? 'bg-sage-500 text-white' 
-                  : 'text-white hover:bg-white/10'
+                  : 'text-gray-900 hover:bg-gray-100'
               }`}
             >
               {item}
