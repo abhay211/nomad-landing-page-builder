@@ -6,7 +6,7 @@ const HowItWorksSection = () => {
     <section className="py-20 px-6" style={{ backgroundColor: '#F5F5F3' }}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="mb-16">
           <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white mb-8">
             <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#92B193' }}>
               <img 
@@ -18,25 +18,25 @@ const HowItWorksSection = () => {
             <span className="font-albert-sans text-gray-900 text-lg font-medium">How it works</span>
           </div>
           
-          <div className="space-y-4">
-            <h2 className="font-albert-sans font-extralight text-[62px] leading-[70px] tracking-[-0.04em]" style={{ color: '#1F1F1F' }}>
-              Plan Your Trip in
-            </h2>
-            <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="font-albert-sans font-extralight text-[62px] leading-[70px] tracking-[-0.04em]" style={{ color: '#1F1F1F' }}>
+                Plan Your Trip in
+              </h2>
               <span className="font-albert-sans font-extralight text-[62px] leading-[70px] tracking-[-0.04em]" style={{ color: '#92B193' }}>
                 3 Easy Steps
               </span>
-              <button className="inline-flex items-center justify-center gap-3 text-white font-plus-jakarta font-medium text-lg px-6 py-3 rounded-full transition-all duration-200 hover:shadow-lg" style={{ backgroundColor: '#92B193' }}>
-                <span>Plan a Trip Now</span>
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img 
-                    src="/lovable-uploads/bfe7e292-b113-429a-9a8e-a3bc4130d317.png" 
-                    alt="arrow" 
-                    className="w-5 h-5"
-                  />
-                </div>
-              </button>
             </div>
+            <button className="inline-flex items-center justify-center gap-3 text-white font-plus-jakarta font-medium text-lg px-6 py-3 rounded-full transition-all duration-200 hover:shadow-lg" style={{ backgroundColor: '#92B193' }}>
+              <span>Plan a Trip Now</span>
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                <img 
+                  src="/lovable-uploads/bfe7e292-b113-429a-9a8e-a3bc4130d317.png" 
+                  alt="arrow" 
+                  className="w-5 h-5"
+                />
+              </div>
+            </button>
           </div>
         </div>
 
@@ -103,16 +103,16 @@ const HowItWorksSection = () => {
           </div>
 
           {/* Right side - Visual Elements */}
-          <div className="relative">
-            {/* Spa/Wellness Card */}
-            <div className="absolute top-0 left-8 bg-white rounded-2xl shadow-lg overflow-hidden w-64 h-48">
+          <div className="relative h-[600px]">
+            {/* Spa/Wellness Card - Top Left */}
+            <div className="absolute top-0 left-0 bg-white rounded-2xl shadow-lg overflow-hidden w-72 h-56">
               <img 
                 src="/lovable-uploads/f0773f67-0a53-4f19-9eff-d94a77482a61.png" 
                 alt="Spa wellness" 
-                className="w-full h-32 object-cover"
+                className="w-full h-40 object-cover"
               />
               <div className="p-4">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
                     <span className="text-white text-xs">🧘</span>
                   </div>
@@ -121,52 +121,35 @@ const HowItWorksSection = () => {
               </div>
             </div>
 
-            {/* Beach Card */}
-            <div className="absolute top-16 right-0 bg-white rounded-2xl shadow-lg overflow-hidden w-56 h-40">
-              <img 
-                src="/lovable-uploads/f0773f67-0a53-4f19-9eff-d94a77482a61.png" 
-                alt="Beach" 
-                className="w-full h-24 object-cover"
-              />
-              <div className="p-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs">🏖️</span>
-                  </div>
-                  <span className="font-satoshi font-medium text-gray-900 text-sm">Beach</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Historical Tours Card */}
-            <div className="absolute top-8 right-16 bg-white rounded-full px-4 py-2 shadow-lg">
+            {/* Historical Tours Tag - Top Right */}
+            <div className="absolute top-8 right-0 bg-white rounded-full px-4 py-2 shadow-lg">
               <div className="flex items-center gap-2">
+                <span className="font-satoshi font-medium text-gray-900 text-sm">Historical Tours</span>
                 <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
                   <span className="text-white text-xs">🏛️</span>
                 </div>
-                <span className="font-satoshi font-medium text-gray-900 text-sm">Historical Tours</span>
               </div>
             </div>
 
-            {/* Hotels Card */}
-            <div className="absolute bottom-32 left-0 bg-white rounded-2xl shadow-lg overflow-hidden w-64 h-48">
+            {/* Beach Card - Top Right */}
+            <div className="absolute top-16 right-8 bg-white rounded-2xl shadow-lg overflow-hidden w-64 h-48">
               <img 
                 src="/lovable-uploads/f0773f67-0a53-4f19-9eff-d94a77482a61.png" 
-                alt="Hotels" 
+                alt="Beach" 
                 className="w-full h-32 object-cover"
               />
               <div className="p-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs">🏨</span>
+                <div className="flex items-center gap-3">
+                  <span className="font-satoshi font-medium text-gray-900">Beach</span>
+                  <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">🏖️</span>
                   </div>
-                  <span className="font-satoshi font-medium text-gray-900">Hotels</span>
                 </div>
               </div>
             </div>
 
-            {/* Fine Dining Card */}
-            <div className="absolute bottom-16 right-8 bg-white rounded-2xl shadow-lg overflow-hidden w-56 h-40">
+            {/* Fine Dining Card - Right Side */}
+            <div className="absolute top-48 right-0 bg-white rounded-2xl shadow-lg overflow-hidden w-56 h-40">
               <img 
                 src="/lovable-uploads/f0773f67-0a53-4f19-9eff-d94a77482a61.png" 
                 alt="Fine dining" 
@@ -174,21 +157,38 @@ const HowItWorksSection = () => {
               />
               <div className="p-3">
                 <div className="flex items-center gap-2">
+                  <span className="font-satoshi font-medium text-gray-900 text-sm">Fine Dining</span>
                   <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
                     <span className="text-white text-xs">🍽️</span>
                   </div>
-                  <span className="font-satoshi font-medium text-gray-900 text-sm">Fine Dining</span>
                 </div>
               </div>
             </div>
 
-            {/* Resorts Card */}
-            <div className="absolute bottom-8 right-24 bg-white rounded-full px-4 py-2 shadow-lg">
+            {/* Hotels Card - Bottom Left */}
+            <div className="absolute bottom-16 left-16 bg-white rounded-2xl shadow-lg overflow-hidden w-64 h-48">
+              <img 
+                src="/lovable-uploads/f0773f67-0a53-4f19-9eff-d94a77482a61.png" 
+                alt="Hotels" 
+                className="w-full h-32 object-cover"
+              />
+              <div className="p-4">
+                <div className="flex items-center gap-3">
+                  <span className="font-satoshi font-medium text-gray-900">Hotels</span>
+                  <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">🏨</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Resorts Tag - Bottom Right */}
+            <div className="absolute bottom-8 right-16 bg-white rounded-full px-4 py-2 shadow-lg">
               <div className="flex items-center gap-2">
+                <span className="font-satoshi font-medium text-gray-900 text-sm">Resorts</span>
                 <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
                   <span className="text-white text-xs">🏖️</span>
                 </div>
-                <span className="font-satoshi font-medium text-gray-900 text-sm">Resorts</span>
               </div>
             </div>
           </div>
