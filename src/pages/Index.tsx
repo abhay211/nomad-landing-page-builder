@@ -4,6 +4,7 @@ import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
 import SwipeSection from '../components/SwipeSection';
 import AIPoweredSection from '../components/AIPoweredSection';
+import HowItWorksSection from '../components/HowItWorksSection';
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
       <HeroSection />
       <SwipeSection />
       <AIPoweredSection />
+      <HowItWorksSection />
     </div>
   );
 };
