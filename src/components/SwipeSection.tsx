@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Heart, X } from 'lucide-react';
 
 const SwipeSection = () => {
   return (
@@ -88,11 +87,12 @@ const SwipeSection = () => {
                 
                 {/* Action buttons */}
                 <div className="flex justify-center gap-6">
-                  <button className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
-                    <X className="w-8 h-8 text-white" />
-                  </button>
-                  <button className="w-16 h-16 bg-sage-500 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
-                    <Heart className="w-8 h-8 text-white" />
+                  <button className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
+                    <img 
+                      src="/lovable-uploads/0a08ccd5-fe89-4814-8086-97ac7e1a12fd.png" 
+                      alt="Cross and Heart buttons" 
+                      className="w-full h-full object-contain"
+                    />
                   </button>
                 </div>
               </div>
