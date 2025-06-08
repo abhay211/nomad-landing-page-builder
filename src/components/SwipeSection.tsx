@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Heart, X } from 'lucide-react';
 
 const SwipeSection = () => {
   return (
@@ -9,93 +8,13 @@ const SwipeSection = () => {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left side - Travel Card */}
           <div className="relative">
-            {/* Card */}
-            <div className="bg-white rounded-3xl shadow-lg overflow-hidden max-w-md mx-auto">
-              {/* Header */}
-              <div className="p-4 text-center">
-                <p className="font-satoshi text-gray-600 text-sm">Suggested by Alex</p>
-              </div>
-              
-              {/* Image with location tag */}
-              <div className="relative">
-                <img 
-                  src="/lovable-uploads/c8bcb5e6-cf56-434e-9b46-7c5942461c67.png" 
-                  alt="Indonesia coastline" 
-                  className="w-full h-64 object-cover"
-                />
-                <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full flex items-center gap-2">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                  <span className="font-satoshi text-sm">Indonesia</span>
-                </div>
-              </div>
-              
-              {/* Trip duration */}
-              <div className="p-6">
-                <div className="flex items-center gap-6 mb-6">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-                      <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                    </div>
-                    <span className="font-satoshi font-bold text-2xl">5 Days</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                    </div>
-                    <span className="font-satoshi font-bold text-2xl">6 Nights</span>
-                  </div>
-                </div>
-                
-                {/* Features list */}
-                <div className="grid grid-cols-2 gap-3 mb-8">
-                  <div className="flex items-start gap-2">
-                    <div className="w-5 h-5 bg-sage-500 rounded-full flex items-center justify-center mt-0.5">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                    </div>
-                    <span className="font-satoshi text-sm text-gray-700">Includes beachfront accommodation</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <div className="w-5 h-5 bg-sage-500 rounded-full flex items-center justify-center mt-0.5">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                    </div>
-                    <span className="font-satoshi text-sm text-gray-700">Local experiences</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <div className="w-5 h-5 bg-sage-500 rounded-full flex items-center justify-center mt-0.5">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                    </div>
-                    <span className="font-satoshi text-sm text-gray-700">Free guided tour to must-see spots</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <div className="w-5 h-5 bg-sage-500 rounded-full flex items-center justify-center mt-0.5">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                    </div>
-                    <span className="font-satoshi text-sm text-gray-700">Ideal for 4–6 people, flexible pace</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <div className="w-5 h-5 bg-sage-500 rounded-full flex items-center justify-center mt-0.5">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                    </div>
-                    <span className="font-satoshi text-sm text-gray-700">Great for hikes and chill days</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <div className="w-5 h-5 bg-sage-500 rounded-full flex items-center justify-center mt-0.5">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                    </div>
-                    <span className="font-satoshi text-sm text-gray-700">Several party places in 6mi radius</span>
-                  </div>
-                </div>
-                
-                {/* Action buttons */}
-                <div className="flex justify-center gap-6">
-                  <button className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
-                    <X className="w-8 h-8 text-white" />
-                  </button>
-                  <button className="w-16 h-16 bg-sage-500 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
-                    <Heart className="w-8 h-8 text-white" />
-                  </button>
-                </div>
-              </div>
+            {/* Detail Card */}
+            <div className="relative max-w-md mx-auto">
+              <img 
+                src="/lovable-uploads/0a08ccd5-fe89-4814-8086-97ac7e1a12fd.png" 
+                alt="Indonesia travel card with swipe options" 
+                className="w-full h-auto"
+              />
             </div>
             
             {/* Swipe instruction */}
