@@ -14,7 +14,7 @@ const AIPoweredSection = () => {
                 <img 
                   src="/lovable-uploads/c3376b83-bfa4-4dbe-976d-e4d165596b48.png" 
                   alt="AI-Powered Travel Planning" 
-                  className="w-6 h-6"
+                  className="w-8 h-8"
                 />
               </div>
               <span className="font-albert-sans text-gray-900 text-lg font-medium">AI-Powered Travel Planning</span>
