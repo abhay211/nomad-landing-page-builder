@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { Users } from 'lucide-react';
 
 const SwipeSection = () => {
   return (
-    <section className="py-20 px-6 bg-white font-albert-sans">
+    <section className="py-20 px-6 font-albert-sans" style={{ backgroundColor: '#FFFFFF' }}>
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left side - Travel Card */}
