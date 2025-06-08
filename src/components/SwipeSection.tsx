@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Users } from 'lucide-react';
 
 const SwipeSection = () => {
   return (
@@ -26,13 +27,11 @@ const SwipeSection = () => {
           {/* Right side - Content */}
           <div className="flex flex-col items-start gap-8 w-full max-w-[695px] h-[526px]">
             {/* Header with icon */}
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: '#92B193' }}>
-                <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                  <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#92B193' }}></div>
-                </div>
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full" style={{ backgroundColor: '#F5F5F3' }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#92B193' }}>
+                <Users className="w-5 h-5 text-white" />
               </div>
-              <span className="font-satoshi text-gray-600 text-lg">Group Travel Planning</span>
+              <span className="font-satoshi text-gray-900 text-lg font-medium">Group Travel Planning</span>
             </div>
             
             {/* Main heading */}
