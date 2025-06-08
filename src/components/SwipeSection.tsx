@@ -19,7 +19,7 @@ const SwipeSection = () => {
             </div>
             
             {/* Swipe instruction */}
-            <p className="text-center text-gray-400 font-satoshi text-sm mt-4">
+            <p className="text-center text-gray-400 font-albert-sans text-sm mt-4">
               Swipe left to skip or right to recommend to your group
             </p>
           </div>
@@ -31,22 +31,24 @@ const SwipeSection = () => {
               <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#92B193' }}>
                 <Users className="w-5 h-5 text-white" />
               </div>
-              <span className="font-satoshi text-gray-900 text-lg font-medium">Group Travel Planning</span>
+              <span className="font-albert-sans text-gray-900 text-lg font-medium">Group Travel Planning</span>
             </div>
             
-            {/* Main heading */}
-            <h2 className="font-satoshi font-bold text-5xl lg:text-6xl leading-tight">
-              <span className="text-gray-900">Swipe on YOUR</span>
-              <br />
-              <span style={{ color: '#92B193' }}>Dream Vacation.</span>
-            </h2>
+            {/* Main heading - now using image */}
+            <div className="w-full">
+              <img 
+                src="/lovable-uploads/82ef55c3-af72-4095-a8cc-ea15226e5984.png" 
+                alt="Swipe on YOUR Dream Vacation" 
+                className="w-full max-w-md h-auto"
+              />
+            </div>
             
             {/* Description */}
             <div className="space-y-4">
-              <p className="font-satoshi text-gray-600 text-lg leading-relaxed">
+              <p className="font-albert-sans text-gray-600 text-lg leading-relaxed">
                 Swipe to vote on destinations, stays, and things to do.
               </p>
-              <p className="font-satoshi text-gray-600 text-lg leading-relaxed">
+              <p className="font-albert-sans text-gray-600 text-lg leading-relaxed">
                 We turn your group's picks into one smart, effortless itinerary.
               </p>
             </div>
@@ -57,30 +59,30 @@ const SwipeSection = () => {
                 <div className="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center mt-1">
                   <div className="w-2 h-2 bg-white rounded-full"></div>
                 </div>
-                <span className="font-satoshi text-gray-900 text-lg">Swipe to vote on places, stays, activities and all things fun!</span>
+                <span className="font-albert-sans text-gray-900 text-lg">Swipe to vote on places, stays, activities and all things fun!</span>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center mt-1">
                   <div className="w-2 h-2 bg-white rounded-full"></div>
                 </div>
-                <span className="font-satoshi text-gray-900 text-lg">Instantly compare hotels, flights, cabs and other trip options</span>
+                <span className="font-albert-sans text-gray-900 text-lg">Instantly compare hotels, flights, cabs and other trip options</span>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center mt-1">
                   <div className="w-2 h-2 bg-white rounded-full"></div>
                 </div>
-                <span className="font-satoshi text-gray-900 text-lg">See what your group's loving — in real time</span>
+                <span className="font-albert-sans text-gray-900 text-lg">See what your group's loving — in real time</span>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center mt-1">
                   <div className="w-2 h-2 bg-white rounded-full"></div>
                 </div>
-                <span className="font-satoshi text-gray-900 text-lg">Get AI-powered itineraries built on what everyone's preferences.</span>
+                <span className="font-albert-sans text-gray-900 text-lg">Get AI-powered itineraries built on what everyone's preferences.</span>
               </div>
             </div>
             
             {/* CTA Button */}
-            <button className="inline-flex items-center gap-3 text-white font-satoshi font-medium text-lg px-8 py-4 rounded-full transition-colors" style={{ backgroundColor: '#92B193' }}>
+            <button className="inline-flex items-center gap-3 text-white font-albert-sans font-medium text-lg px-8 py-4 rounded-full transition-colors" style={{ backgroundColor: '#92B193' }}>
               Create Groups
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                 <div className="w-4 h-1 rounded-full" style={{ backgroundColor: '#92B193' }}></div>
