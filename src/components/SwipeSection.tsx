@@ -11,10 +11,27 @@ const SwipeSection = () => {
             {/* Detail Card */}
             <div className="relative max-w-md mx-auto">
               <img 
-                src="/lovable-uploads/0a08ccd5-fe89-4814-8086-97ac7e1a12fd.png" 
+                src="/lovable-uploads/c8bcb5e6-cf56-434e-9b46-7c5942461c67.png" 
                 alt="Indonesia travel card with swipe options" 
                 className="w-full h-auto"
               />
+              
+              {/* Action buttons positioned over the card */}
+              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4">
+                {/* Cross button */}
+                <button className="w-14 h-14 bg-orange-500 rounded-full flex items-center justify-center shadow-lg hover:bg-orange-600 transition-colors">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                
+                {/* Heart button */}
+                <button className="w-14 h-14 bg-sage-500 rounded-full flex items-center justify-center shadow-lg hover:bg-sage-600 transition-colors">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="white"/>
+                  </svg>
+                </button>
+              </div>
             </div>
             
             {/* Swipe instruction */}
