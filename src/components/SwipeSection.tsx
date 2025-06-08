@@ -27,7 +27,7 @@ const SwipeSection = () => {
           {/* Right side - Content */}
           <div className="flex flex-col items-start gap-8 w-full max-w-[695px] h-[526px]">
             {/* Header with icon */}
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full" style={{ backgroundColor: '#F5F5F3' }}>
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white">
               <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#92B193' }}>
                 <Users className="w-5 h-5 text-white" />
               </div>
