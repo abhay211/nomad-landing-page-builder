@@ -12,7 +12,7 @@ const AIPoweredSection = () => {
             <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white">
               <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#92B193' }}>
                 <img 
-                  src="/lovable-uploads/0fbd03fa-7369-405b-8cb9-11192fcbe0cc.png" 
+                  src="/lovable-uploads/0a08ccd5-fe89-4814-8086-97ac7e1a12fd.png" 
                   alt="AI-Powered Travel Planning" 
                   className="w-6 h-6"
                 />

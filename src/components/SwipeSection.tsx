@@ -97,7 +97,7 @@ const SwipeSection = () => {
               </div>
             </div>
             
-            {/* CTA Button - Updated design */}
+            {/* CTA Button - Create Groups button stays in this section */}
             <button className="inline-flex items-center justify-center gap-4 text-white font-plus-jakarta font-medium text-xl px-8 py-4 rounded-full transition-all duration-200 hover:shadow-lg" style={{ backgroundColor: '#92B193' }}>
               <span>Create Groups</span>
               <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
