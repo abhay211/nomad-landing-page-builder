@@ -12,7 +12,7 @@ const AIPoweredSection = () => {
             <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gray-50">
               <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#92B193' }}>
                 <img 
-                  src="/lovable-uploads/8090b5f5-c535-4a9c-b059-84c12e0e6ee7.png" 
+                  src="/lovable-uploads/c3376b83-bfa4-4dbe-976d-e4d165596b48.png" 
                   alt="AI-Powered Travel Planning" 
                   className="w-6 h-6"
                 />
@@ -23,7 +23,7 @@ const AIPoweredSection = () => {
             {/* Main heading with exact specifications */}
             <div className="space-y-6">
               <div className="flex flex-col items-start gap-6 w-[696px] h-[330px]">
-                <h2 className="font-albert-sans font-light leading-[70px] tracking-[-0.04em]" style={{ fontSize: '62px', color: '#1F1F1F' }}>
+                <h2 className="font-albert-sans font-extralight leading-[70px] tracking-[-0.04em]" style={{ fontSize: '62px', color: '#1F1F1F' }}>
                   Effortless Travel Starts
                   <br />
                   with <span style={{ color: '#92B193' }}>Smart Itineraries</span>
