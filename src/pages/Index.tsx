@@ -3,6 +3,7 @@ import React from 'react';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
 import SwipeSection from '../components/SwipeSection';
+import AIPoweredSection from '../components/AIPoweredSection';
 
 const Index = () => {
   return (
@@ -10,6 +11,7 @@ const Index = () => {
       <Navigation />
       <HeroSection />
       <SwipeSection />
+      <AIPoweredSection />
     </div>
   );
 };
