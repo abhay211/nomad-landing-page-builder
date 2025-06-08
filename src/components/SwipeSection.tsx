@@ -24,26 +24,26 @@ const SwipeSection = () => {
           </div>
           
           {/* Right side - Content */}
-          <div className="lg:pl-12">
+          <div className="flex flex-col items-start gap-8 w-full max-w-[695px] h-[526px]">
             {/* Header with icon */}
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-12 h-12 bg-sage-500 rounded-full flex items-center justify-center">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: '#92B193' }}>
                 <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                  <div className="w-3 h-3 bg-sage-500 rounded-sm"></div>
+                  <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#92B193' }}></div>
                 </div>
               </div>
               <span className="font-satoshi text-gray-600 text-lg">Group Travel Planning</span>
             </div>
             
             {/* Main heading */}
-            <h2 className="font-satoshi font-bold text-5xl lg:text-6xl leading-tight mb-8">
+            <h2 className="font-satoshi font-bold text-5xl lg:text-6xl leading-tight">
               <span className="text-gray-900">Swipe on YOUR</span>
               <br />
-              <span className="text-sage-500">Dream Vacation.</span>
+              <span style={{ color: '#92B193' }}>Dream Vacation.</span>
             </h2>
             
             {/* Description */}
-            <div className="mb-12 space-y-4">
+            <div className="space-y-4">
               <p className="font-satoshi text-gray-600 text-lg leading-relaxed">
                 Swipe to vote on destinations, stays, and things to do.
               </p>
@@ -53,7 +53,7 @@ const SwipeSection = () => {
             </div>
             
             {/* Features list */}
-            <div className="space-y-4 mb-12">
+            <div className="space-y-4 flex-grow">
               <div className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center mt-1">
                   <div className="w-2 h-2 bg-white rounded-full"></div>
@@ -81,10 +81,10 @@ const SwipeSection = () => {
             </div>
             
             {/* CTA Button */}
-            <button className="inline-flex items-center gap-3 bg-sage-500 text-white font-satoshi font-medium text-lg px-8 py-4 rounded-full hover:bg-sage-600 transition-colors">
+            <button className="inline-flex items-center gap-3 text-white font-satoshi font-medium text-lg px-8 py-4 rounded-full transition-colors" style={{ backgroundColor: '#92B193' }}>
               Create Groups
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <div className="w-4 h-1 bg-sage-500 rounded-full"></div>
+                <div className="w-4 h-1 rounded-full" style={{ backgroundColor: '#92B193' }}></div>
               </div>
             </button>
           </div>
