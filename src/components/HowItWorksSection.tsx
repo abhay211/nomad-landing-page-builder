@@ -105,85 +105,91 @@ const HowItWorksSection = () => {
           {/* Right side - Visual Elements */}
           <div className="relative h-[600px]">
             {/* Spa/Wellness Card - Top Left */}
-            <div className="absolute top-0 left-0 bg-white rounded-2xl shadow-lg overflow-hidden w-72 h-56">
+            <div className="absolute top-0 left-0 bg-white rounded-2xl shadow-xl overflow-hidden w-80 h-60">
               <img 
                 src="/lovable-uploads/1c8eb9b5-4b1c-45bd-80a7-bc199fb6dee2.png" 
                 alt="Spa wellness" 
-                className="w-full h-40 object-cover"
+                className="w-full h-44 object-cover"
               />
-              <div className="p-4">
-                <img 
-                  src="/lovable-uploads/4f2fee6c-4d0f-4caf-9f42-424d3581d193.png" 
-                  alt="Spa / Wellness tag" 
-                  className="h-8"
-                />
+              <div className="p-4 flex items-center justify-between">
+                <span className="bg-white px-4 py-2 rounded-full text-sm font-medium text-gray-800 shadow-sm border">
+                  Spa / Wellness
+                </span>
+                <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs">🍃</span>
+                </div>
               </div>
             </div>
 
             {/* Historical Tours Tag - Top Right */}
-            <div className="absolute top-8 right-0">
-              <img 
-                src="/lovable-uploads/26e6e5ac-bcb0-4a7b-a997-1c427c51c85c.png" 
-                alt="Historical Tours tag" 
-                className="h-12"
-              />
+            <div className="absolute top-6 right-4">
+              <div className="bg-white px-4 py-2 rounded-full text-sm font-medium text-gray-800 shadow-lg border flex items-center gap-2">
+                <span>Historical Tours</span>
+                <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs">🏛️</span>
+                </div>
+              </div>
             </div>
 
-            {/* Beach Card - Top Right */}
-            <div className="absolute top-16 right-8 bg-white rounded-2xl shadow-lg overflow-hidden w-64 h-48">
+            {/* Beach Card - Center Right */}
+            <div className="absolute top-20 right-0 bg-white rounded-2xl shadow-xl overflow-hidden w-72 h-52 z-10">
               <img 
                 src="/lovable-uploads/eb8e2e66-d086-47d7-b63b-b86ac60c9921.png" 
                 alt="Beach" 
-                className="w-full h-32 object-cover rounded-t-2xl"
+                className="w-full h-36 object-cover"
               />
-              <div className="p-4">
-                <img 
-                  src="/lovable-uploads/845a2739-e78a-4fb8-9f72-273f540b71d3.png" 
-                  alt="Beach tag" 
-                  className="h-8"
-                />
+              <div className="p-4 flex items-center justify-between">
+                <span className="bg-white px-4 py-2 rounded-full text-sm font-medium text-gray-800 shadow-sm border">
+                  Beach
+                </span>
+                <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs">🏖️</span>
+                </div>
               </div>
             </div>
 
             {/* Fine Dining Card - Right Side */}
-            <div className="absolute top-48 right-0 bg-white rounded-2xl shadow-lg overflow-hidden w-56 h-40">
+            <div className="absolute top-64 right-8 bg-white rounded-2xl shadow-xl overflow-hidden w-64 h-44 z-20">
               <img 
                 src="/lovable-uploads/e5097ff5-388e-4d82-8813-f00b179d9d91.png" 
                 alt="Fine dining" 
-                className="w-full h-24 object-cover"
+                className="w-full h-28 object-cover"
               />
-              <div className="p-3">
-                <img 
-                  src="/lovable-uploads/e6801f11-0565-4bd4-930d-55b06360a49b.png" 
-                  alt="Fine Dining tag" 
-                  className="h-6"
-                />
+              <div className="p-3 flex items-center justify-between">
+                <span className="bg-white px-3 py-1 rounded-full text-sm font-medium text-gray-800 shadow-sm border">
+                  Fine Dining
+                </span>
+                <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs">🍽️</span>
+                </div>
               </div>
             </div>
 
             {/* Hotels Card - Bottom Left */}
-            <div className="absolute bottom-16 left-16 bg-white rounded-2xl shadow-lg overflow-hidden w-64 h-48">
+            <div className="absolute bottom-12 left-8 bg-white rounded-2xl shadow-xl overflow-hidden w-72 h-52">
               <img 
                 src="/lovable-uploads/ccabc53e-04d7-439c-957b-7e816786fdd9.png" 
                 alt="Hotels" 
-                className="w-full h-32 object-cover"
+                className="w-full h-36 object-cover"
               />
-              <div className="p-4">
-                <img 
-                  src="/lovable-uploads/6d164d8b-e815-408b-a109-370c5cbf403c.png" 
-                  alt="Hotels tag" 
-                  className="h-8"
-                />
+              <div className="p-4 flex items-center justify-between">
+                <span className="bg-white px-4 py-2 rounded-full text-sm font-medium text-gray-800 shadow-sm border">
+                  Hotels
+                </span>
+                <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs">🏨</span>
+                </div>
               </div>
             </div>
 
             {/* Resorts Tag - Bottom Right */}
-            <div className="absolute bottom-8 right-16">
-              <img 
-                src="/lovable-uploads/77caadc1-751b-4942-9c69-3cb8048eecc1.png" 
-                alt="Resorts tag" 
-                className="h-12"
-              />
+            <div className="absolute bottom-4 right-12">
+              <div className="bg-white px-4 py-2 rounded-full text-sm font-medium text-gray-800 shadow-lg border flex items-center gap-2">
+                <span>Resorts</span>
+                <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs">🏖️</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
