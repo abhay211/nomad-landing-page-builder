@@ -11,17 +11,17 @@ const RecentlyGeneratedSection = () => {
     {
       id: 2,
       image: "/lovable-uploads/a329ae4a-a4be-4c07-8cd4-e2edf96c65b8.png",
-      date: "January 25, 2025"
+      date: "January 23, 2025"
     },
     {
       id: 3,
       image: "/lovable-uploads/a5b83ce8-3642-4c95-a80d-f3272ebe444c.png",
-      date: "January 25, 2025"
+      date: "January 21, 2025"
     },
     {
       id: 4,
       image: "/lovable-uploads/339ebabf-34ed-43ed-932c-9bd7f26011ec.png",
-      date: "January 25, 2025"
+      date: "January 18, 2025"
     }
   ];
 
