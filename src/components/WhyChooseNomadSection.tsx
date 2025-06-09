@@ -29,20 +29,12 @@ const WhyChooseNomadSection = () => {
         <div className="space-y-16">
           {/* AI-Powered Itineraries - Full Width */}
           <div className="w-full">
-            <div className="mb-8">
-              <h3 className="font-albert-sans font-semibold text-4xl text-gray-900 mb-4">
-                AI-Powered Itineraries
-              </h3>
-              <p className="font-satoshi text-gray-600 text-lg leading-relaxed mb-8">
-                Smart plans that save time and match your interests.
-              </p>
-              <button className="inline-flex items-center gap-3 px-6 py-3 rounded-full text-white font-medium transition-all duration-200 hover:shadow-lg" style={{ backgroundColor: '#92B193' }}>
-                Plan a Trip Now
-                <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                  <ArrowRight className="w-4 h-4" style={{ color: '#92B193' }} />
-                </div>
-              </button>
-            </div>
+            <button className="inline-flex items-center gap-3 px-6 py-3 rounded-full text-white font-medium transition-all duration-200 hover:shadow-lg mb-8" style={{ backgroundColor: '#92B193' }}>
+              Plan a Trip Now
+              <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                <ArrowRight className="w-4 h-4" style={{ color: '#92B193' }} />
+              </div>
+            </button>
             
             {/* AI-Powered Itineraries Image */}
             <div className="relative">
@@ -58,13 +50,6 @@ const WhyChooseNomadSection = () => {
           <div className="grid lg:grid-cols-2 gap-16">
             {/* Local Recommendations */}
             <div>
-              <h3 className="font-albert-sans font-semibold text-4xl text-gray-900 mb-4">
-                Local Recommendations
-              </h3>
-              <p className="font-satoshi text-gray-600 text-lg leading-relaxed mb-8">
-                Discover hidden gems and authentic spots recommended by real locals.
-              </p>
-              
               {/* Local Recommendations Image */}
               <div className="relative">
                 <img 
@@ -77,13 +62,6 @@ const WhyChooseNomadSection = () => {
 
             {/* Group Planning Tools */}
             <div>
-              <h3 className="font-albert-sans font-semibold text-4xl text-gray-900 mb-4">
-                Group Planning Tools
-              </h3>
-              <p className="font-satoshi text-gray-600 text-lg leading-relaxed mb-8">
-                Collaborate easily with friends and family—no more endless group chats.
-              </p>
-              
               {/* Group Planning Tools Image */}
               <div className="relative">
                 <img 
