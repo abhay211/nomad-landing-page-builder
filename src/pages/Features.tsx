@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -28,8 +29,16 @@ const Features = () => {
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
+      <section 
+        className="py-20 px-6 relative"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('/lovable-uploads/e0a9d7be-7d2b-40f4-933f-5900dae17047.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <div className="max-w-6xl mx-auto relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             
             {/* Feature 1 */}
