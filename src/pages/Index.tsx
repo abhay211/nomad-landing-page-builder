@@ -6,6 +6,7 @@ import SwipeSection from '../components/SwipeSection';
 import AIPoweredSection from '../components/AIPoweredSection';
 import HowItWorksSection from '../components/HowItWorksSection';
 import RecentlyGeneratedSection from '../components/RecentlyGeneratedSection';
+import WhyChooseNomadSection from '../components/WhyChooseNomadSection';
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
       <AIPoweredSection />
       <HowItWorksSection />
       <RecentlyGeneratedSection />
+      <WhyChooseNomadSection />
     </div>
   );
 };
