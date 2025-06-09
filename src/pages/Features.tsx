@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -8,20 +7,28 @@ const Features = () => {
     <div className="min-h-screen">
       <Navigation />
       
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6 bg-gradient-to-br from-sage-50 to-sage-100">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="font-albert-sans font-light text-[62px] leading-[70px] tracking-[-0.04em] text-gray-900 mb-6">
+      {/* Hero Section with Background Image */}
+      <section 
+        className="pt-32 pb-20 px-6 relative overflow-hidden"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/lovable-uploads/56536861-27a8-4eb3-8391-7850b0e90b8f.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h1 className="font-albert-sans font-light text-[62px] leading-[70px] tracking-[-0.04em] text-white mb-6">
             ✨ Features That Make Travel Planning <span style={{ color: '#92B193' }}>Effortless</span>
           </h1>
-          <p className="font-albert-sans text-gray-600 text-xl leading-relaxed">
+          <p className="font-albert-sans text-white text-xl leading-relaxed">
             Nomad is designed to make travel planning as exciting as the journey itself. Whether you're a solo traveler or planning with a group, our intuitive tools and personalized intelligence make sure you focus less on logistics and more on experiences.
           </p>
         </div>
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 px-6">
+      <section className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             
