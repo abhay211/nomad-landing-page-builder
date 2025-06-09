@@ -18,7 +18,7 @@ const HowItWorksSection = () => {
             <span className="font-albert-sans text-gray-900 text-lg font-medium">How it works</span>
           </div>
           
-          <div className="flex items-center justify-between">
+          <div className="flex items-end justify-between">
             <div>
               <h2 className="font-albert-sans font-extralight text-[62px] leading-[70px] tracking-[-0.04em]" style={{ color: '#1F1F1F' }}>
                 Plan Your Trip in
@@ -27,7 +27,7 @@ const HowItWorksSection = () => {
                 3 Easy Steps
               </span>
             </div>
-            <button className="inline-flex items-center justify-center gap-3 text-white font-plus-jakarta font-medium text-lg px-6 py-3 rounded-full transition-all duration-200 hover:shadow-lg" style={{ backgroundColor: '#92B193' }}>
+            <button className="inline-flex items-center justify-center gap-3 text-white font-plus-jakarta font-medium text-lg px-8 py-4 rounded-full transition-all duration-200 hover:shadow-lg" style={{ backgroundColor: '#92B193' }}>
               <span>Plan a Trip Now</span>
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                 <img 
