@@ -1,7 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import CustomSlider from './CustomSlider';
 
 const RecentlyGeneratedSection = () => {
+  const [sliderValue, setSliderValue] = useState([50]);
+  
   const itineraries = [
     {
       id: 1,
@@ -30,6 +33,21 @@ const RecentlyGeneratedSection = () => {
             Recently generated{' '}
             <span style={{ color: '#92B193' }}>itineraries</span>
           </h2>
+        </div>
+
+        {/* Slider */}
+        <div className="mb-12 max-w-md mx-auto">
+          <CustomSlider
+            value={sliderValue}
+            onValueChange={setSliderValue}
+            min={0}
+            max={100}
+            step={1}
+            className="mb-4"
+          />
+          <div className="text-center text-sm text-gray-600">
+            Value: {sliderValue[0]}
+          </div>
         </div>
 
         {/* Cards Grid */}
