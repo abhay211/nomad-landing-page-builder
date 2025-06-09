@@ -8,11 +8,11 @@ const WhyChooseNomadSection = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white mb-8">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#92B193' }}>
+            <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: '#92B193' }}>
               <img 
                 src="/lovable-uploads/e8cd8f41-ef37-4742-a14d-e79dde11051b.png" 
                 alt="Why Choose Nomad" 
-                className="w-6 h-6"
+                className="w-8 h-8"
               />
             </div>
             <span className="font-albert-sans text-gray-900 text-lg font-medium">Why Choose Nomad?</span>
