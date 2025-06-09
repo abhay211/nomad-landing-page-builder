@@ -35,21 +35,6 @@ const RecentlyGeneratedSection = () => {
           </h2>
         </div>
 
-        {/* Slider */}
-        <div className="mb-12 max-w-md mx-auto">
-          <CustomSlider
-            value={sliderValue}
-            onValueChange={setSliderValue}
-            min={0}
-            max={100}
-            step={1}
-            className="mb-4"
-          />
-          <div className="text-center text-sm text-gray-600">
-            Value: {sliderValue[0]}
-          </div>
-        </div>
-
         {/* Cards Grid */}
         <div className="flex flex-col items-center p-0 gap-[60px] w-[1320px] h-[526px] mx-auto">
           <div className="grid grid-cols-4 gap-6 w-full">
@@ -66,6 +51,17 @@ const RecentlyGeneratedSection = () => {
                 </div>
               </div>
             ))}
+          </div>
+          
+          {/* Slider below cards */}
+          <div className="w-full max-w-4xl">
+            <CustomSlider
+              value={sliderValue}
+              onValueChange={setSliderValue}
+              min={0}
+              max={100}
+              step={1}
+            />
           </div>
         </div>
       </div>

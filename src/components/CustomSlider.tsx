@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Slider } from '@/components/ui/slider';
 
 interface CustomSliderProps {
   value: number[];
@@ -19,36 +18,29 @@ const CustomSlider = ({
   step = 1,
   className = ""
 }: CustomSliderProps) => {
+  const percentage = ((value[0] - min) / (max - min)) * 100;
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickPosition = (e.clientX - rect.left) / rect.width;
+    const newValue = min + (clickPosition * (max - min));
+    onValueChange([Math.round(newValue / step) * step]);
+  };
+
   return (
     <div className={`w-full ${className}`}>
-      <div className="custom-slider">
-        <Slider
-          value={value}
-          onValueChange={onValueChange}
-          min={min}
-          max={max}
-          step={step}
-          className="w-full"
+      <div 
+        className="relative w-full h-2 bg-gray-200 rounded-full cursor-pointer"
+        onClick={handleClick}
+      >
+        <div 
+          className="absolute top-0 left-0 h-full rounded-full transition-all duration-200 ease-out"
+          style={{ 
+            width: `${percentage}%`,
+            backgroundColor: '#92B193'
+          }}
         />
       </div>
-      <style dangerouslySetInnerHTML={{
-        __html: `
-          .custom-slider .slider-track {
-            background-color: #E5E7EB;
-          }
-          .custom-slider .slider-range {
-            background-color: #92B193;
-          }
-          .custom-slider .slider-thumb {
-            background-color: #92B193;
-            border-color: #92B193;
-          }
-          .custom-slider [data-radix-collection-item] {
-            background-color: #92B193;
-            border-color: #92B193;
-          }
-        `
-      }} />
     </div>
   );
 };
