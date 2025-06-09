@@ -7,6 +7,7 @@ import AIPoweredSection from '../components/AIPoweredSection';
 import HowItWorksSection from '../components/HowItWorksSection';
 import RecentlyGeneratedSection from '../components/RecentlyGeneratedSection';
 import WhyChooseNomadSection from '../components/WhyChooseNomadSection';
+import DreamTripSection from '../components/DreamTripSection';
 
 const Index = () => {
   return (
@@ -18,6 +19,7 @@ const Index = () => {
       <HowItWorksSection />
       <RecentlyGeneratedSection />
       <WhyChooseNomadSection />
+      <DreamTripSection />
     </div>
   );
 };
