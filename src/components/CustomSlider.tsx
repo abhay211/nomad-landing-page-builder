@@ -21,31 +21,34 @@ const CustomSlider = ({
 }: CustomSliderProps) => {
   return (
     <div className={`w-full ${className}`}>
-      <Slider
-        value={value}
-        onValueChange={onValueChange}
-        min={min}
-        max={max}
-        step={step}
-        className="w-full"
-        style={{
-          '--slider-track': '#E5E7EB',
-          '--slider-range': '#92B193',
-          '--slider-thumb': '#92B193',
-        } as React.CSSProperties}
-      />
-      <style jsx>{`
-        :global(.slider-track) {
-          background-color: #E5E7EB;
-        }
-        :global(.slider-range) {
-          background-color: #92B193;
-        }
-        :global(.slider-thumb) {
-          background-color: #92B193;
-          border-color: #92B193;
-        }
-      `}</style>
+      <div className="custom-slider">
+        <Slider
+          value={value}
+          onValueChange={onValueChange}
+          min={min}
+          max={max}
+          step={step}
+          className="w-full"
+        />
+      </div>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .custom-slider .slider-track {
+            background-color: #E5E7EB;
+          }
+          .custom-slider .slider-range {
+            background-color: #92B193;
+          }
+          .custom-slider .slider-thumb {
+            background-color: #92B193;
+            border-color: #92B193;
+          }
+          .custom-slider [data-radix-collection-item] {
+            background-color: #92B193;
+            border-color: #92B193;
+          }
+        `
+      }} />
     </div>
   );
 };
