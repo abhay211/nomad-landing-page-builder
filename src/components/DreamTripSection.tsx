@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Spa, Utensils, Beach, Park, Hotel, Landmark } from 'lucide-react';
+import { Waves, Utensils, Palmtree, Trees, Hotel, Landmark } from 'lucide-react';
 
 const DreamTripSection = () => {
   return (
@@ -32,7 +32,7 @@ const DreamTripSection = () => {
           <div className="absolute top-8 left-8 bg-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 animate-fade-in">
             <span className="font-albert-sans text-gray-900 font-medium">Spa / Wellness</span>
             <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
-              <Spa className="w-5 h-5 text-white" />
+              <Waves className="w-5 h-5 text-white" />
             </div>
           </div>
 
@@ -64,7 +64,7 @@ const DreamTripSection = () => {
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 animate-fade-in">
             <span className="font-albert-sans text-gray-900 font-medium">Beach</span>
             <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
-              <Beach className="w-5 h-5 text-white" />
+              <Palmtree className="w-5 h-5 text-white" />
             </div>
           </div>
 
@@ -72,7 +72,7 @@ const DreamTripSection = () => {
           <div className="absolute bottom-8 left-4 bg-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 animate-fade-in">
             <span className="font-albert-sans text-gray-900 font-medium">Park</span>
             <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
-              <Park className="w-5 h-5 text-white" />
+              <Trees className="w-5 h-5 text-white" />
             </div>
           </div>
 
