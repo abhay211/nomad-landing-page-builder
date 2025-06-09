@@ -1,18 +1,17 @@
-
 import React from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
-
 const About = () => {
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       <Navigation />
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6 bg-gradient-to-br from-sage-50 to-sage-100">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="font-albert-sans font-light text-[62px] leading-[70px] tracking-[-0.04em] text-gray-900 mb-12">
-            About <span style={{ color: '#92B193' }}>Nomad</span>
+            About <span style={{
+            color: '#92B193'
+          }} className="text-gray-950">us</span>
           </h1>
         </div>
       </section>
@@ -36,15 +35,15 @@ const About = () => {
             We bring the world to your fingertips—so you can focus less on logistics, and more on the memories.
           </p>
           
-          <p className="font-albert-sans text-xl leading-relaxed text-gray-700 font-medium" style={{ color: '#92B193' }}>
+          <p className="font-albert-sans text-xl leading-relaxed text-gray-700 font-medium" style={{
+          color: '#92B193'
+        }}>
             Let's make travel feel like travel again.
           </p>
         </div>
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default About;
