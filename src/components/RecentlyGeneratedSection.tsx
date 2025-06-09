@@ -6,25 +6,21 @@ const RecentlyGeneratedSection = () => {
     {
       id: 1,
       image: "/lovable-uploads/858df27c-78e5-452f-912d-33df4ff25a76.png",
-      title: "Australia",
       date: "January 25, 2025"
     },
     {
       id: 2,
       image: "/lovable-uploads/a329ae4a-a4be-4c07-8cd4-e2edf96c65b8.png",
-      title: "Thailand",
       date: "January 25, 2025"
     },
     {
       id: 3,
       image: "/lovable-uploads/a5b83ce8-3642-4c95-a80d-f3272ebe444c.png",
-      title: "Sweden",
       date: "January 25, 2025"
     },
     {
       id: 4,
       image: "/lovable-uploads/339ebabf-34ed-43ed-932c-9bd7f26011ec.png",
-      title: "Istanbul, Turkey",
       date: "January 25, 2025"
     }
   ];
@@ -48,14 +44,11 @@ const RecentlyGeneratedSection = () => {
                 <div className="aspect-square overflow-hidden">
                   <img 
                     src={itinerary.image} 
-                    alt={itinerary.title}
+                    alt="Travel destination"
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
                 <div className="p-6">
-                  <h3 className="font-albert-sans font-normal text-2xl text-gray-900 mb-2">
-                    {itinerary.title}
-                  </h3>
                   <p className="font-satoshi text-gray-600 text-sm">
                     {itinerary.date}
                   </p>
