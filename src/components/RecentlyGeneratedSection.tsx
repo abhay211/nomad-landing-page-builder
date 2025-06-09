@@ -33,8 +33,8 @@ const RecentlyGeneratedSection = () => {
         </div>
 
         {/* Cards Grid */}
-        <div className="flex flex-col items-center gap-[60px]">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-[1320px]">
+        <div className="flex flex-col items-center p-0 gap-[60px] w-[1320px] h-[526px] mx-auto">
+          <div className="grid grid-cols-4 gap-6 w-full">
             {itineraries.map((itinerary) => (
               <div key={itinerary.id} className="group cursor-pointer flex flex-col w-[318px] h-[396px]">
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
