@@ -21,7 +21,7 @@ const DreamTripSection = () => {
           {/* Central Image */}
           <div className="relative z-10">
             <img 
-              src="/lovable-uploads/38b14908-207e-4f8d-82eb-7bb537f0c8c0.png" 
+              src="/lovable-uploads/be8550a4-8b89-407b-96a4-685c28df934d.png" 
               alt="Scenic coastal view with interactive travel elements" 
               className="w-[400px] h-[300px] object-cover rounded-3xl shadow-lg"
             />
