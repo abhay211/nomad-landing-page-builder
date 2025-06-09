@@ -25,59 +25,37 @@ const WhyChooseNomadSection = () => {
           </h2>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid lg:grid-cols-2 gap-16">
-          {/* Left Column */}
-          <div className="space-y-16">
-            {/* AI-Powered Itineraries */}
-            <div className="relative">
-              <div className="mb-8">
-                <h3 className="font-albert-sans font-semibold text-4xl text-gray-900 mb-4">
-                  AI-Powered Itineraries
-                </h3>
-                <p className="font-satoshi text-gray-600 text-lg leading-relaxed mb-8">
-                  Smart plans that save time and match your interests.
-                </p>
-                <button className="inline-flex items-center gap-3 px-6 py-3 rounded-full text-white font-medium transition-all duration-200 hover:shadow-lg" style={{ backgroundColor: '#92B193' }}>
-                  Plan a Trip Now
-                  <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                    <ArrowRight className="w-4 h-4" style={{ color: '#92B193' }} />
-                  </div>
-                </button>
-              </div>
-              
-              {/* Thailand Card Mockup */}
-              <div className="relative">
-                <img 
-                  src="/lovable-uploads/e2704476-ff95-4d20-ad66-56766af97308.png" 
-                  alt="AI-Powered Itineraries showing Thailand trip planning interface" 
-                  className="w-full h-auto"
-                />
-              </div>
-            </div>
-
-            {/* Group Planning Tools */}
-            <div>
+        {/* Features Grid - Updated Layout */}
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
+          {/* Left Column - AI-Powered Itineraries */}
+          <div className="lg:row-span-2">
+            <div className="mb-8">
               <h3 className="font-albert-sans font-semibold text-4xl text-gray-900 mb-4">
-                Group Planning Tools
+                AI-Powered Itineraries
               </h3>
               <p className="font-satoshi text-gray-600 text-lg leading-relaxed mb-8">
-                Collaborate easily with friends and family—no more endless group chats.
+                Smart plans that save time and match your interests.
               </p>
-              
-              {/* Group Chat Mockup */}
-              <div className="relative">
-                <img 
-                  src="/lovable-uploads/e77752c8-3e96-40f2-b5dd-2ef45544cfc0.png" 
-                  alt="Group Planning Tools showing collaborative chat interface" 
-                  className="w-full h-auto max-w-lg"
-                />
-              </div>
+              <button className="inline-flex items-center gap-3 px-6 py-3 rounded-full text-white font-medium transition-all duration-200 hover:shadow-lg" style={{ backgroundColor: '#92B193' }}>
+                Plan a Trip Now
+                <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                  <ArrowRight className="w-4 h-4" style={{ color: '#92B193' }} />
+                </div>
+              </button>
+            </div>
+            
+            {/* AI-Powered Itineraries Image */}
+            <div className="relative">
+              <img 
+                src="/lovable-uploads/5b863327-f856-4d3b-9fc4-c87ca1f21e48.png" 
+                alt="AI-Powered Itineraries showing Thailand trip planning interface" 
+                className="w-full h-auto"
+              />
             </div>
           </div>
 
-          {/* Right Column - Local Recommendations */}
-          <div className="lg:pl-8">
+          {/* Right Column - Top: Local Recommendations */}
+          <div className="mb-12">
             <h3 className="font-albert-sans font-semibold text-4xl text-gray-900 mb-4">
               Local Recommendations
             </h3>
@@ -85,12 +63,31 @@ const WhyChooseNomadSection = () => {
               Discover hidden gems and authentic spots recommended by real locals.
             </p>
             
-            {/* Recommendations Grid */}
+            {/* Local Recommendations Image */}
             <div className="relative">
               <img 
-                src="/lovable-uploads/d0e5663a-fb25-4516-9441-30d304859c94.png" 
+                src="/lovable-uploads/d7356d4e-7844-4a4e-a4b9-2bf272f8d003.png" 
                 alt="Local Recommendations showing various activity cards" 
                 className="w-full h-auto"
+              />
+            </div>
+          </div>
+
+          {/* Right Column - Bottom: Group Planning Tools */}
+          <div>
+            <h3 className="font-albert-sans font-semibold text-4xl text-gray-900 mb-4">
+              Group Planning Tools
+            </h3>
+            <p className="font-satoshi text-gray-600 text-lg leading-relaxed mb-8">
+              Collaborate easily with friends and family—no more endless group chats.
+            </p>
+            
+            {/* Group Planning Tools Image */}
+            <div className="relative">
+              <img 
+                src="/lovable-uploads/368789cd-2e27-46e7-8d62-2988dd243c82.png" 
+                alt="Group Planning Tools showing collaborative chat interface" 
+                className="w-full h-auto max-w-lg"
               />
             </div>
           </div>
