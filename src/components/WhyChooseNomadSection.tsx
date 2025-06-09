@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
 
 const WhyChooseNomadSection = () => {
   return (
@@ -8,10 +7,10 @@ const WhyChooseNomadSection = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gray-50 mb-8">
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white mb-8">
             <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#92B193' }}>
               <img 
-                src="/lovable-uploads/c3376b83-bfa4-4dbe-976d-e4d165596b48.png" 
+                src="/lovable-uploads/e8cd8f41-ef37-4742-a14d-e79dde11051b.png" 
                 alt="Why Choose Nomad" 
                 className="w-6 h-6"
               />
@@ -29,13 +28,6 @@ const WhyChooseNomadSection = () => {
         <div className="space-y-16">
           {/* AI-Powered Itineraries - Full Width */}
           <div className="w-full">
-            <button className="inline-flex items-center gap-3 px-6 py-3 rounded-full text-white font-medium transition-all duration-200 hover:shadow-lg mb-8" style={{ backgroundColor: '#92B193' }}>
-              Plan a Trip Now
-              <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                <ArrowRight className="w-4 h-4" style={{ color: '#92B193' }} />
-              </div>
-            </button>
-            
             {/* AI-Powered Itineraries Image */}
             <div className="relative">
               <img 
