@@ -1,10 +1,7 @@
 
-import React, { useState } from 'react';
-import CustomSlider from './CustomSlider';
+import React from 'react';
 
 const RecentlyGeneratedSection = () => {
-  const [sliderValue, setSliderValue] = useState([50]);
-  
   const itineraries = [
     {
       id: 1,
@@ -51,17 +48,6 @@ const RecentlyGeneratedSection = () => {
                 </div>
               </div>
             ))}
-          </div>
-          
-          {/* Slider below cards */}
-          <div className="w-full max-w-4xl">
-            <CustomSlider
-              value={sliderValue}
-              onValueChange={setSliderValue}
-              min={0}
-              max={100}
-              step={1}
-            />
           </div>
         </div>
       </div>
