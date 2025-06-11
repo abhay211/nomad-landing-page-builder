@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
 import { Textarea } from '@/components/ui/textarea';
-import { MapPin, Coffee, Mountain, Spa } from 'lucide-react';
+import { MapPin, Coffee, Mountain, Flower2 } from 'lucide-react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 
@@ -48,7 +48,7 @@ const CreateTrip = () => {
   };
 
   const vibeOptions = [
-    { value: 'relax', label: 'Relax', icon: Spa, color: '#92B193' },
+    { value: 'relax', label: 'Relax', icon: Flower2, color: '#92B193' },
     { value: 'explore', label: 'Explore', icon: Mountain, color: '#92B193' },
     { value: 'local-eats', label: 'Local Eats', icon: Coffee, color: '#92B193' }
   ];
