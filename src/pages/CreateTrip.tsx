@@ -99,8 +99,11 @@ const CreateTrip = () => {
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="1">Just me</SelectItem>
+                          <SelectItem value="2">2 people</SelectItem>
                           <SelectItem value="2-4">2-4 people</SelectItem>
-                          <SelectItem value="5+">5+ people</SelectItem>
+                          <SelectItem value="4-6">4-6 people</SelectItem>
+                          <SelectItem value="6-10">6-10 people</SelectItem>
+                          <SelectItem value="10+">10+ people</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -124,10 +127,11 @@ const CreateTrip = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="3">3 days</SelectItem>
-                          <SelectItem value="5">5 days</SelectItem>
-                          <SelectItem value="7">7 days</SelectItem>
-                          <SelectItem value="10+">10+ days</SelectItem>
+                          <SelectItem value="1-2">1-2 days</SelectItem>
+                          <SelectItem value="2-4">2-4 days</SelectItem>
+                          <SelectItem value="4-7">4-7 days</SelectItem>
+                          <SelectItem value="1-2weeks">1-2 weeks</SelectItem>
+                          <SelectItem value="2weeks+">2+ weeks</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
