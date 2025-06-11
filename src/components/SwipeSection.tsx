@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const SwipeSection = () => {
   return (
@@ -97,7 +99,11 @@ const SwipeSection = () => {
             </div>
             
             {/* CTA Button - Create Groups button stays in this section */}
-            <button className="inline-flex items-center justify-center gap-4 text-white font-plus-jakarta font-medium text-xl px-8 py-4 rounded-full transition-all duration-200 hover:shadow-lg mt-6" style={{ backgroundColor: '#92B193' }}>
+            <Link 
+              to="/create-trip"
+              className="inline-flex items-center justify-center gap-4 text-white font-plus-jakarta font-medium text-xl px-8 py-4 rounded-full transition-all duration-200 hover:shadow-lg mt-6" 
+              style={{ backgroundColor: '#92B193' }}
+            >
               <span>Create Groups</span>
               <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
                 <img 
@@ -106,7 +112,7 @@ const SwipeSection = () => {
                   className="w-6 h-6"
                 />
               </div>
-            </button>
+            </Link>
           </div>
         </div>
       </div>
