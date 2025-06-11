@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
 import { Textarea } from '@/components/ui/textarea';
-import { MapPin, Coffee, Mountain, Flower2 } from 'lucide-react';
+import { MapPin, Mountain, Leaf, Heart, Building, Trees, Palette, Star } from 'lucide-react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 
@@ -48,9 +48,14 @@ const CreateTrip = () => {
   };
 
   const vibeOptions = [
-    { value: 'relax', label: 'Relax', icon: Flower2, color: '#92B193' },
+    { value: 'relax', label: 'Relax', icon: Leaf, color: '#92B193' },
     { value: 'explore', label: 'Explore', icon: Mountain, color: '#92B193' },
-    { value: 'local-eats', label: 'Local Eats', icon: Coffee, color: '#92B193' }
+    { value: 'adventure', label: 'Adventure', icon: Mountain, color: '#92B193' },
+    { value: 'wellness', label: 'Wellness', icon: Heart, color: '#92B193' },
+    { value: 'city-life', label: 'City Life', icon: Building, color: '#92B193' },
+    { value: 'nature', label: 'Nature', icon: Trees, color: '#92B193' },
+    { value: 'culture', label: 'Culture', icon: Palette, color: '#92B193' },
+    { value: 'hidden-gems', label: 'Hidden Gems', icon: Star, color: '#92B193' }
   ];
 
   return (
@@ -152,7 +157,7 @@ const CreateTrip = () => {
                         <RadioGroup
                           onValueChange={field.onChange}
                           defaultValue={field.value}
-                          className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+                          className="grid grid-cols-2 lg:grid-cols-4 gap-3"
                         >
                           {vibeOptions.map((option) => (
                             <div key={option.value} className="relative">
@@ -163,10 +168,10 @@ const CreateTrip = () => {
                               />
                               <label
                                 htmlFor={option.value}
-                                className="flex flex-col items-center justify-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-200 hover:border-sage-300 hover:bg-sage-50 peer-checked:border-sage-400 peer-checked:bg-sage-50 peer-checked:shadow-md"
+                                className="flex flex-col items-center justify-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all duration-200 hover:border-sage-300 hover:bg-sage-50 peer-checked:border-sage-400 peer-checked:bg-sage-50 peer-checked:shadow-md min-h-[80px]"
                               >
-                                <option.icon className="w-8 h-8 mb-3 text-sage-500" />
-                                <span className="font-satoshi font-medium text-gray-900">
+                                <option.icon className="w-6 h-6 mb-2 text-sage-500" />
+                                <span className="font-satoshi font-medium text-gray-900 text-sm text-center">
                                   {option.label}
                                 </span>
                               </label>
