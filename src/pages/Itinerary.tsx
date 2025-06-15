@@ -31,7 +31,7 @@ const Itinerary = () => {
             <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-8">
               <div className="relative h-64 sm:h-80">
                 <img 
-                  src="/lovable-uploads/5b863327-f856-4d3b-9fc4-c87ca1f21e48.png"
+                  src="/lovable-uploads/9b68c3ac-69b4-433b-9fad-88608e8ed270.png"
                   alt="Ubud, Bali landscape"
                   className="w-full h-full object-cover"
                 />
