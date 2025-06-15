@@ -1,16 +1,88 @@
+
 import React from 'react';
-import { MapPin, Calendar, Bed, DollarSign } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import ItineraryHeader from '../components/itinerary/ItineraryHeader';
+import ItineraryDay from '../components/itinerary/ItineraryDay';
+
+// Type definitions
+interface TripDetails {
+  destination: string;
+  stay: string;
+  budget: string;
+  imageUrl: string;
+}
+
+interface ItineraryItem {
+  description: string;
+}
+
+interface DayPlan {
+  day: number;
+  title: string;
+  activities: ItineraryItem[];
+}
+
+interface ItineraryData {
+  tripDetails: TripDetails;
+  days: DayPlan[];
+}
+
+const mockItinerary: ItineraryData = {
+  tripDetails: {
+    destination: 'Ubud, Bali',
+    stay: 'Boutique 2-bedroom villa with jungle view',
+    budget: 'Medium ($$)',
+    imageUrl: '/lovable-uploads/9b68c3ac-69b4-433b-9fad-88608e8ed270.png'
+  },
+  days: [
+    {
+      day: 1,
+      title: 'Arrival & Unwind',
+      activities: [
+        { description: 'Check-in to villa' },
+        { description: 'Sunset drinks at Folk Pool & Gardens' },
+        { description: 'Dinner at Ibu Rai' }
+      ]
+    },
+    {
+      day: 2,
+      title: 'Nature & Relaxation',
+      activities: [
+        { description: 'Yoga at The Yoga Barn' },
+        { description: 'Spa at Karsa Spa' },
+        { description: 'Campuhan Ridge Walk' },
+        { description: 'Chill dinner by the pool' }
+      ]
+    },
+    {
+      day: 3,
+      title: 'Culture & Leisure',
+      activities: [
+        { description: 'Visit Tirta Empul Temple' },
+        { description: 'Ubud Market + Saraswati Temple' },
+        { description: 'Traditional dance show at night' }
+      ]
+    },
+    {
+      day: 4,
+      title: 'Farewell',
+      activities: [
+        { description: 'Brunch at Sayuri Cafe' },
+        { description: 'Local shopping' },
+        { description: 'Departure' }
+      ]
+    }
+  ]
+};
 
 const Itinerary = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
       
-      {/* Hero Section with Background */}
       <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-        {/* Background Elements */}
         <div className="absolute inset-0 bg-gradient-to-br from-sage-50 to-sage-100"></div>
         <div className="absolute top-20 left-10 w-32 h-32 bg-sage-200 rounded-full opacity-30 blur-xl"></div>
         <div className="absolute bottom-20 right-10 w-48 h-48 bg-sage-300 rounded-full opacity-20 blur-2xl"></div>
@@ -25,56 +97,9 @@ const Itinerary = () => {
             </p>
           </div>
 
-          {/* Itinerary Content */}
           <div className="max-w-3xl mx-auto">
-            {/* Header Card with Image */}
-            <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-8">
-              <div className="relative h-64 sm:h-80">
-                <img 
-                  src="/lovable-uploads/9b68c3ac-69b4-433b-9fad-88608e8ed270.png"
-                  alt="Ubud, Bali landscape"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-              </div>
-              
-              <div className="p-8">
-                {/* Trip Details */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center">
-                      <MapPin className="w-6 h-6 text-sage-600" />
-                    </div>
-                    <div>
-                      <p className="font-satoshi font-medium text-gray-900">🌴 Destination:</p>
-                      <p className="text-gray-600">Ubud, Bali</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center">
-                      <Bed className="w-6 h-6 text-sage-600" />
-                    </div>
-                    <div>
-                      <p className="font-satoshi font-medium text-gray-900">🛏 Stay:</p>
-                      <p className="text-gray-600">Boutique 2-bedroom villa with jungle view</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center">
-                      <DollarSign className="w-6 h-6 text-sage-600" />
-                    </div>
-                    <div>
-                      <p className="font-satoshi font-medium text-gray-900">💰 Budget:</p>
-                      <p className="text-gray-600">Medium ($$)</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ItineraryHeader tripDetails={mockItinerary.tripDetails} />
 
-            {/* Itinerary Days */}
             <div className="bg-white rounded-3xl shadow-lg p-8">
               <div className="flex items-center space-x-3 mb-8">
                 <div className="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center">
@@ -84,93 +109,9 @@ const Itinerary = () => {
               </div>
               
               <div className="space-y-8">
-                {/* Day 1 */}
-                <div className="border-l-4 border-sage-300 pl-6">
-                  <h3 className="font-satoshi font-bold text-xl text-gray-900 mb-3">
-                    Day 1 – Arrival & Unwind
-                  </h3>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Check-in to villa</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Sunset drinks at Folk Pool & Gardens</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Dinner at Ibu Rai</span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Day 2 */}
-                <div className="border-l-4 border-sage-300 pl-6">
-                  <h3 className="font-satoshi font-bold text-xl text-gray-900 mb-3">
-                    Day 2 – Nature & Relaxation
-                  </h3>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Yoga at The Yoga Barn</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Spa at Karsa Spa</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Campuhan Ridge Walk</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Chill dinner by the pool</span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Day 3 */}
-                <div className="border-l-4 border-sage-300 pl-6">
-                  <h3 className="font-satoshi font-bold text-xl text-gray-900 mb-3">
-                    Day 3 – Culture & Leisure
-                  </h3>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Visit Tirta Empul Temple</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Ubud Market + Saraswati Temple</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Traditional dance show at night</span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Day 4 */}
-                <div className="border-l-4 border-sage-300 pl-6">
-                  <h3 className="font-satoshi font-bold text-xl text-gray-900 mb-3">
-                    Day 4 – Farewell
-                  </h3>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Brunch at Sayuri Cafe</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Local shopping</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <span className="w-2 h-2 bg-sage-400 rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Departure</span>
-                    </li>
-                  </ul>
-                </div>
+                {mockItinerary.days.map((day) => (
+                  <ItineraryDay key={day.day} dayPlan={day} />
+                ))}
               </div>
             </div>
           </div>
