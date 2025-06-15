@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MapPin, Calendar, Bed, DollarSign } from 'lucide-react';
 import Navigation from '../components/Navigation';
@@ -32,7 +31,7 @@ const Itinerary = () => {
             <div className="bg-white rounded-3xl shadow-lg overflow-hidden mb-8">
               <div className="relative h-64 sm:h-80">
                 <img 
-                  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80"
+                  src="/lovable-uploads/5b863327-f856-4d3b-9fc4-c87ca1f21e48.png"
                   alt="Ubud, Bali landscape"
                   className="w-full h-full object-cover"
                 />
