@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -22,6 +22,7 @@ interface TripFormData {
 
 const CreateTrip = () => {
   const [budget, setBudget] = useState([2]);
+  const navigate = useNavigate();
   
   const form = useForm<TripFormData>({
     defaultValues: {
@@ -35,7 +36,8 @@ const CreateTrip = () => {
 
   const onSubmit = (data: TripFormData) => {
     console.log('Trip data:', { ...data, budget });
-    // Handle form submission
+    // Navigate to itinerary page
+    navigate('/itinerary');
   };
 
   const getBudgetLabel = (value: number) => {
