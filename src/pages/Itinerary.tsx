@@ -36,87 +36,172 @@ const mockItineraries: ItineraryData[] = [
     title: 'Adventure Seeker',
     tripDetails: {
       destination: 'Ubud, Bali',
-      stay: 'Boutique 2-bedroom villa with jungle view',
-      budget: 'Medium ($$)',
+      stay: 'Luxury jungle resort with infinity pool',
+      budget: 'High ($$$)',
       imageUrl: '/lovable-uploads/9b68c3ac-69b4-433b-9fad-88608e8ed270.png'
     },
     days: [
       {
         day: 1,
-        title: 'Arrival & Adventure',
+        title: 'Arrival & River Adventure',
         activities: [
-          { description: 'Check-in to villa' },
-          { description: 'White water rafting' },
-          { description: 'Dinner at Locavore' }
+          { description: 'Check-in to jungle resort' },
+          { description: 'White water rafting on Ayung River' },
+          { description: 'Sunset dinner at resort terrace' }
         ]
       },
       {
         day: 2,
-        title: 'Nature Exploration',
+        title: 'Volcano & Hot Springs',
         activities: [
-          { description: 'Sunrise at Mount Batur' },
-          { description: 'Hot springs relaxation' },
-          { description: 'ATV ride through rice terraces' }
+          { description: 'Pre-dawn Mount Batur hike' },
+          { description: 'Sunrise breakfast at summit' },
+          { description: 'Natural hot springs relaxation' }
+        ]
+      },
+      {
+        day: 3,
+        title: 'Jungle Exploration',
+        activities: [
+          { description: 'Monkey Forest Sanctuary visit' },
+          { description: 'ATV ride through rice terraces' },
+          { description: 'Traditional fire dance performance' }
+        ]
+      },
+      {
+        day: 4,
+        title: 'Cultural Discovery',
+        activities: [
+          { description: 'Sacred temple tour' },
+          { description: 'Local market exploration' },
+          { description: 'Farewell dinner at Locavore' }
         ]
       }
     ]
   },
   {
     id: '2',
-    title: 'Wellness & Relaxation',
+    title: 'Quick Getaway',
     tripDetails: {
-      destination: 'Ubud, Bali',
-      stay: 'Boutique 2-bedroom villa with jungle view',
+      destination: 'Canggu, Bali',
+      stay: 'Beachfront boutique hotel',
       budget: 'Medium ($$)',
       imageUrl: '/lovable-uploads/9b68c3ac-69b4-433b-9fad-88608e8ed270.png'
     },
     days: [
       {
         day: 1,
-        title: 'Arrival & Unwind',
+        title: 'Beach & Surf',
         activities: [
-          { description: 'Check-in to villa' },
-          { description: 'Sunset yoga session' },
-          { description: 'Healthy dinner at Clear Cafe' }
+          { description: 'Check-in to beachfront hotel' },
+          { description: 'Surfing lessons at Echo Beach' },
+          { description: 'Beachside dinner and sunset' }
         ]
       },
       {
         day: 2,
-        title: 'Spa & Meditation',
+        title: 'Culture & Departure',
         activities: [
-          { description: 'Morning meditation' },
-          { description: 'Full day spa at Karsa Spa' },
-          { description: 'Organic cooking class' }
+          { description: 'Morning yoga session' },
+          { description: 'Visit Tanah Lot Temple' },
+          { description: 'Shopping at local markets' },
+          { description: 'Airport transfer' }
         ]
       }
     ]
   },
   {
     id: '3',
-    title: 'Cultural Immersion',
+    title: 'Wellness Retreat',
     tripDetails: {
-      destination: 'Ubud, Bali',
-      stay: 'Boutique 2-bedroom villa with jungle view',
-      budget: 'Medium ($$)',
+      destination: 'Seminyak, Bali',
+      stay: 'Spa resort with private villa',
+      budget: 'High ($$$)',
       imageUrl: '/lovable-uploads/9b68c3ac-69b4-433b-9fad-88608e8ed270.png'
     },
     days: [
       {
         day: 1,
-        title: 'Temple & Tradition',
+        title: 'Arrival & Relaxation',
         activities: [
-          { description: 'Check-in to villa' },
-          { description: 'Visit Tirta Empul Temple' },
-          { description: 'Traditional Balinese dinner' }
+          { description: 'Private villa check-in' },
+          { description: 'Welcome massage therapy' },
+          { description: 'Healthy cuisine dinner' }
         ]
       },
       {
         day: 2,
-        title: 'Arts & Crafts',
+        title: 'Mind & Body',
         activities: [
-          { description: 'Silver jewelry making class' },
-          { description: 'Visit local art galleries' },
-          { description: 'Traditional dance performance' }
+          { description: 'Sunrise meditation session' },
+          { description: 'Balinese healing ritual' },
+          { description: 'Organic cooking class' }
+        ]
+      },
+      {
+        day: 3,
+        title: 'Spa & Serenity',
+        activities: [
+          { description: 'Full day at Karsa Spa' },
+          { description: 'Beach walk and reflection' },
+          { description: 'Farewell dinner at beach club' }
+        ]
+      }
+    ]
+  },
+  {
+    id: '4',
+    title: 'Budget Explorer',
+    tripDetails: {
+      destination: 'Sanur, Bali',
+      stay: 'Cozy guesthouse near beach',
+      budget: 'Low ($)',
+      imageUrl: '/lovable-uploads/9b68c3ac-69b4-433b-9fad-88608e8ed270.png'
+    },
+    days: [
+      {
+        day: 1,
+        title: 'Local Discovery',
+        activities: [
+          { description: 'Check-in to local guesthouse' },
+          { description: 'Bike tour of Sanur village' },
+          { description: 'Street food dinner adventure' }
+        ]
+      },
+      {
+        day: 2,
+        title: 'Temple & Tradition',
+        activities: [
+          { description: 'Early morning temple visit' },
+          { description: 'Traditional craft workshop' },
+          { description: 'Local warung lunch experience' }
+        ]
+      },
+      {
+        day: 3,
+        title: 'Beach & Culture',
+        activities: [
+          { description: 'Sanur Beach morning walk' },
+          { description: 'Visit Blanco Renaissance Museum' },
+          { description: 'Sunset at Sanur pier' }
+        ]
+      },
+      {
+        day: 4,
+        title: 'Market & Memories',
+        activities: [
+          { description: 'Traditional market shopping' },
+          { description: 'Coffee plantation tour' },
+          { description: 'Group dinner with locals' }
+        ]
+      },
+      {
+        day: 5,
+        title: 'Final Adventures',
+        activities: [
+          { description: 'Snorkeling at Blue Lagoon' },
+          { description: 'Souvenir shopping' },
+          { description: 'Airport transfer' }
         ]
       }
     ]
