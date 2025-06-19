@@ -9,7 +9,7 @@ const Navigation = () => {
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
     { name: 'Features', path: '/features' },
-    { name: 'How It Works', path: '#' }
+    { name: 'How It Works', path: '/how-it-works' }
   ];
 
   return (
@@ -22,31 +22,18 @@ const Navigation = () => {
         
         {/* Navigation Menu */}
         <nav className="hidden md:flex items-center space-x-1 bg-white rounded-full px-2 py-2">
-          {navItems.map((item, index) => (
-            item.path === '#' ? (
-              <button
-                key={item.name}
-                className={`px-6 py-2 rounded-full font-satoshi font-medium text-sm transition-all duration-200 ${
-                  index === 0 && location.pathname === '/'
-                    ? 'bg-sage-500 text-white' 
-                    : 'text-gray-900 hover:bg-gray-100'
-                }`}
-              >
-                {item.name}
-              </button>
-            ) : (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={`px-6 py-2 rounded-full font-satoshi font-medium text-sm transition-all duration-200 ${
-                  location.pathname === item.path
-                    ? 'bg-sage-500 text-white' 
-                    : 'text-gray-900 hover:bg-gray-100'
-                }`}
-              >
-                {item.name}
-              </Link>
-            )
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              to={item.path}
+              className={`px-6 py-2 rounded-full font-satoshi font-medium text-sm transition-all duration-200 ${
+                location.pathname === item.path
+                  ? 'bg-sage-500 text-white' 
+                  : 'text-gray-900 hover:bg-gray-100'
+              }`}
+            >
+              {item.name}
+            </Link>
           ))}
         </nav>
       </div>
