@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import StepOne from '../components/how-it-works/StepOne';
@@ -7,9 +7,26 @@ import StepTwo from '../components/how-it-works/StepTwo';
 import StepThree from '../components/how-it-works/StepThree';
 import StepFour from '../components/how-it-works/StepFour';
 import StepFive from '../components/how-it-works/StepFive';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, CarouselApi } from '../components/ui/carousel';
 
 const HowItWorks = () => {
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -30,29 +47,37 @@ const HowItWorks = () => {
           </div>
 
           <div className="max-w-6xl mx-auto">
-            <Carousel className="w-full">
-              <CarouselContent>
-                <CarouselItem>
+            <Carousel 
+              className="w-full"
+              setApi={setApi}
+              opts={{
+                align: "start",
+                loop: false,
+                slidesToScroll: 1
+              }}
+            >
+              <CarouselContent className="-ml-2 md:-ml-4">
+                <CarouselItem className="pl-2 md:pl-4 basis-5/6 md:basis-4/5">
                   <div className="px-4">
                     <StepOne />
                   </div>
                 </CarouselItem>
-                <CarouselItem>
+                <CarouselItem className="pl-2 md:pl-4 basis-5/6 md:basis-4/5">
                   <div className="px-4">
                     <StepTwo />
                   </div>
                 </CarouselItem>
-                <CarouselItem>
+                <CarouselItem className="pl-2 md:pl-4 basis-5/6 md:basis-4/5">
                   <div className="px-4">
                     <StepThree />
                   </div>
                 </CarouselItem>
-                <CarouselItem>
+                <CarouselItem className="pl-2 md:pl-4 basis-5/6 md:basis-4/5">
                   <div className="px-4">
                     <StepFour />
                   </div>
                 </CarouselItem>
-                <CarouselItem>
+                <CarouselItem className="pl-2 md:pl-4 basis-5/6 md:basis-4/5">
                   <div className="px-4">
                     <StepFive />
                   </div>
@@ -61,6 +86,23 @@ const HowItWorks = () => {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel>
+            
+            {/* Progress Bar */}
+            <div className="mt-8 flex justify-center">
+              <div className="flex space-x-2">
+                {Array.from({ length: count }, (_, index) => (
+                  <button
+                    key={index}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      index + 1 === current 
+                        ? 'w-8 bg-sage-500' 
+                        : 'w-2 bg-sage-200 hover:bg-sage-300'
+                    }`}
+                    onClick={() => api?.scrollTo(index)}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
