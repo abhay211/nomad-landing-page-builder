@@ -1,5 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import StepOne from '../components/how-it-works/StepOne';
@@ -8,6 +8,7 @@ import StepThree from '../components/how-it-works/StepThree';
 import StepFour from '../components/how-it-works/StepFour';
 import StepFive from '../components/how-it-works/StepFive';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, CarouselApi } from '../components/ui/carousel';
+import { Button } from '../components/ui/button';
 
 const HowItWorks = () => {
   const [api, setApi] = useState<CarouselApi>();
@@ -103,6 +104,27 @@ const HowItWorks = () => {
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
+            <Link to="/itinerary" className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                className="w-full h-12 text-sage-600 border-sage-300 hover:bg-sage-50 font-plus-jakarta font-medium text-lg rounded-full transition-all duration-200"
+              >
+                See Sample Itineraries
+              </Button>
+            </Link>
+            
+            <Link to="/create-trip" className="w-full sm:w-auto">
+              <Button
+                className="w-full h-12 text-white font-plus-jakarta font-medium text-lg rounded-full transition-all duration-200 hover:shadow-lg"
+                style={{ backgroundColor: '#92B193' }}
+              >
+                Plan Your Trip Now
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
