@@ -108,14 +108,12 @@ const HowItWorks = () => {
 
           {/* Action Buttons */}
           <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
-            <Link to="/itinerary" className="w-full sm:w-auto">
-              <Button
-                variant="outline"
-                className="w-full h-12 text-sage-600 border-sage-300 hover:bg-sage-50 font-plus-jakarta font-medium text-lg rounded-full transition-all duration-200"
-              >
-                See Sample Itineraries
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              className="w-full sm:w-auto h-12 text-sage-600 border-sage-300 hover:bg-sage-50 font-plus-jakarta font-medium text-lg rounded-full transition-all duration-200"
+            >
+              See Sample Itineraries
+            </Button>
             
             <Link to="/create-trip" className="w-full sm:w-auto">
               <Button
