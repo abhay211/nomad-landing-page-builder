@@ -7,6 +7,7 @@ import StepTwo from '../components/how-it-works/StepTwo';
 import StepThree from '../components/how-it-works/StepThree';
 import StepFour from '../components/how-it-works/StepFour';
 import StepFive from '../components/how-it-works/StepFive';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../components/ui/carousel';
 
 const HowItWorks = () => {
   return (
@@ -28,12 +29,38 @@ const HowItWorks = () => {
             </p>
           </div>
 
-          <div className="space-y-32">
-            <StepOne />
-            <StepTwo />
-            <StepThree />
-            <StepFour />
-            <StepFive />
+          <div className="max-w-6xl mx-auto">
+            <Carousel className="w-full">
+              <CarouselContent>
+                <CarouselItem>
+                  <div className="px-4">
+                    <StepOne />
+                  </div>
+                </CarouselItem>
+                <CarouselItem>
+                  <div className="px-4">
+                    <StepTwo />
+                  </div>
+                </CarouselItem>
+                <CarouselItem>
+                  <div className="px-4">
+                    <StepThree />
+                  </div>
+                </CarouselItem>
+                <CarouselItem>
+                  <div className="px-4">
+                    <StepFour />
+                  </div>
+                </CarouselItem>
+                <CarouselItem>
+                  <div className="px-4">
+                    <StepFive />
+                  </div>
+                </CarouselItem>
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </div>
         </div>
       </section>

@@ -4,7 +4,7 @@ import { Sparkles, Globe, MapPin } from 'lucide-react';
 
 const StepTwo = () => {
   const [currentQuote, setCurrentQuote] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(true);
+  const [currentImage, setCurrentImage] = useState(0);
   
   const quotes = [
     "Scanning seasons, routes, and secret spots...",
@@ -13,27 +13,35 @@ const StepTwo = () => {
     "Creating your personalized journey..."
   ];
 
+  const backgroundImages = [
+    '/lovable-uploads/photo-1605810230434-7631ac76ec81', // group of people with screens
+    '/lovable-uploads/photo-1519389950473-47ba0277781c', // people with laptops
+    '/lovable-uploads/photo-1581091226825-a6a2a5aee158', // woman with laptop
+    '/lovable-uploads/photo-1721322800607-8c38375eef04'  // living room scene
+  ];
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentQuote((prev) => (prev + 1) % quotes.length);
+      setCurrentImage((prev) => (prev + 1) % backgroundImages.length);
     }, 2000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="grid lg:grid-cols-2 gap-12 items-center">
+    <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[500px]">
       <div className="relative order-2 lg:order-1">
         <div 
-          className="absolute inset-0 rounded-3xl opacity-10"
+          className="absolute inset-0 rounded-3xl opacity-20 transition-all duration-1000"
           style={{
-            backgroundImage: `url('/lovable-uploads/c79d0a0f-c625-49b7-95b5-5811214407e9.png')`,
+            backgroundImage: `url('${backgroundImages[currentImage]}')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
         />
         
-        <div className="relative bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20 min-h-[400px] flex flex-col items-center justify-center">
+        <div className="relative bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20 min-h-[400px] flex flex-col items-center justify-center">
           <div className="relative mb-8">
             <div className="w-24 h-24 bg-gradient-to-br from-sage-400 to-sage-600 rounded-full flex items-center justify-center animate-pulse">
               <Globe className="w-12 h-12 text-white animate-spin" style={{ animationDuration: '3s' }} />
