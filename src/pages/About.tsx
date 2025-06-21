@@ -3,7 +3,7 @@ import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 const About = () => {
   return <div className="min-h-screen">
-      <Navigation />
+      {/* <Navigation />
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6 bg-gradient-to-br from-sage-50 to-sage-100">
@@ -43,7 +43,7 @@ const About = () => {
         </div>
       </section>
 
-      <Footer />
+      <Footer /> */}
     </div>;
 };
 export default About;
