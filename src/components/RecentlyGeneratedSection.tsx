@@ -73,7 +73,7 @@ const RecentlyGeneratedSection = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % itineraries.length);
-    }, 4000);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, [itineraries.length]);
