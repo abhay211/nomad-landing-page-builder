@@ -4,6 +4,9 @@ import tokyoImage from '../assets/tokyo-itinerary.jpg';
 import santoriniImage from '../assets/santorini-itinerary.jpg';
 import baliImage from '../assets/bali-itinerary.jpg';
 import parisImage from '../assets/paris-itinerary.jpg';
+import australiaImage from '../assets/australia-itinerary.jpg';
+import thailandImage from '../assets/thailand-itinerary.jpg';
+import turkeyImage from '../assets/turkey-itinerary.jpg';
 
 const RecentlyGeneratedSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -40,6 +43,30 @@ const RecentlyGeneratedSection = () => {
       duration: "4 Days",
       highlights: ["Louvre Museum Tour", "Seine River Cruise", "Montmartre Artist District"],
       budget: "$$$"
+    },
+    {
+      id: 5,
+      image: australiaImage,
+      destination: "Sydney, Australia",
+      duration: "8 Days",
+      highlights: ["Opera House & Harbour Bridge", "Great Barrier Reef Diving", "Uluru Sacred Rock"],
+      budget: "$$$"
+    },
+    {
+      id: 6,
+      image: thailandImage,
+      destination: "Bangkok, Thailand",
+      duration: "6 Days",
+      highlights: ["Grand Palace Complex", "Floating Market Adventure", "Phi Phi Islands Beach"],
+      budget: "$$"
+    },
+    {
+      id: 7,
+      image: turkeyImage,
+      destination: "Istanbul, Turkey",
+      duration: "5 Days",
+      highlights: ["Hagia Sophia History", "Cappadocia Hot Air Balloons", "Grand Bazaar Shopping"],
+      budget: "$$"
     }
   ];
 
