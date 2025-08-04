@@ -103,10 +103,6 @@ const RecentlyGeneratedSection = () => {
                   alt={`${itineraries[currentIndex].destination} travel destination`}
                   className="w-full h-full object-cover transition-all duration-500"
                 />
-                {/* Floating badge */}
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
-                  <span className="text-[#92B193] font-medium text-sm">✨ AI Generated</span>
-                </div>
               </div>
             </div>
             
