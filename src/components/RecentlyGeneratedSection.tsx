@@ -1,5 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
+import tokyoImage from '../assets/tokyo-itinerary.jpg';
+import santoriniImage from '../assets/santorini-itinerary.jpg';
+import baliImage from '../assets/bali-itinerary.jpg';
+import parisImage from '../assets/paris-itinerary.jpg';
 
 const RecentlyGeneratedSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -7,34 +11,34 @@ const RecentlyGeneratedSection = () => {
   const itineraries = [
     {
       id: 1,
-      image: "/lovable-uploads/858df27c-78e5-452f-912d-33df4ff25a76.png",
+      image: tokyoImage,
       destination: "Tokyo, Japan",
       duration: "7 Days",
-      highlights: ["Cherry Blossoms", "Traditional Temples", "Modern Culture"],
+      highlights: ["Shibuya Crossing Experience", "Mount Fuji Day Trip", "Traditional Sushi Making"],
       budget: "$$"
     },
     {
       id: 2,
-      image: "/lovable-uploads/a329ae4a-a4be-4c07-8cd4-e2edf96c65b8.png",
+      image: santoriniImage,
       destination: "Santorini, Greece",
       duration: "5 Days",
-      highlights: ["Sunset Views", "White Architecture", "Blue Aegean Sea"],
+      highlights: ["Oia Sunset Photography", "Wine Tasting in Fira", "Black Sand Beach Adventure"],
       budget: "$$$"
     },
     {
       id: 3,
-      image: "/lovable-uploads/a5b83ce8-3642-4c95-a80d-f3272ebe444c.png",
+      image: baliImage,
       destination: "Bali, Indonesia",
       duration: "6 Days",
-      highlights: ["Rice Terraces", "Beach Resorts", "Cultural Temples"],
+      highlights: ["Tegallalang Rice Terraces", "Tanah Lot Temple Visit", "Ubud Monkey Forest"],
       budget: "$$"
     },
     {
       id: 4,
-      image: "/lovable-uploads/339ebabf-34ed-43ed-932c-9bd7f26011ec.png",
+      image: parisImage,
       destination: "Paris, France",
       duration: "4 Days",
-      highlights: ["Eiffel Tower", "Art Museums", "Romantic Streets"],
+      highlights: ["Louvre Museum Tour", "Seine River Cruise", "Montmartre Artist District"],
       budget: "$$$"
     }
   ];
