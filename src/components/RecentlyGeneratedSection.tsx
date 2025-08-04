@@ -51,57 +51,91 @@ const RecentlyGeneratedSection = () => {
     <section className="py-20 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <h2 className="font-albert-sans font-light text-[62px] leading-[70px] tracking-[-0.04em] text-gray-900 mb-4">
             Recently generated{' '}
             <span style={{ color: '#92B193' }}>itineraries</span>
           </h2>
+          <p className="font-albert-sans text-gray-600 text-lg max-w-2xl mx-auto">
+            Real trips crafted by our AI for travelers just like you. Get inspired by these personalized adventures.
+          </p>
         </div>
 
         {/* Enhanced Card Display */}
         <div className="flex justify-center items-center">
-          <div className="flex flex-col lg:flex-row items-center gap-8 max-w-5xl">
+          <div className="flex flex-col lg:flex-row items-center gap-12 max-w-6xl">
             {/* Image Container */}
-            <div className="relative w-[400px] h-[400px] flex-shrink-0">
-              <div className="absolute inset-0 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+            <div className="relative w-[450px] h-[450px] flex-shrink-0">
+              <div className="absolute inset-0 bg-white rounded-3xl shadow-xl overflow-hidden transform transition-transform duration-500 hover:scale-105">
                 <img 
                   src={itineraries[currentIndex].image} 
                   alt={`${itineraries[currentIndex].destination} travel destination`}
-                  className="w-full h-full object-cover transition-opacity duration-500"
+                  className="w-full h-full object-cover transition-all duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                {/* Floating badge */}
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                  <span className="text-[#92B193] font-medium text-sm">✨ AI Generated</span>
+                </div>
               </div>
             </div>
             
             {/* Information Panel */}
-            <div className="flex-1 max-w-md">
-              <div className="text-center lg:text-left">
-                <h3 className="font-albert-sans text-3xl font-medium text-gray-900 mb-2">
-                  {itineraries[currentIndex].destination}
-                </h3>
-                <div className="flex items-center justify-center lg:justify-start gap-4 mb-4">
-                  <span className="text-[#92B193] font-medium">{itineraries[currentIndex].duration}</span>
-                  <span className="text-gray-400">•</span>
-                  <span className="text-gray-600">{itineraries[currentIndex].budget}</span>
+            <div className="flex-1 max-w-lg">
+              <div className="text-center lg:text-left space-y-6">
+                {/* Destination Info */}
+                <div>
+                  <div className="inline-block px-3 py-1 bg-[#92B193]/10 text-[#92B193] rounded-full text-sm font-medium mb-3">
+                    Featured Destination
+                  </div>
+                  <h3 className="font-albert-sans text-4xl font-medium text-gray-900 mb-3">
+                    {itineraries[currentIndex].destination}
+                  </h3>
+                  <p className="text-gray-600 text-lg mb-4">
+                    Discover the magic of this incredible destination with our carefully curated itinerary
+                  </p>
+                </div>
+
+                {/* Trip Details */}
+                <div className="flex items-center justify-center lg:justify-start gap-6 py-4 border-l-4 border-[#92B193] pl-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-[#92B193]">{itineraries[currentIndex].duration}</div>
+                    <div className="text-sm text-gray-500">Duration</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-[#92B193]">{itineraries[currentIndex].budget}</div>
+                    <div className="text-sm text-gray-500">Budget</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-[#92B193]">{itineraries[currentIndex].highlights.length}</div>
+                    <div className="text-sm text-gray-500">Highlights</div>
+                  </div>
                 </div>
                 
-                <div className="space-y-3">
-                  <h4 className="font-albert-sans text-lg font-medium text-gray-800 mb-3">
-                    Trip Highlights
+                {/* Highlights */}
+                <div className="space-y-4">
+                  <h4 className="font-albert-sans text-xl font-semibold text-gray-900 flex items-center">
+                    <span className="text-2xl mr-2">🌟</span>
+                    What makes this trip special
                   </h4>
-                  <ul className="space-y-2">
+                  <div className="grid grid-cols-1 gap-3">
                     {itineraries[currentIndex].highlights.map((highlight, index) => (
-                      <li key={index} className="flex items-center justify-center lg:justify-start">
-                        <div className="w-2 h-2 bg-[#92B193] rounded-full mr-3 flex-shrink-0" />
-                        <span className="text-gray-600 font-albert-sans">{highlight}</span>
-                      </li>
+                      <div key={index} className="flex items-center bg-gray-50 rounded-lg p-3 hover:bg-[#92B193]/5 transition-colors duration-300">
+                        <div className="w-2 h-2 bg-[#92B193] rounded-full mr-4 flex-shrink-0" />
+                        <span className="text-gray-700 font-albert-sans font-medium">{highlight}</span>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
                 
-                <button className="mt-6 px-6 py-3 bg-[#92B193] text-white rounded-lg hover:bg-[#7a9b7b] transition-colors duration-300 font-medium">
-                  View Full Itinerary
-                </button>
+                {/* CTA */}
+                <div className="pt-4">
+                  <button className="w-full lg:w-auto px-8 py-4 bg-[#92B193] text-white rounded-xl hover:bg-[#7a9b7b] transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    🚀 Start Planning Your Trip
+                  </button>
+                  <p className="text-sm text-gray-500 mt-2 text-center lg:text-left">
+                    Join 10,000+ travelers who trusted our AI
+                  </p>
+                </div>
               </div>
             </div>
           </div>
