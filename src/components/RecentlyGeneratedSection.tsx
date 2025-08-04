@@ -1,7 +1,9 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const RecentlyGeneratedSection = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
   const itineraries = [
     {
       id: 1,
@@ -21,6 +23,14 @@ const RecentlyGeneratedSection = () => {
     }
   ];
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % itineraries.length);
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, [itineraries.length]);
+
   return (
     <section className="py-20 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -32,23 +42,31 @@ const RecentlyGeneratedSection = () => {
           </h2>
         </div>
 
-        {/* Cards Grid */}
-        <div className="flex flex-col items-center p-0 gap-[60px] w-[1320px] h-[526px] mx-auto">
-          <div className="grid grid-cols-4 gap-6 w-full">
-            {itineraries.map((itinerary) => (
-              <div key={itinerary.id} className="group cursor-pointer flex flex-col w-[318px] h-[396px]">
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
-                  <div className="aspect-square overflow-hidden">
-                    <img 
-                      src={itinerary.image} 
-                      alt="Travel destination"
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-                </div>
+        {/* Cycling Card Display */}
+        <div className="flex justify-center items-center">
+          <div className="relative w-[480px] h-[480px]">
+            <div className="absolute inset-0 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+              <div className="w-full h-full overflow-hidden">
+                <img 
+                  src={itineraries[currentIndex].image} 
+                  alt="Travel destination"
+                  className="w-full h-full object-cover transition-opacity duration-500"
+                />
               </div>
-            ))}
+            </div>
           </div>
+        </div>
+        
+        {/* Indicators */}
+        <div className="flex justify-center mt-8 space-x-2">
+          {itineraries.map((_, index) => (
+            <div
+              key={index}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentIndex ? 'bg-[#92B193] scale-110' : 'bg-gray-300'
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>
