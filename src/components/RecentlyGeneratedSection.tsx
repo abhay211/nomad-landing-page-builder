@@ -26,7 +26,7 @@ const RecentlyGeneratedSection = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % itineraries.length);
-    }, 1500);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [itineraries.length]);
