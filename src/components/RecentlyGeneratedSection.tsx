@@ -60,11 +60,13 @@ const RecentlyGeneratedSection = () => {
         {/* Indicators */}
         <div className="flex justify-center mt-8 space-x-2">
           {itineraries.map((_, index) => (
-            <div
+            <button
               key={index}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentIndex ? 'bg-[#92B193] scale-110' : 'bg-gray-300'
+              onClick={() => setCurrentIndex(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer hover:scale-125 ${
+                index === currentIndex ? 'bg-[#92B193] scale-110' : 'bg-gray-300 hover:bg-gray-400'
               }`}
+              aria-label={`View itinerary ${index + 1}`}
             />
           ))}
         </div>
