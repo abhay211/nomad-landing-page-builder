@@ -115,73 +115,70 @@ const CreateTrip = () => {
           </div>
 
           <div className="flex justify-center">
-            <div className="w-full max-w-4xl">
-              <div className="grid lg:grid-cols-3 gap-8">
-                {/* Main Form */}
-                <div className="lg:col-span-2">
-                  <div className="bg-white rounded-3xl shadow-lg p-8 sm:p-12 backdrop-blur-sm bg-opacity-95">
-                    {/* Progress Indicator */}
-                    <ProgressIndicator
-                      currentStep={currentStep}
-                      totalSteps={3}
-                      stepLabels={stepLabels}
-                    />
+            <div className="w-full max-w-3xl">
+              <div className="bg-white rounded-3xl shadow-lg p-8 sm:p-12 backdrop-blur-sm bg-opacity-95">
+                {/* Progress Indicator */}
+                <ProgressIndicator
+                  currentStep={currentStep}
+                  totalSteps={3}
+                  stepLabels={stepLabels}
+                />
 
-                    {/* Quick Start */}
-                    {currentStep === 1 && (
-                      <QuickStartInput onQuickStart={handleQuickStart} className="mb-8" />
-                    )}
+                {/* Quick Start */}
+                {currentStep === 1 && (
+                  <QuickStartInput onQuickStart={handleQuickStart} className="mb-8" />
+                )}
 
-                    {/* Step Content */}
-                    {currentStep === 1 && (
-                      <StepOne
-                        groupSize={groupSize}
-                        setGroupSize={setGroupSize}
-                        dates={dates}
-                        setDates={setDates}
-                        tripLength={tripLength}
-                        setTripLength={setTripLength}
-                        onNext={nextStep}
-                      />
-                    )}
+                {/* Step Content */}
+                {currentStep === 1 && (
+                  <StepOne
+                    groupSize={groupSize}
+                    setGroupSize={setGroupSize}
+                    dates={dates}
+                    setDates={setDates}
+                    tripLength={tripLength}
+                    setTripLength={setTripLength}
+                    onNext={nextStep}
+                  />
+                )}
 
-                    {currentStep === 2 && (
-                      <StepTwo
-                        selectedInterests={selectedInterests}
-                        setSelectedInterests={setSelectedInterests}
-                        groupSize={groupSize}
-                        onNext={nextStep}
-                        onBack={prevStep}
-                      />
-                    )}
+                {currentStep === 2 && (
+                  <StepTwo
+                    selectedInterests={selectedInterests}
+                    setSelectedInterests={setSelectedInterests}
+                    groupSize={groupSize}
+                    onNext={nextStep}
+                    onBack={prevStep}
+                  />
+                )}
 
-                    {currentStep === 3 && (
-                      <StepThree
-                        budget={budget}
-                        setBudget={setBudget}
-                        specialRequests={specialRequests}
-                        setSpecialRequests={setSpecialRequests}
-                        customRequests={customRequests}
-                        setCustomRequests={setCustomRequests}
-                        onSubmit={onSubmit}
-                        onBack={prevStep}
-                      />
-                    )}
-                  </div>
-                </div>
+                {currentStep === 3 && (
+                  <StepThree
+                    budget={budget}
+                    setBudget={setBudget}
+                    specialRequests={specialRequests}
+                    setSpecialRequests={setSpecialRequests}
+                    customRequests={customRequests}
+                    setCustomRequests={setCustomRequests}
+                    onSubmit={onSubmit}
+                    onBack={prevStep}
+                  />
+                )}
+              </div>
 
-                {/* Live Preview */}
-                <div className="lg:col-span-1">
+              {/* Live Preview - Below form on mobile, inline on larger screens */}
+              {(currentStep > 1 || groupSize !== '') && (
+                <div className="mt-8">
                   <LivePreview
                     groupSize={groupSize}
                     dates={dates}
                     tripLength={tripLength}
                     selectedInterests={selectedInterests}
                     budget={budget}
-                    isVisible={currentStep > 1 || groupSize !== ''}
+                    isVisible={true}
                   />
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
