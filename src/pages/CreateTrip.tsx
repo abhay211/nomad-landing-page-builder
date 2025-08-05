@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapPin } from 'lucide-react';
 import Navigation from '../components/Navigation';
@@ -32,6 +32,11 @@ const CreateTrip = () => {
   const [budget, setBudget] = useState([2]);
   const [specialRequests, setSpecialRequests] = useState<string[]>([]);
   const [customRequests, setCustomRequests] = useState('');
+
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const stepLabels = ['Basics', 'Interests', 'Budget'];
 
