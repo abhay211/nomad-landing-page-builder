@@ -104,7 +104,7 @@ const CreateTrip = () => {
           <MapPin className="w-96 h-96 text-sage-400" />
         </div>
         
-        <div className="relative max-w-7xl mx-auto">
+        <div className="relative max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="font-albert-sans font-light text-[48px] sm:text-[62px] leading-[56px] sm:leading-[70px] tracking-[-0.04em] text-gray-900 mb-6">
               Tell us about your <span style={{ color: '#92B193' }}>trip</span>
@@ -114,70 +114,74 @@ const CreateTrip = () => {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Main Form */}
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-3xl shadow-lg p-8 sm:p-12 backdrop-blur-sm bg-opacity-95">
-                {/* Progress Indicator */}
-                <ProgressIndicator
-                  currentStep={currentStep}
-                  totalSteps={3}
-                  stepLabels={stepLabels}
-                />
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <div className="grid lg:grid-cols-3 gap-8">
+                {/* Main Form */}
+                <div className="lg:col-span-2">
+                  <div className="bg-white rounded-3xl shadow-lg p-8 sm:p-12 backdrop-blur-sm bg-opacity-95">
+                    {/* Progress Indicator */}
+                    <ProgressIndicator
+                      currentStep={currentStep}
+                      totalSteps={3}
+                      stepLabels={stepLabels}
+                    />
 
-                {/* Quick Start */}
-                {currentStep === 1 && (
-                  <QuickStartInput onQuickStart={handleQuickStart} className="mb-8" />
-                )}
+                    {/* Quick Start */}
+                    {currentStep === 1 && (
+                      <QuickStartInput onQuickStart={handleQuickStart} className="mb-8" />
+                    )}
 
-                {/* Step Content */}
-                {currentStep === 1 && (
-                  <StepOne
+                    {/* Step Content */}
+                    {currentStep === 1 && (
+                      <StepOne
+                        groupSize={groupSize}
+                        setGroupSize={setGroupSize}
+                        dates={dates}
+                        setDates={setDates}
+                        tripLength={tripLength}
+                        setTripLength={setTripLength}
+                        onNext={nextStep}
+                      />
+                    )}
+
+                    {currentStep === 2 && (
+                      <StepTwo
+                        selectedInterests={selectedInterests}
+                        setSelectedInterests={setSelectedInterests}
+                        groupSize={groupSize}
+                        onNext={nextStep}
+                        onBack={prevStep}
+                      />
+                    )}
+
+                    {currentStep === 3 && (
+                      <StepThree
+                        budget={budget}
+                        setBudget={setBudget}
+                        specialRequests={specialRequests}
+                        setSpecialRequests={setSpecialRequests}
+                        customRequests={customRequests}
+                        setCustomRequests={setCustomRequests}
+                        onSubmit={onSubmit}
+                        onBack={prevStep}
+                      />
+                    )}
+                  </div>
+                </div>
+
+                {/* Live Preview */}
+                <div className="lg:col-span-1">
+                  <LivePreview
                     groupSize={groupSize}
-                    setGroupSize={setGroupSize}
                     dates={dates}
-                    setDates={setDates}
                     tripLength={tripLength}
-                    setTripLength={setTripLength}
-                    onNext={nextStep}
-                  />
-                )}
-
-                {currentStep === 2 && (
-                  <StepTwo
                     selectedInterests={selectedInterests}
-                    setSelectedInterests={setSelectedInterests}
-                    groupSize={groupSize}
-                    onNext={nextStep}
-                    onBack={prevStep}
-                  />
-                )}
-
-                {currentStep === 3 && (
-                  <StepThree
                     budget={budget}
-                    setBudget={setBudget}
-                    specialRequests={specialRequests}
-                    setSpecialRequests={setSpecialRequests}
-                    customRequests={customRequests}
-                    setCustomRequests={setCustomRequests}
-                    onSubmit={onSubmit}
-                    onBack={prevStep}
+                    isVisible={currentStep > 1 || groupSize !== ''}
                   />
-                )}
+                </div>
               </div>
-            </div>
-
-            {/* Live Preview */}
-            <div className="lg:col-span-1">
-              <LivePreview
-                groupSize={groupSize}
-                dates={dates}
-                tripLength={tripLength}
-                selectedInterests={selectedInterests}
-                budget={budget}
-                isVisible={currentStep > 1 || groupSize !== ''}
-              />
             </div>
           </div>
         </div>
