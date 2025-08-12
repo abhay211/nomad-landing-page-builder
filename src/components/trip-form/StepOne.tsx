@@ -81,7 +81,7 @@ const StepOne: React.FC<StepOneProps> = ({
   ];
 
   const filteredDestinations = popularDestinations.filter(dest =>
-    dest.toLowerCase().includes(destination.toLowerCase())
+    dest && destination && dest.toLowerCase().includes(destination.toLowerCase())
   );
 
   const isValid = destination && travelMonth && travelYear && groupSize > 0 && 
@@ -111,7 +111,7 @@ const StepOne: React.FC<StepOneProps> = ({
             placeholder="Where do you want to go?"
             className="h-12 text-base"
           />
-          {showDestinationSuggestions && destination && filteredDestinations.length > 0 && (
+          {showDestinationSuggestions && destination && destination.trim() && filteredDestinations.length > 0 && (
             <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
               {filteredDestinations.slice(0, 6).map((dest) => (
                 <button
