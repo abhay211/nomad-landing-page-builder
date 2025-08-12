@@ -21,8 +21,10 @@ interface TripFormData {
   decisionMode: string;
   selectedInterests: string[];
   budget: number[];
-  specialRequests: string[];
-  customRequests: string;
+  mustHaveActivities: string[];
+  specialRequests: string;
+  experienceStyle: string;
+  accessibilityNeeds: string;
 }
 
 const CreateTrip = () => {
@@ -40,8 +42,10 @@ const CreateTrip = () => {
   const [decisionMode, setDecisionMode] = useState('');
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [budget, setBudget] = useState([2]);
-  const [specialRequests, setSpecialRequests] = useState<string[]>([]);
-  const [customRequests, setCustomRequests] = useState('');
+  const [mustHaveActivities, setMustHaveActivities] = useState<string[]>([]);
+  const [specialRequests, setSpecialRequests] = useState('');
+  const [experienceStyle, setExperienceStyle] = useState('');
+  const [accessibilityNeeds, setAccessibilityNeeds] = useState('');
 
   // Scroll to top on component mount
   useEffect(() => {
@@ -86,11 +90,13 @@ const CreateTrip = () => {
       decisionMode,
       selectedInterests,
       budget,
+      mustHaveActivities,
       specialRequests,
-      customRequests
+      experienceStyle,
+      accessibilityNeeds
     };
     
-    console.log('Trip data:', data);
+    console.log('Complete Trip Data JSON:', JSON.stringify(data, null, 2));
     navigate('/itinerary');
   };
 
@@ -173,10 +179,14 @@ const CreateTrip = () => {
                   <StepThree
                     budget={budget}
                     setBudget={setBudget}
+                    mustHaveActivities={mustHaveActivities}
+                    setMustHaveActivities={setMustHaveActivities}
                     specialRequests={specialRequests}
                     setSpecialRequests={setSpecialRequests}
-                    customRequests={customRequests}
-                    setCustomRequests={setCustomRequests}
+                    experienceStyle={experienceStyle}
+                    setExperienceStyle={setExperienceStyle}
+                    accessibilityNeeds={accessibilityNeeds}
+                    setAccessibilityNeeds={setAccessibilityNeeds}
                     onSubmit={onSubmit}
                     onBack={prevStep}
                   />
