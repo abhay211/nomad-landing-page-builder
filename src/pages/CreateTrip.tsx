@@ -11,9 +11,14 @@ import LivePreview from '../components/trip-form/LivePreview';
 import QuickStartInput from '../components/trip-form/QuickStartInput';
 
 interface TripFormData {
-  groupSize: string;
-  dates: { from?: Date; to?: Date };
-  tripLength: string;
+  destination: string;
+  travelMonth: string;
+  travelYear: string;
+  originCity: string;
+  groupSize: number;
+  tripDuration: { type: 'predefined' | 'custom'; value: string; customDays?: number };
+  budgetTier: string;
+  decisionMode: string;
   selectedInterests: string[];
   budget: number[];
   specialRequests: string[];
@@ -25,9 +30,14 @@ const CreateTrip = () => {
   const [currentStep, setCurrentStep] = useState(1);
   
   // Form state
-  const [groupSize, setGroupSize] = useState('');
-  const [dates, setDates] = useState<{ from?: Date; to?: Date }>({});
-  const [tripLength, setTripLength] = useState('');
+  const [destination, setDestination] = useState('');
+  const [travelMonth, setTravelMonth] = useState('');
+  const [travelYear, setTravelYear] = useState('');
+  const [originCity, setOriginCity] = useState('');
+  const [groupSize, setGroupSize] = useState(2);
+  const [tripDuration, setTripDuration] = useState<{ type: 'predefined' | 'custom'; value: string; customDays?: number }>({ type: 'predefined', value: '' });
+  const [budgetTier, setBudgetTier] = useState('');
+  const [decisionMode, setDecisionMode] = useState('');
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [budget, setBudget] = useState([2]);
   const [specialRequests, setSpecialRequests] = useState<string[]>([]);
@@ -40,31 +50,18 @@ const CreateTrip = () => {
 
   const stepLabels = ['Basics', 'Interests', 'Budget'];
 
-  const handleQuickStart = (input: string) => {
-    // Simulate AI parsing - in real app, this would call an AI service
-    const lowerInput = input.toLowerCase();
-    
-    // Parse group size
-    if (lowerInput.includes('solo') || lowerInput.includes('just me')) {
-      setGroupSize('solo');
-    } else if (lowerInput.includes('2') || lowerInput.includes('couple')) {
-      setGroupSize('2-3');
-    } else if (lowerInput.includes('family') || lowerInput.includes('4') || lowerInput.includes('5')) {
-      setGroupSize('4-6');
-    } else if (lowerInput.includes('group') || lowerInput.includes('7')) {
-      setGroupSize('7+');
-    }
-
-    // Parse trip length
-    if (lowerInput.includes('weekend')) {
-      setTripLength('weekend');
-    } else if (lowerInput.includes('week') && !lowerInput.includes('2')) {
-      setTripLength('1-week');
-    } else if (lowerInput.includes('2 week') || lowerInput.includes('month')) {
-      setTripLength('2-weeks');
-    }
+  const handleQuickStart = (input: string, parsedData: any) => {
+    // Apply parsed data to form fields
+    if (parsedData.destination) setDestination(parsedData.destination);
+    if (parsedData.travelMonth) setTravelMonth(parsedData.travelMonth);
+    if (parsedData.travelYear) setTravelYear(parsedData.travelYear);
+    if (parsedData.groupSize) setGroupSize(parsedData.groupSize);
+    if (parsedData.tripDuration) setTripDuration(parsedData.tripDuration);
+    if (parsedData.budgetTier) setBudgetTier(parsedData.budgetTier);
+    if (parsedData.decisionMode) setDecisionMode(parsedData.decisionMode);
 
     // Parse interests based on keywords
+    const lowerInput = input.toLowerCase();
     const interests = [];
     if (lowerInput.includes('beach') || lowerInput.includes('relax')) interests.push('relax');
     if (lowerInput.includes('adventure') || lowerInput.includes('hiking')) interests.push('adventure');
@@ -79,9 +76,14 @@ const CreateTrip = () => {
 
   const onSubmit = () => {
     const data: TripFormData = {
+      destination,
+      travelMonth,
+      travelYear,
+      originCity,
       groupSize,
-      dates,
-      tripLength,
+      tripDuration,
+      budgetTier,
+      decisionMode,
       selectedInterests,
       budget,
       specialRequests,
@@ -137,12 +139,22 @@ const CreateTrip = () => {
                 {/* Step Content */}
                 {currentStep === 1 && (
                   <StepOne
+                    destination={destination}
+                    setDestination={setDestination}
+                    travelMonth={travelMonth}
+                    setTravelMonth={setTravelMonth}
+                    travelYear={travelYear}
+                    setTravelYear={setTravelYear}
+                    originCity={originCity}
+                    setOriginCity={setOriginCity}
                     groupSize={groupSize}
                     setGroupSize={setGroupSize}
-                    dates={dates}
-                    setDates={setDates}
-                    tripLength={tripLength}
-                    setTripLength={setTripLength}
+                    tripDuration={tripDuration}
+                    setTripDuration={setTripDuration}
+                    budgetTier={budgetTier}
+                    setBudgetTier={setBudgetTier}
+                    decisionMode={decisionMode}
+                    setDecisionMode={setDecisionMode}
                     onNext={nextStep}
                   />
                 )}
@@ -151,7 +163,7 @@ const CreateTrip = () => {
                   <StepTwo
                     selectedInterests={selectedInterests}
                     setSelectedInterests={setSelectedInterests}
-                    groupSize={groupSize}
+                    groupSize={groupSize.toString()}
                     onNext={nextStep}
                     onBack={prevStep}
                   />
@@ -172,12 +184,12 @@ const CreateTrip = () => {
               </div>
 
               {/* Live Preview - Below form on mobile, inline on larger screens */}
-              {(currentStep > 1 || groupSize !== '') && (
+              {(currentStep > 1 || destination !== '') && (
                 <div className="mt-8">
                   <LivePreview
-                    groupSize={groupSize}
-                    dates={dates}
-                    tripLength={tripLength}
+                    groupSize={groupSize.toString()}
+                    dates={{ from: undefined, to: undefined }}
+                    tripLength={tripDuration.value}
                     selectedInterests={selectedInterests}
                     budget={budget}
                     isVisible={true}

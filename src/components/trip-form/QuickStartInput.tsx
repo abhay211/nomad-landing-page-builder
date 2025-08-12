@@ -5,7 +5,7 @@ import { Sparkles, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface QuickStartInputProps {
-  onQuickStart: (input: string) => void;
+  onQuickStart: (input: string, parsedData: any) => void;
   className?: string;
 }
 
@@ -20,6 +20,73 @@ const QuickStartInput: React.FC<QuickStartInputProps> = ({ onQuickStart, classNa
     "Solo backpacking through Thailand"
   ];
 
+  const parseNaturalLanguage = (text: string) => {
+    const lower = text.toLowerCase();
+    const parsed: any = {};
+
+    // Extract destination
+    const destinations = ['bali', 'paris', 'tokyo', 'thailand', 'new york', 'london', 'rome', 'barcelona', 'santorini', 'bangkok', 'dubai', 'sydney', 'amsterdam'];
+    const foundDestination = destinations.find(dest => lower.includes(dest));
+    if (foundDestination) {
+      const destMap: Record<string, string> = {
+        'bali': 'Bali, Indonesia',
+        'paris': 'Paris, France',
+        'tokyo': 'Tokyo, Japan',
+        'thailand': 'Bangkok, Thailand',
+        'new york': 'New York, USA',
+        'london': 'London, UK',
+        'rome': 'Rome, Italy',
+        'barcelona': 'Barcelona, Spain',
+        'santorini': 'Santorini, Greece',
+        'bangkok': 'Bangkok, Thailand',
+        'dubai': 'Dubai, UAE',
+        'sydney': 'Sydney, Australia',
+        'amsterdam': 'Amsterdam, Netherlands'
+      };
+      parsed.destination = destMap[foundDestination] || foundDestination;
+    }
+
+    // Extract months
+    const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+    const foundMonth = months.find(month => lower.includes(month));
+    if (foundMonth) {
+      parsed.travelMonth = foundMonth.charAt(0).toUpperCase() + foundMonth.slice(1);
+    }
+
+    // Extract group size
+    const groupMatch = text.match(/(\d+)\s*people?/i) || text.match(/for\s*(\d+)/i);
+    if (groupMatch) {
+      parsed.groupSize = parseInt(groupMatch[1]);
+    }
+
+    // Extract duration
+    if (lower.includes('weekend')) {
+      parsed.tripDuration = { type: 'predefined', value: 'weekend' };
+    } else if (lower.includes('week') && !lower.includes('weekend')) {
+      if (lower.includes('2') || lower.includes('two')) {
+        parsed.tripDuration = { type: 'predefined', value: '2-weeks' };
+      } else {
+        parsed.tripDuration = { type: 'predefined', value: '1-week' };
+      }
+    } else {
+      const dayMatch = text.match(/(\d+)\s*days?/i);
+      if (dayMatch) {
+        parsed.tripDuration = { type: 'custom', value: 'custom', customDays: parseInt(dayMatch[1]) };
+      }
+    }
+
+    // Set default year to current year
+    parsed.travelYear = new Date().getFullYear().toString();
+
+    // Default budget tier
+    parsed.budgetTier = 'mid-range';
+
+    // Default decision mode
+    parsed.decisionMode = 'fair';
+
+    return parsed;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -27,7 +94,9 @@ const QuickStartInput: React.FC<QuickStartInputProps> = ({ onQuickStart, classNa
     setIsProcessing(true);
     // Simulate AI processing
     await new Promise(resolve => setTimeout(resolve, 1500));
-    onQuickStart(input);
+    
+    const parsedData = parseNaturalLanguage(input);
+    onQuickStart(input, parsedData);
     setIsProcessing(false);
   };
 
