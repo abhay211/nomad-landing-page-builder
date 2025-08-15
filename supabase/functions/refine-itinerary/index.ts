@@ -13,7 +13,23 @@ const corsHeaders = {
 
 const supabase = createClient(supabaseUrl!, supabaseServiceKey!);
 
+async function trackAnalyticsEvent(tripId: string, event: string, meta: any = {}) {
+  try {
+    await supabase.from('analytics_events').insert({
+      trip_id: tripId,
+      user_id: null, // No auth for now
+      event,
+      meta
+    });
+  } catch (error) {
+    console.error('Analytics tracking error:', error);
+    // Non-fatal, don't throw
+  }
+}
+
 async function refineItineraryWithAI(itineraryData: any, formData: any, directionText: string): Promise<any> {
+  const startTime = Date.now();
+  
   const prompt = `You are an expert travel planner. Modify the following itinerary ONLY as requested: "${directionText}".
 
 CRITICAL REQUIREMENTS:
@@ -41,7 +57,7 @@ Return the complete modified itinerary as valid JSON only.`;
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4.1-2025-04-14',
+        model: 'gpt-5-2025-08-07',
         messages: [
           { 
             role: 'system', 
@@ -83,7 +99,7 @@ Fix the JSON syntax errors and return valid JSON only:`;
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-4.1-2025-04-14',
+          model: 'gpt-5-2025-08-07',
           messages: [
             { role: 'system', content: 'Fix JSON syntax errors. Return valid JSON only.' },
             { role: 'user', content: repairPrompt }
@@ -97,10 +113,20 @@ Fix the JSON syntax errors and return valid JSON only:`;
       refinedItinerary = JSON.parse(repairedContent);
     }
 
-    return refinedItinerary;
+    const duration_ms = Date.now() - startTime;
+    
+    return {
+      itinerary: refinedItinerary,
+      analytics: {
+        model: 'gpt-5-2025-08-07',
+        duration_ms,
+        tokens: data.usage?.total_tokens || null
+      }
+    };
   } catch (error) {
     console.error('Error refining itinerary:', error);
-    throw error;
+    const duration_ms = Date.now() - startTime;
+    throw { ...error, analytics: { duration_ms } };
   }
 }
 
@@ -154,11 +180,12 @@ serve(async (req) => {
     }
 
     // Refine the itinerary with AI
-    const refinedItinerary = await refineItineraryWithAI(
+    const result = await refineItineraryWithAI(
       trip.itinerary_data, 
       trip.form_payload, 
       directionText
     );
+    const refinedItinerary = result.itinerary;
 
     // Update the trip with refined itinerary
     const newVersion = (trip.itinerary_version || 1) + 1;
@@ -205,6 +232,9 @@ serve(async (req) => {
       );
     }
 
+    // Track success analytics
+    await trackAnalyticsEvent(tripId, 'refine_success', result.analytics);
+
     console.log('Itinerary refined successfully, new version:', newVersion);
 
     return new Response(
@@ -221,6 +251,13 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in refine-itinerary function:', error);
+    
+    // Track error analytics
+    const { tripId } = await req.clone().json().catch(() => ({}));
+    if (tripId && error.analytics) {
+      await trackAnalyticsEvent(tripId, 'refine_error', error.analytics);
+    }
+    
     return new Response(
       JSON.stringify({ error: error.message || 'Internal server error' }), 
       {

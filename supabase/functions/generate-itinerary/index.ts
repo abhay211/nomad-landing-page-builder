@@ -146,8 +146,23 @@ async function enrichItineraryWithPlaces(itinerary: any, destination: string): P
   return itinerary;
 }
 
+async function trackAnalyticsEvent(tripId: string, event: string, meta: any = {}) {
+  try {
+    await supabase.from('analytics_events').insert({
+      trip_id: tripId,
+      user_id: null, // No auth for now
+      event,
+      meta
+    });
+  } catch (error) {
+    console.error('Analytics tracking error:', error);
+    // Non-fatal, don't throw
+  }
+}
+
 async function generateItinerary(formData: TripFormData): Promise<any> {
   console.log('Generating itinerary for:', formData);
+  const startTime = Date.now();
   
   // Calculate trip duration
   const startDate = new Date(formData.startDate);
@@ -225,7 +240,7 @@ Please create a detailed itinerary in JSON format with this exact structure:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4.1-2025-04-14',
+        model: 'gpt-5-2025-08-07',
         messages: [
           { 
             role: 'system', 
@@ -233,7 +248,7 @@ Please create a detailed itinerary in JSON format with this exact structure:
           },
           { role: 'user', content: prompt }
         ],
-        max_tokens: 4000,
+        max_completion_tokens: 4000,
         temperature: 0.7
       }),
     });
@@ -262,10 +277,20 @@ Please create a detailed itinerary in JSON format with this exact structure:
     console.log('Enriching itinerary with Google Places data...');
     const enrichedItinerary = await enrichItineraryWithPlaces(itineraryData, formData.destination);
 
-    return enrichedItinerary;
+    const duration_ms = Date.now() - startTime;
+    
+    return {
+      itinerary: enrichedItinerary,
+      analytics: {
+        model: 'gpt-5-2025-08-07',
+        duration_ms,
+        tokens: data.usage?.total_tokens || null
+      }
+    };
   } catch (error) {
     console.error('Error generating itinerary:', error);
-    throw error;
+    const duration_ms = Date.now() - startTime;
+    throw { ...error, analytics: { duration_ms } };
   }
 }
 
@@ -291,7 +316,8 @@ serve(async (req) => {
     }
 
     // Generate the itinerary
-    const itineraryData = await generateItinerary(formData);
+    const result = await generateItinerary(formData);
+    const itineraryData = result.itinerary;
 
     // Store the trip in the database
     const { data: trip, error: tripError } = await supabase
@@ -341,6 +367,9 @@ serve(async (req) => {
       // Non-fatal, continue
     }
 
+    // Track success analytics
+    await trackAnalyticsEvent(trip.id, 'generate_success', result.analytics);
+
     console.log('Trip stored successfully:', trip.id);
 
     return new Response(
@@ -356,6 +385,13 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in generate-itinerary function:', error);
+    
+    // Track error analytics if we have a trip ID context
+    if (error.analytics) {
+      // We can't track without tripId in generate, but we log the error
+      console.log('Generation failed with analytics:', error.analytics);
+    }
+    
     return new Response(
       JSON.stringify({ error: error.message || 'Internal server error' }), 
       {

@@ -74,6 +74,7 @@ const Itinerary = () => {
   const [tripData, setTripData] = useState<TripData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hasTrackedView, setHasTrackedView] = useState(false);
   
   // Filter states
   const [vibeFilters, setVibeFilters] = useState({
@@ -104,6 +105,33 @@ const Itinerary = () => {
       setLoading(false);
     }
   }, [tripId]);
+
+  // Track view analytics on first mount
+  useEffect(() => {
+    if (tripData && !hasTrackedView) {
+      trackViewAnalytics();
+      setHasTrackedView(true);
+    }
+  }, [tripData, hasTrackedView]);
+
+  const trackViewAnalytics = async () => {
+    if (!tripData) return;
+    
+    try {
+      await supabase.from('analytics_events').insert({
+        trip_id: tripData.id,
+        user_id: null,
+        event: 'view_itinerary',
+        meta: {
+          destination: tripData.destination,
+          duration_days: tripData.duration_days,
+          version: tripData.itinerary_version || 1
+        }
+      });
+    } catch (error) {
+      console.error('Error tracking view analytics:', error);
+    }
+  };
 
   const fetchTripData = async () => {
     try {
