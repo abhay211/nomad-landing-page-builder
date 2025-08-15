@@ -15,6 +15,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnsplashImage } from '@/hooks/useUnsplashImage';
 import ItineraryRefinement from '../components/itinerary/ItineraryRefinement';
+import GroupPreferenceSummary from '../components/itinerary/GroupPreferenceSummary';
+import FairnessTooltip from '../components/itinerary/FairnessTooltip';
 import ItineraryDay from '../components/itinerary/ItineraryDay';
 import Navigation from '../components/Navigation';
 import HeroImage from '../components/HeroImage';
@@ -316,6 +318,9 @@ const Itinerary = () => {
                     v{tripData.itinerary_version || 1}
                   </Badge>
                 )}
+                {hasItinerary && tripData.itinerary_data?.fairness_explainer && (
+                  <FairnessTooltip fairnessExplainer={tripData.itinerary_data.fairness_explainer} />
+                )}
               </div>
               
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
@@ -347,6 +352,13 @@ const Itinerary = () => {
                   </Badge>
                 ))}
               </div>
+
+              {/* Group Preference Summary */}
+              {tripData.form_payload && (
+                <div className="mt-3">
+                  <GroupPreferenceSummary formPayload={tripData.form_payload} />
+                </div>
+              )}
             </div>
             
             {/* Action Buttons */}
