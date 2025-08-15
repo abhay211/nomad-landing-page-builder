@@ -26,6 +26,7 @@ const App = () => (
           <Route path="/features" element={<Features />} />
           <Route path="/create-trip" element={<CreateTrip />} />
           <Route path="/itinerary" element={<Itinerary />} />
+          <Route path="/itinerary/:tripId" element={<Itinerary />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

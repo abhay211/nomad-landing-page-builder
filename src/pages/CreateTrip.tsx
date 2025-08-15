@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapPin } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import StepOne from '../components/trip-form/StepOne';
@@ -29,7 +31,9 @@ interface TripFormData {
 
 const CreateTrip = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Form state
   const [destination, setDestination] = useState('');
@@ -78,26 +82,103 @@ const CreateTrip = () => {
     setCurrentStep(2); // Jump to step 2 after quick start
   };
 
-  const onSubmit = () => {
-    const data: TripFormData = {
-      destination,
-      travelMonth,
-      travelYear,
-      originCity,
-      groupSize,
-      tripDuration,
-      budgetTier,
-      decisionMode,
-      selectedInterests,
-      budget,
-      mustHaveActivities,
-      specialRequests,
-      experienceStyle,
-      accessibilityNeeds
-    };
+  const onSubmit = async () => {
+    if (isSubmitting) return;
     
-    console.log('Complete Trip Data JSON:', JSON.stringify(data, null, 2));
-    navigate('/itinerary');
+    setIsSubmitting(true);
+    
+    try {
+      // Get current user (nullable if not authenticated)
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      // Calculate duration in days
+      const durationDays = tripDuration.type === 'custom' && tripDuration.customDays 
+        ? tripDuration.customDays 
+        : parseInt(tripDuration.value) || 7;
+
+      // Prepare trip data in the requested format
+      const tripData = {
+        user_id: user?.id || null,
+        destination,
+        travel_month: travelMonth,
+        travel_year: parseInt(travelYear) || new Date().getFullYear(),
+        duration_days: durationDays,
+        budget_tier: budgetTier,
+        origin_city: originCity,
+        group_size: groupSize,
+        decision_mode: decisionMode,
+        explorer_mode_allowed: true, // Default value
+        members: [
+          {
+            name: "Primary Traveler",
+            must: mustHaveActivities,
+            ok: selectedInterests,
+            no_go: [],
+            flexible: true
+          }
+        ],
+        special_requests: specialRequests,
+        group_style: experienceStyle,
+        accessibility: accessibilityNeeds,
+        status: "draft"
+      };
+
+      // Store in trips table
+      const { data: trip, error } = await supabase
+        .from('trips')
+        .insert({
+          user_id: user?.id || null,
+          destination,
+          travel_month: travelMonth,
+          travel_year: parseInt(travelYear) || new Date().getFullYear(),
+          origin_city: originCity,
+          group_size: groupSize,
+          duration_days: durationDays,
+          budget_tier: budgetTier,
+          decision_mode: decisionMode,
+          group_preferences: {
+            interests: selectedInterests,
+            must_have: mustHaveActivities,
+            experience_style: experienceStyle
+          },
+          special_requests: specialRequests,
+          group_style: experienceStyle,
+          accessibility_needs: accessibilityNeeds ? [accessibilityNeeds] : [],
+          form_payload: tripData,
+          status: 'draft'
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error saving trip:', error);
+        toast({
+          title: "Error saving trip",
+          description: "There was a problem saving your trip. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      console.log('Trip saved successfully:', trip);
+      toast({
+        title: "Trip saved!",
+        description: "Your trip details have been saved successfully.",
+      });
+
+      // Navigate to itinerary with trip ID
+      navigate(`/itinerary/${trip.id}`);
+      
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 3));
@@ -189,6 +270,7 @@ const CreateTrip = () => {
                     setAccessibilityNeeds={setAccessibilityNeeds}
                     onSubmit={onSubmit}
                     onBack={prevStep}
+                    isSubmitting={isSubmitting}
                   />
                 )}
               </div>

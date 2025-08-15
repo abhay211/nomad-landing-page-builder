@@ -24,6 +24,7 @@ interface StepThreeProps {
   setAccessibilityNeeds: (needs: string) => void;
   onSubmit: () => void;
   onBack: () => void;
+  isSubmitting?: boolean;
 }
 
 const StepThree: React.FC<StepThreeProps> = ({
@@ -38,7 +39,8 @@ const StepThree: React.FC<StepThreeProps> = ({
   accessibilityNeeds,
   setAccessibilityNeeds,
   onSubmit,
-  onBack
+  onBack,
+  isSubmitting = false
 }) => {
   const [showSpecialRequests, setShowSpecialRequests] = useState(false);
   const [showAccessibility, setShowAccessibility] = useState(false);
@@ -287,10 +289,11 @@ const StepThree: React.FC<StepThreeProps> = ({
         </Button>
         <Button
           onClick={onSubmit}
-          className="flex-1 h-12 text-lg font-semibold rounded-xl bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+          disabled={isSubmitting}
+          className="flex-1 h-12 text-lg font-semibold rounded-xl bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 disabled:opacity-50"
         >
-          Create My Itinerary
-          <span className="ml-2">🚀</span>
+          {isSubmitting ? 'Saving Trip...' : 'Create My Itinerary'}
+          <span className="ml-2">{isSubmitting ? '⏳' : '🚀'}</span>
         </Button>
       </div>
     </div>
