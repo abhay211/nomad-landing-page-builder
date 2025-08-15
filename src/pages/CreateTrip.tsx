@@ -170,8 +170,8 @@ const CreateTrip = () => {
 
       try {
         // Prepare data for the edge function
-        const startDate = new Date(parseInt(travelYear), new Date(`${travelMonth} 1`).getMonth()).toISOString().split('T')[0];
-        const endDate = new Date(parseInt(travelYear), new Date(`${travelMonth} 1`).getMonth(), durationDays).toISOString().split('T')[0];
+        const startDate = new Date(parseInt(travelYear), new Date(`${travelMonth} 1`).getMonth(), 1).toISOString().split('T')[0];
+        const endDate = new Date(parseInt(travelYear), new Date(`${travelMonth} 1`).getMonth(), 1 + durationDays).toISOString().split('T')[0];
         
         const formData = {
           destination,
