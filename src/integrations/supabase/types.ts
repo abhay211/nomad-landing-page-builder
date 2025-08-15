@@ -194,7 +194,7 @@ export type Database = {
           travel_month: string | null
           travel_year: number | null
           updated_at: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           accessibility_needs?: string[] | null
@@ -220,7 +220,7 @@ export type Database = {
           travel_month?: string | null
           travel_year?: number | null
           updated_at?: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           accessibility_needs?: string[] | null
@@ -246,7 +246,7 @@ export type Database = {
           travel_month?: string | null
           travel_year?: number | null
           updated_at?: string
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {
