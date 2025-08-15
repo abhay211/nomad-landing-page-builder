@@ -240,7 +240,7 @@ Please create a detailed itinerary in JSON format with this exact structure:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-5-2025-08-07',
+        model: 'gpt-4o',
         messages: [
           { 
             role: 'system', 
@@ -248,7 +248,8 @@ Please create a detailed itinerary in JSON format with this exact structure:
           },
           { role: 'user', content: prompt }
         ],
-        max_completion_tokens: 4000
+        max_tokens: 4000,
+        temperature: 0.7
       }),
     });
 
@@ -281,7 +282,7 @@ Please create a detailed itinerary in JSON format with this exact structure:
     return {
       itinerary: enrichedItinerary,
       analytics: {
-        model: 'gpt-5-2025-08-07',
+        model: 'gpt-4o',
         duration_ms,
         tokens: data.usage?.total_tokens || null
       }
