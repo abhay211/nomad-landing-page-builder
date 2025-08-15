@@ -81,48 +81,47 @@ Trip Details:
 Available Places (use these as reference):
 ${allPlaces.map(place => `- ${place.name} (Rating: ${place.rating || 'N/A'})`).join('\n')}
 
-Please create a detailed itinerary in JSON format with this structure:
+Please create a detailed itinerary in JSON format with this exact structure:
 {
-  "tripData": {
-    "destination": "${formData.destination}",
-    "startDate": "${formData.startDate}",
-    "endDate": "${formData.endDate}",
-    "groupSize": ${formData.groupSize},
-    "budget": ${formData.budget},
-    "duration": ${duration},
-    "originCity": "${formData.originCity || 'Not specified'}",
-    "interests": ${JSON.stringify(formData.activities)}
-  },
-  "itinerary": [
+  "title": "string",
+  "summary": "string", 
+  "destination": "string",
+  "date_range": "string",
+  "tags": ["string"],
+  "fairness_explainer": "string",
+  "days": [
     {
       "day": 1,
-      "theme": "Arrival & First Impressions",
-      "color": "from-blue-500 to-purple-600",
-      "heroImage": "/placeholder-day-image.jpg",
-      "activities": [
+      "theme": ["string"],
+      "location": "string",
+      "seasonal_notes": "string|null",
+      "blocks": [
         {
-          "time": "09:00",
-          "title": "Activity Name",
-          "description": "Detailed description of the activity",
-          "duration": "2 hours",
-          "location": "Specific location name",
-          "type": "arrival|sightseeing|dining|activity|rest"
+          "id": "string",
+          "time": "morning|afternoon|evening",
+          "main": {
+            "name": "string",
+            "duration_hr": 0,
+            "difficulty": "easy|moderate|strenuous|null",
+            "best_time": "string|null",
+            "cost_pp": "string|null",
+            "map_hint": "string|null"
+          },
+          "parallel": {
+            "name": "string",
+            "duration_hr": 0,
+            "cost_pp": "string|null",
+            "map_hint": "string|null"
+          },
+          "rendezvous": { "time": "string", "place": "string" }
         }
-      ]
+      ],
+      "local_tips": ["string"],
+      "pace": "chill|balanced|packed",
+      "daily_budget_band": "low|medium|high"
     }
   ]
-}
-
-Guidelines:
-- Create realistic timing with travel time between locations
-- Include a mix of must-have activities and local recommendations
-- Consider the group style (relaxed = fewer activities, packed = more activities)
-- Include meal recommendations
-- Add rest periods for relaxed style
-- Keep within the specified budget
-- Make each day themed and balanced
-- Use actual place names from the provided list when possible
-- Include specific locations, not just generic activities`;
+}`;
 
   try {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -136,7 +135,7 @@ Guidelines:
         messages: [
           { 
             role: 'system', 
-            content: 'You are an expert travel planner. Create detailed, realistic itineraries in valid JSON format. Always respond with properly formatted JSON only.' 
+            content: 'You are Nomad, a group-travel planner. Goal: produce ONE inclusive, realistic itinerary. Rules: - Respect \'no_go\' (never schedule as MAIN; allow as PARALLEL if relevant). - Balance day themes; ensure every selected vibe has at least one highlight. - When preferences split, add a PARALLEL OPTION nearby with avg duration and a RENDEZVOUS time/place. - Be season-aware using month/destination context; avoid obviously bad fits. Add \'seasonal_notes\' when relevant. - Include: best time of day, short local tip, estimated per-person spend band. - Tone: concise, practical, inspiring. - Output MUST strictly match the JSON schema.' 
           },
           { role: 'user', content: prompt }
         ],
