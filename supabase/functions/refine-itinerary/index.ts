@@ -163,6 +163,26 @@ serve(async (req) => {
     // Update the trip with refined itinerary
     const newVersion = (trip.itinerary_version || 1) + 1;
     
+    // Store the new version in trips_versions first
+    const { error: versionError } = await supabase
+      .from('trips_versions')
+      .insert({
+        trip_id: tripId,
+        version: newVersion,
+        itinerary_json: refinedItinerary
+      });
+
+    if (versionError) {
+      console.error('Error storing trip version:', versionError);
+      return new Response(
+        JSON.stringify({ error: 'Failed to save itinerary version' }), 
+        { 
+          status: 500, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+    
     const { data: updatedTrip, error: updateError } = await supabase
       .from('trips')
       .update({

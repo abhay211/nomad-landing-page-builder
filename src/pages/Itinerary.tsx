@@ -18,6 +18,7 @@ import ItineraryRefinement from '../components/itinerary/ItineraryRefinement';
 import GroupPreferenceSummary from '../components/itinerary/GroupPreferenceSummary';
 import FairnessTooltip from '../components/itinerary/FairnessTooltip';
 import ItineraryDay from '../components/itinerary/ItineraryDay';
+import VersionDropdown from '../components/itinerary/VersionDropdown';
 import Navigation from '../components/Navigation';
 import HeroImage from '../components/HeroImage';
 
@@ -363,6 +364,13 @@ const Itinerary = () => {
             
             {/* Action Buttons */}
             <div className="flex gap-2">
+              {hasItinerary && (
+                <VersionDropdown
+                  tripId={tripData.id}
+                  currentVersion={tripData.itinerary_version || 1}
+                  onVersionRestored={fetchTripData}
+                />
+              )}
               <Button variant="outline" size="sm" onClick={handleSave}>
                 <Save className="w-4 h-4 mr-2" />
                 Save

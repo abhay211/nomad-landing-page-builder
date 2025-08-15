@@ -223,6 +223,38 @@ export type Database = {
           },
         ]
       }
+      trips_versions: {
+        Row: {
+          created_at: string
+          id: string
+          itinerary_json: Json
+          trip_id: string
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          itinerary_json: Json
+          trip_id: string
+          version: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          itinerary_json?: Json
+          trip_id?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trips_versions_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

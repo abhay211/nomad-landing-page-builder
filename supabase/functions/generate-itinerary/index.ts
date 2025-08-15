@@ -310,6 +310,7 @@ serve(async (req) => {
         origin_city: formData.originCity,
         form_payload: formData,
         itinerary_data: itineraryData,
+        itinerary_version: 1,
         status: 'completed'
       })
       .select()
@@ -324,6 +325,20 @@ serve(async (req) => {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
       );
+    }
+
+    // Store the first version in trips_versions
+    const { error: versionError } = await supabase
+      .from('trips_versions')
+      .insert({
+        trip_id: trip.id,
+        version: 1,
+        itinerary_json: itineraryData
+      });
+
+    if (versionError) {
+      console.error('Error storing trip version:', versionError);
+      // Non-fatal, continue
     }
 
     console.log('Trip stored successfully:', trip.id);
