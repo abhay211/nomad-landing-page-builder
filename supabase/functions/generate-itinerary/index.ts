@@ -52,6 +52,100 @@ async function searchPlaces(query: string, location: string): Promise<PlaceDetai
   }
 }
 
+async function enrichActivityWithPlaces(activityName: string, destination: string): Promise<any> {
+  // Check cache first
+  const cacheKey = `${destination.toLowerCase()}_${activityName.toLowerCase()}`.replace(/[^a-z0-9_]/g, '_');
+  const { data: cached } = await supabase
+    .from('place_cache')
+    .select('*')
+    .eq('cache_key', cacheKey)
+    .gte('expires_at', new Date().toISOString())
+    .single();
+
+  if (cached) {
+    console.log('Using cached place data for:', activityName);
+    return cached.place_data;
+  }
+
+  // Search Google Places
+  try {
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(activityName + ' ' + destination)}&key=${googlePlacesApiKey}`
+    );
+    
+    const data = await response.json();
+    
+    if (data.results && data.results.length > 0) {
+      const place = data.results[0];
+      
+      // Get place details for photo
+      let photoUrl = null;
+      if (place.photos && place.photos[0]) {
+        photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${googlePlacesApiKey}`;
+      }
+
+      const enrichment = {
+        rating: place.rating || null,
+        price_level: place.price_level ? '$'.repeat(place.price_level) : null,
+        photo_url: photoUrl
+      };
+
+      // Cache the result for 48-72 hours
+      const expiresAt = new Date();
+      expiresAt.setHours(expiresAt.getHours() + 60); // 60 hours (between 48-72)
+      
+      await supabase.from('place_cache').upsert({
+        cache_key: cacheKey,
+        place_data: enrichment,
+        expires_at: expiresAt.toISOString()
+      });
+
+      return enrichment;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error enriching activity:', error);
+    return null;
+  }
+}
+
+async function enrichItineraryWithPlaces(itinerary: any, destination: string): Promise<any> {
+  console.log('Enriching itinerary with Google Places data...');
+  
+  for (const day of itinerary.days) {
+    for (const block of day.blocks) {
+      // Enrich main activity
+      if (block.main && block.main.name) {
+        const enrichment = await enrichActivityWithPlaces(block.main.name, destination);
+        if (enrichment) {
+          block.main = { ...block.main, ...enrichment };
+        } else {
+          // Mark as suggested if no match found
+          if (!block.main.name.includes('(suggested)')) {
+            block.main.name = `${block.main.name} (suggested)`;
+          }
+        }
+      }
+
+      // Enrich parallel activity
+      if (block.parallel && block.parallel.name) {
+        const enrichment = await enrichActivityWithPlaces(block.parallel.name, destination);
+        if (enrichment) {
+          block.parallel = { ...block.parallel, ...enrichment };
+        } else {
+          // Mark as suggested if no match found
+          if (!block.parallel.name.includes('(suggested)')) {
+            block.parallel.name = `${block.parallel.name} (suggested)`;
+          }
+        }
+      }
+    }
+  }
+
+  return itinerary;
+}
+
 async function generateItinerary(formData: TripFormData): Promise<any> {
   console.log('Generating itinerary for:', formData);
   
