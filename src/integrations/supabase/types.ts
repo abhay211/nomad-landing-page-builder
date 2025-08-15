@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      image_cache: {
+        Row: {
+          cache_key: string
+          created_at: string
+          expires_at: string
+          id: string
+          image_data: Json
+          itinerary_id: string | null
+          query: string
+        }
+        Insert: {
+          cache_key: string
+          created_at?: string
+          expires_at: string
+          id?: string
+          image_data: Json
+          itinerary_id?: string | null
+          query: string
+        }
+        Update: {
+          cache_key?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          image_data?: Json
+          itinerary_id?: string | null
+          query?: string
+        }
+        Relationships: []
+      }
       place_cache: {
         Row: {
           cache_key: string

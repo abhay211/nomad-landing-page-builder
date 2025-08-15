@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
+import { useUnsplashImage } from '@/hooks/useUnsplashImage';
 
 interface ActivityDetail {
   name: string;
@@ -35,6 +36,8 @@ interface DayData {
 
 interface ItineraryDayProps {
   dayData: DayData;
+  destination: string;
+  itineraryId?: string;
 }
 
 const ActivityBadges: React.FC<{ activity: ActivityDetail }> = ({ activity }) => {
@@ -61,19 +64,66 @@ const ActivityBadges: React.FC<{ activity: ActivityDetail }> = ({ activity }) =>
   );
 };
 
-const ItineraryDay: React.FC<ItineraryDayProps> = ({ dayData }) => {
+const ActivityImage: React.FC<{ 
+  activity: ActivityDetail; 
+  destination: string; 
+  itineraryId?: string;
+}> = ({ activity, destination, itineraryId }) => {
+  const query = `${activity.name} ${destination}`;
+  const { imageUrl, loading } = useUnsplashImage(query, itineraryId, 'small');
+  
+  // Priority: Google Places photo_url first, then Unsplash fallback
+  const displayImage = activity.photo_url || imageUrl;
+  
+  if (!displayImage && !loading) return null;
+  
   return (
-    <div className="border-l-4 border-primary/20 pl-6 space-y-4">
-      <div>
-        <h3 className="font-satoshi font-bold text-xl text-foreground mb-2">
-          Day {dayData.day} – {dayData.theme.join(' & ')}
-        </h3>
-        <p className="text-sm text-muted-foreground mb-1">{dayData.location}</p>
-        {dayData.seasonal_notes && (
-          <p className="text-sm text-primary/80 italic">{dayData.seasonal_notes}</p>
+    <div className="w-16 h-12 rounded-md overflow-hidden bg-muted flex-shrink-0">
+      {loading ? (
+        <div className="w-full h-full bg-muted animate-pulse" />
+      ) : displayImage ? (
+        <img 
+          src={displayImage} 
+          alt={activity.name}
+          className="w-full h-full object-cover"
+        />
+      ) : null}
+    </div>
+  );
+};
+
+const ItineraryDay: React.FC<ItineraryDayProps> = ({ dayData, destination, itineraryId }) => {
+  const dayBannerQuery = `${dayData.location} ${dayData.theme[0] || destination}`;
+  const { imageUrl: bannerImage, loading: bannerLoading } = useUnsplashImage(
+    dayBannerQuery, 
+    itineraryId, 
+    'regular'
+  );
+
+  return (
+    <div className="space-y-4">
+      {/* Day Banner */}
+      <div className="relative rounded-lg overflow-hidden bg-gradient-to-r from-primary/80 to-primary/60 min-h-[200px]">
+        {bannerImage && !bannerLoading && (
+          <img 
+            src={bannerImage} 
+            alt={`Day ${dayData.day} - ${dayData.theme.join(' & ')}`}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
         )}
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative p-6 text-white">
+          <h3 className="font-satoshi font-bold text-2xl mb-2">
+            Day {dayData.day} – {dayData.theme.join(' & ')}
+          </h3>
+          <p className="text-white/90 mb-1">{dayData.location}</p>
+          {dayData.seasonal_notes && (
+            <p className="text-sm text-white/80 italic">{dayData.seasonal_notes}</p>
+          )}
+        </div>
       </div>
 
+      {/* Activities */}
       <div className="space-y-4">
         {dayData.blocks.map((block) => (
           <div key={block.id} className="bg-card/50 rounded-lg p-4 border">
@@ -85,18 +135,27 @@ const ItineraryDay: React.FC<ItineraryDayProps> = ({ dayData }) => {
 
             {/* Main Activity */}
             <div className="mb-3">
-              <h4 className="font-medium text-foreground">{block.main.name}</h4>
-              <ActivityBadges activity={block.main} />
-              {block.main.duration_hr && (
-                <p className="text-sm text-muted-foreground mt-1">
-                  Duration: {block.main.duration_hr}h
-                </p>
-              )}
-              {block.main.best_time && (
-                <p className="text-sm text-muted-foreground">
-                  Best time: {block.main.best_time}
-                </p>
-              )}
+              <div className="flex items-start gap-3">
+                <ActivityImage 
+                  activity={block.main} 
+                  destination={destination}
+                  itineraryId={itineraryId}
+                />
+                <div className="flex-1">
+                  <h4 className="font-medium text-foreground">{block.main.name}</h4>
+                  <ActivityBadges activity={block.main} />
+                  {block.main.duration_hr && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Duration: {block.main.duration_hr}h
+                    </p>
+                  )}
+                  {block.main.best_time && (
+                    <p className="text-sm text-muted-foreground">
+                      Best time: {block.main.best_time}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* Parallel Activity */}
@@ -105,13 +164,22 @@ const ItineraryDay: React.FC<ItineraryDayProps> = ({ dayData }) => {
                 <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
                   Alternative Option
                 </p>
-                <h4 className="font-medium text-foreground">{block.parallel.name}</h4>
-                <ActivityBadges activity={block.parallel} />
-                {block.parallel.duration_hr && (
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Duration: {block.parallel.duration_hr}h
-                  </p>
-                )}
+                <div className="flex items-start gap-3">
+                  <ActivityImage 
+                    activity={block.parallel} 
+                    destination={destination}
+                    itineraryId={itineraryId}
+                  />
+                  <div className="flex-1">
+                    <h4 className="font-medium text-foreground">{block.parallel.name}</h4>
+                    <ActivityBadges activity={block.parallel} />
+                    {block.parallel.duration_hr && (
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Duration: {block.parallel.duration_hr}h
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 

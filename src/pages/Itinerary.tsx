@@ -13,8 +13,10 @@ import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useUnsplashImage } from '@/hooks/useUnsplashImage';
 import ItineraryDay from '../components/itinerary/ItineraryDay';
 import Navigation from '../components/Navigation';
+import HeroImage from '../components/HeroImage';
 
 interface TripData {
   id: string;
@@ -78,6 +80,11 @@ const Itinerary = () => {
   const [pace, setPace] = useState([2]);
   const [budgetBand, setBudgetBand] = useState([2]);
   const [showFilters, setShowFilters] = useState(false);
+  const [attributions, setAttributions] = useState<Array<{
+    photographer: string;
+    photographerUrl: string;
+    imageUrl: string;
+  }>>([]);
 
   useEffect(() => {
     if (tripId) {
@@ -373,14 +380,26 @@ const Itinerary = () => {
                 {tripData.itinerary_data?.days ? (
                   // New enriched format
                   <div className="space-y-8">
-                    {/* Header */}
+                    {/* Header with Hero Image */}
                     <div className="text-center space-y-4">
-                      <h1 className="text-3xl font-bold text-foreground">
-                        {tripData.itinerary_data.title || `${tripData.destination} Itinerary`}
-                      </h1>
-                      <p className="text-muted-foreground max-w-2xl mx-auto">
-                        {tripData.itinerary_data.summary || `Your ${tripData.duration_days} day adventure in ${tripData.destination}`}
-                      </p>
+                      <div className="relative rounded-lg overflow-hidden h-64 mb-6">
+                        <HeroImage 
+                          destination={tripData.destination}
+                          itineraryId={tripData.id}
+                          className="w-full h-full"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center text-white">
+                            <h1 className="text-4xl font-bold mb-2">
+                              {tripData.itinerary_data.title || `${tripData.destination} Itinerary`}
+                            </h1>
+                            <p className="text-white/90 text-lg max-w-2xl">
+                              {tripData.itinerary_data.summary || `Your ${tripData.duration_days} day adventure in ${tripData.destination}`}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      
                       {tripData.itinerary_data.date_range && (
                         <p className="text-sm text-muted-foreground">{tripData.itinerary_data.date_range}</p>
                       )}
@@ -403,7 +422,12 @@ const Itinerary = () => {
                     {/* Days */}
                     <div className="space-y-8">
                       {tripData.itinerary_data.days.map((day: any) => (
-                        <ItineraryDay key={day.day} dayData={day} />
+                        <ItineraryDay 
+                          key={day.day} 
+                          dayData={day} 
+                          destination={tripData.destination}
+                          itineraryId={tripData.id}
+                        />
                       ))}
                     </div>
                   </div>
@@ -627,6 +651,26 @@ const Itinerary = () => {
           </div>
         </div>
       </div>
+      
+      {/* Unsplash Attribution Footer */}
+      <footer className="bg-muted/30 border-t py-4">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center text-xs text-muted-foreground">
+            <p>
+              Photos by{' '}
+              <a 
+                href="https://unsplash.com/?utm_source=nomad_travel&utm_medium=referral" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                Unsplash
+              </a>
+              {' '}photographers
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
