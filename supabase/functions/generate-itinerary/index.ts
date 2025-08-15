@@ -240,7 +240,7 @@ Please create a detailed itinerary in JSON format with this exact structure:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-5-2025-08-07',
+        model: 'gpt-4o',
         messages: [
           { 
             role: 'system', 
@@ -282,7 +282,7 @@ Please create a detailed itinerary in JSON format with this exact structure:
     return {
       itinerary: enrichedItinerary,
       analytics: {
-        model: 'gpt-5-2025-08-07',
+        model: 'gpt-4o',
         duration_ms,
         tokens: data.usage?.total_tokens || null
       }
@@ -323,7 +323,7 @@ serve(async (req) => {
     const { data: trip, error: tripError } = await supabase
       .from('trips')
       .insert({
-        user_id: '00000000-0000-0000-0000-000000000000', // Temporary user ID for public access
+        user_id: null, // Public access
         destination: formData.destination,
         start_date: formData.startDate,
         end_date: formData.endDate,
