@@ -112,6 +112,7 @@ export type Database = {
           group_style: string | null
           id: string
           itinerary_data: Json | null
+          itinerary_version: number | null
           origin_city: string | null
           special_requests: string | null
           start_date: string | null
@@ -137,6 +138,7 @@ export type Database = {
           group_style?: string | null
           id?: string
           itinerary_data?: Json | null
+          itinerary_version?: number | null
           origin_city?: string | null
           special_requests?: string | null
           start_date?: string | null
@@ -162,6 +164,7 @@ export type Database = {
           group_style?: string | null
           id?: string
           itinerary_data?: Json | null
+          itinerary_version?: number | null
           origin_city?: string | null
           special_requests?: string | null
           start_date?: string | null

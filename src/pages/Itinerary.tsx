@@ -14,6 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnsplashImage } from '@/hooks/useUnsplashImage';
+import ItineraryRefinement from '../components/itinerary/ItineraryRefinement';
 import ItineraryDay from '../components/itinerary/ItineraryDay';
 import Navigation from '../components/Navigation';
 import HeroImage from '../components/HeroImage';
@@ -35,6 +36,7 @@ interface TripData {
   accessibility_needs: string[];
   form_payload: any;
   itinerary_data: any;
+  itinerary_version?: number;
   status: string;
   created_at: string;
   updated_at: string;
@@ -85,6 +87,11 @@ const Itinerary = () => {
     photographerUrl: string;
     imageUrl: string;
   }>>([]);
+
+  const calculateDays = () => {
+    if (!tripData?.travel_month || !tripData?.travel_year || !tripData?.duration_days) return 0;
+    return tripData.duration_days;
+  };
 
   useEffect(() => {
     if (tripId) {
@@ -304,6 +311,11 @@ const Itinerary = () => {
                 <Badge className={`px-3 py-1 ${getBudgetBadgeColor(tripData.budget_tier)}`}>
                   {tripData.budget_tier || 'Budget'}
                 </Badge>
+                {hasItinerary && (
+                  <Badge variant="outline" className="text-xs">
+                    v{tripData.itinerary_version || 1}
+                  </Badge>
+                )}
               </div>
               
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
@@ -499,8 +511,19 @@ const Itinerary = () => {
             )}
           </div>
 
-          {/* Right Sidebar */}
+            {/* Right Sidebar */}
           <div className="w-80 space-y-6">
+            {/* Refinement Controls */}
+            {hasItinerary && (
+              <ItineraryRefinement
+                tripId={tripData.id}
+                currentVersion={tripData.itinerary_version || 1}
+                onRefinementComplete={(updatedTrip) => {
+                  setTripData(updatedTrip);
+                }}
+              />
+            )}
+
             {/* Preferences Summary */}
             <Card>
               <CardHeader>
