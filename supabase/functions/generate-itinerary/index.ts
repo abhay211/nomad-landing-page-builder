@@ -258,7 +258,11 @@ Please create a detailed itinerary in JSON format with this exact structure:
       throw new Error('Failed to parse itinerary data');
     }
 
-    return itineraryData;
+    // Enrich the itinerary with Google Places data
+    console.log('Enriching itinerary with Google Places data...');
+    const enrichedItinerary = await enrichItineraryWithPlaces(itineraryData, formData.destination);
+
+    return enrichedItinerary;
   } catch (error) {
     console.error('Error generating itinerary:', error);
     throw error;

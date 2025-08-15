@@ -13,6 +13,7 @@ import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import ItineraryDay from '../components/itinerary/ItineraryDay';
 import Navigation from '../components/Navigation';
 
 interface TripData {
@@ -367,67 +368,109 @@ const Itinerary = () => {
                 </Button>
               </div>
             ) : (
-              <div className="space-y-6">
-                {/* Display actual generated itinerary */}
-                {tripData.itinerary_data?.itinerary?.map((day: any) => (
-                  <Card key={day.day} className="overflow-hidden">
-                    <CardHeader className={`bg-gradient-to-r ${day.color} text-white p-6`}>
-                      <CardTitle className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-2xl font-bold">Day {day.day}</h3>
-                          <p className="text-blue-100 mt-1">{day.theme}</p>
+              <div className="space-y-8">
+                {/* Check if we have the new enriched format */}
+                {tripData.itinerary_data?.days ? (
+                  // New enriched format
+                  <div className="space-y-8">
+                    {/* Header */}
+                    <div className="text-center space-y-4">
+                      <h1 className="text-3xl font-bold text-foreground">
+                        {tripData.itinerary_data.title || `${tripData.destination} Itinerary`}
+                      </h1>
+                      <p className="text-muted-foreground max-w-2xl mx-auto">
+                        {tripData.itinerary_data.summary || `Your ${tripData.duration_days} day adventure in ${tripData.destination}`}
+                      </p>
+                      {tripData.itinerary_data.date_range && (
+                        <p className="text-sm text-muted-foreground">{tripData.itinerary_data.date_range}</p>
+                      )}
+                      {tripData.itinerary_data.tags && (
+                        <div className="flex flex-wrap gap-2 justify-center">
+                          {tripData.itinerary_data.tags.map((tag: string, index: number) => (
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {tag}
+                            </Badge>
+                          ))}
                         </div>
-                        {day.heroImage && (
-                          <div className="w-16 h-16 rounded-lg overflow-hidden bg-white/20">
-                            <img 
-                              src={day.heroImage} 
-                              alt={`Day ${day.day}`} 
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        )}
-                      </CardTitle>
-                    </CardHeader>
-                    
-                    <CardContent className="p-6">
-                      <div className="space-y-6">
-                        {day.activities?.map((activity: any, index: number) => (
-                          <div key={index} className="flex gap-4">
-                            <div className="flex flex-col items-center">
-                              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                                <Clock className="w-4 h-4" />
-                              </div>
-                              {index < day.activities.length - 1 && (
-                                <div className="w-px h-16 bg-gray-200 mt-2"></div>
-                              )}
+                      )}
+                      {tripData.itinerary_data.fairness_explainer && (
+                        <div className="bg-accent/20 rounded-lg p-4 max-w-2xl mx-auto">
+                          <p className="text-sm text-foreground">{tripData.itinerary_data.fairness_explainer}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Days */}
+                    <div className="space-y-8">
+                      {tripData.itinerary_data.days.map((day: any) => (
+                        <ItineraryDay key={day.day} dayData={day} />
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  // Legacy format fallback
+                  <div className="space-y-6">
+                    {tripData.itinerary_data?.itinerary?.map((day: any) => (
+                      <Card key={day.day} className="overflow-hidden">
+                        <CardHeader className={`bg-gradient-to-r ${day.color} text-white p-6`}>
+                          <CardTitle className="flex items-center justify-between">
+                            <div>
+                              <h3 className="text-2xl font-bold">Day {day.day}</h3>
+                              <p className="text-blue-100 mt-1">{day.theme}</p>
                             </div>
-                            
-                            <div className="flex-1 pb-4">
-                              <div className="flex items-start justify-between mb-2">
-                                <div>
-                                  <p className="text-sm text-gray-500">{activity.time}</p>
-                                  <h4 className="font-semibold text-gray-900">
-                                    {activity.title}
-                                  </h4>
+                            {day.heroImage && (
+                              <div className="w-16 h-16 rounded-lg overflow-hidden bg-white/20">
+                                <img 
+                                  src={day.heroImage} 
+                                  alt={`Day ${day.day}`} 
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            )}
+                          </CardTitle>
+                        </CardHeader>
+                        
+                        <CardContent className="p-6">
+                          <div className="space-y-6">
+                            {day.activities?.map((activity: any, index: number) => (
+                              <div key={index} className="flex gap-4">
+                                <div className="flex flex-col items-center">
+                                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                                    <Clock className="w-4 h-4" />
+                                  </div>
+                                  {index < day.activities.length - 1 && (
+                                    <div className="w-px h-16 bg-gray-200 mt-2"></div>
+                                  )}
                                 </div>
-                                <Badge variant="outline" className="text-xs">
-                                  {activity.duration}
-                                </Badge>
+                                
+                                <div className="flex-1 pb-4">
+                                  <div className="flex items-start justify-between mb-2">
+                                    <div>
+                                      <p className="text-sm text-gray-500">{activity.time}</p>
+                                      <h4 className="font-semibold text-gray-900">
+                                        {activity.title}
+                                      </h4>
+                                    </div>
+                                    <Badge variant="outline" className="text-xs">
+                                      {activity.duration}
+                                    </Badge>
+                                  </div>
+                                  
+                                  <p className="text-gray-600 mb-2">{activity.description}</p>
+                                  
+                                  <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                                    <MapPin className="w-3 h-3" />
+                                    <span>{activity.location}</span>
+                                  </div>
+                                </div>
                               </div>
-                              
-                              <p className="text-gray-600 mb-2">{activity.description}</p>
-                              
-                              <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
-                                <MapPin className="w-3 h-3" />
-                                <span>{activity.location}</span>
-                              </div>
-                            </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
