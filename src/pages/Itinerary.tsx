@@ -168,8 +168,8 @@ const Itinerary = () => {
 
     try {
       // Calculate start and end dates
-      const startDate = new Date(tripData.travel_year, new Date(`${tripData.travel_month} 1`).getMonth()).toISOString().split('T')[0];
-      const endDate = new Date(tripData.travel_year, new Date(`${tripData.travel_month} 1`).getMonth(), tripData.duration_days).toISOString().split('T')[0];
+      const startDate = new Date(tripData.travel_year, new Date(`${tripData.travel_month} 1`).getMonth(), 1).toISOString().split('T')[0];
+      const endDate = new Date(tripData.travel_year, new Date(`${tripData.travel_month} 1`).getMonth(), 1 + tripData.duration_days).toISOString().split('T')[0];
       
       const formData = {
         destination: tripData.destination,
