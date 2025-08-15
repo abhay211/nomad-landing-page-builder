@@ -44,6 +44,45 @@ export type Database = {
         }
         Relationships: []
       }
+      location_cache: {
+        Row: {
+          cache_key: string
+          created_at: string
+          day_number: number | null
+          expires_at: string
+          id: string
+          latitude: number | null
+          location_name: string
+          longitude: number | null
+          static_map_url: string | null
+          trip_id: string | null
+        }
+        Insert: {
+          cache_key: string
+          created_at?: string
+          day_number?: number | null
+          expires_at: string
+          id?: string
+          latitude?: number | null
+          location_name: string
+          longitude?: number | null
+          static_map_url?: string | null
+          trip_id?: string | null
+        }
+        Update: {
+          cache_key?: string
+          created_at?: string
+          day_number?: number | null
+          expires_at?: string
+          id?: string
+          latitude?: number | null
+          location_name?: string
+          longitude?: number | null
+          static_map_url?: string | null
+          trip_id?: string | null
+        }
+        Relationships: []
+      }
       place_cache: {
         Row: {
           cache_key: string

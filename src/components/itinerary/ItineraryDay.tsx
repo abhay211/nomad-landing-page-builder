@@ -2,6 +2,7 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { useUnsplashImage } from '@/hooks/useUnsplashImage';
+import StaticMapThumbnail from './StaticMapThumbnail';
 
 interface ActivityDetail {
   name: string;
@@ -112,6 +113,19 @@ const ItineraryDay: React.FC<ItineraryDayProps> = ({ dayData, destination, itine
           />
         )}
         <div className="absolute inset-0 bg-black/40" />
+        
+        {/* Static Map Thumbnail */}
+        {itineraryId && (
+          <div className="absolute top-4 right-4">
+            <StaticMapThumbnail
+              tripId={itineraryId}
+              dayNumber={dayData.day}
+              locationName={dayData.location}
+              className="w-24 h-16"
+            />
+          </div>
+        )}
+        
         <div className="relative p-6 text-white">
           <h3 className="font-satoshi font-bold text-2xl mb-2">
             Day {dayData.day} – {dayData.theme.join(' & ')}
