@@ -112,10 +112,63 @@ const Itinerary = () => {
   };
 
   const handleGenerateItinerary = async () => {
+    if (!tripData) return;
+    
+    setLoading(true);
     toast({
       title: "Generating itinerary...",
-      description: "This feature will be available soon!",
+      description: "Creating your personalized travel plan.",
     });
+
+    try {
+      // Calculate start and end dates
+      const startDate = new Date(tripData.travel_year, new Date(`${tripData.travel_month} 1`).getMonth()).toISOString().split('T')[0];
+      const endDate = new Date(tripData.travel_year, new Date(`${tripData.travel_month} 1`).getMonth(), tripData.duration_days).toISOString().split('T')[0];
+      
+      const formData = {
+        destination: tripData.destination,
+        startDate,
+        endDate,
+        groupSize: tripData.group_size,
+        budget: 2000, // Default budget
+        activities: tripData.group_preferences?.must_have || [],
+        groupStyle: tripData.group_style || 'balanced',
+        specialRequests: tripData.special_requests,
+        accessibilityNeeds: tripData.accessibility_needs?.join(', '),
+        originCity: tripData.origin_city
+      };
+
+      const { data: itineraryData, error: itineraryError } = await supabase.functions.invoke('generate-itinerary', {
+        body: formData
+      });
+
+      if (itineraryError) {
+        console.error('Error generating itinerary:', itineraryError);
+        toast({
+          title: "Error generating itinerary",
+          description: "We couldn't generate the itinerary. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Reload trip data to get the updated itinerary
+      await fetchTripData();
+      
+      toast({
+        title: "Itinerary generated!",
+        description: "Your personalized travel plan is ready.",
+      });
+    } catch (error) {
+      console.error('Error generating itinerary:', error);
+      toast({
+        title: "Error generating itinerary",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSave = () => {
@@ -315,7 +368,8 @@ const Itinerary = () => {
               </div>
             ) : (
               <div className="space-y-6">
-                {mockItineraryData.map((day) => (
+                {/* Display actual generated itinerary */}
+                {tripData.itinerary_data?.itinerary?.map((day: any) => (
                   <Card key={day.day} className="overflow-hidden">
                     <CardHeader className={`bg-gradient-to-r ${day.color} text-white p-6`}>
                       <CardTitle className="flex items-center justify-between">
@@ -323,10 +377,10 @@ const Itinerary = () => {
                           <h3 className="text-2xl font-bold">Day {day.day}</h3>
                           <p className="text-blue-100 mt-1">{day.theme}</p>
                         </div>
-                        {day.hero_image && (
+                        {day.heroImage && (
                           <div className="w-16 h-16 rounded-lg overflow-hidden bg-white/20">
                             <img 
-                              src={day.hero_image} 
+                              src={day.heroImage} 
                               alt={`Day ${day.day}`} 
                               className="w-full h-full object-cover"
                             />
@@ -337,11 +391,11 @@ const Itinerary = () => {
                     
                     <CardContent className="p-6">
                       <div className="space-y-6">
-                        {day.activities.map((activity, index) => (
+                        {day.activities?.map((activity: any, index: number) => (
                           <div key={index} className="flex gap-4">
                             <div className="flex flex-col items-center">
                               <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                                {getTimeIcon(activity.time)}
+                                <Clock className="w-4 h-4" />
                               </div>
                               {index < day.activities.length - 1 && (
                                 <div className="w-px h-16 bg-gray-200 mt-2"></div>
@@ -350,9 +404,12 @@ const Itinerary = () => {
                             
                             <div className="flex-1 pb-4">
                               <div className="flex items-start justify-between mb-2">
-                                <h4 className="font-semibold text-gray-900 capitalize">
-                                  {activity.time} - {activity.title}
-                                </h4>
+                                <div>
+                                  <p className="text-sm text-gray-500">{activity.time}</p>
+                                  <h4 className="font-semibold text-gray-900">
+                                    {activity.title}
+                                  </h4>
+                                </div>
                                 <Badge variant="outline" className="text-xs">
                                   {activity.duration}
                                 </Badge>
@@ -364,24 +421,6 @@ const Itinerary = () => {
                                 <MapPin className="w-3 h-3" />
                                 <span>{activity.location}</span>
                               </div>
-                              
-                              {activity.parallel_activity && (
-                                <div className="bg-blue-50 p-3 rounded-lg mb-3">
-                                  <p className="text-sm font-medium text-blue-900 mb-1">
-                                    Alternative Option:
-                                  </p>
-                                  <p className="text-sm text-blue-800">
-                                    {activity.parallel_activity.title} - {activity.parallel_activity.description}
-                                  </p>
-                                </div>
-                              )}
-                              
-                              {activity.rendezvous && (
-                                <div className="flex items-center gap-2 text-sm text-primary font-medium">
-                                  <NavigationIcon className="w-3 h-3" />
-                                  <span>Rendezvous: {activity.rendezvous}</span>
-                                </div>
-                              )}
                             </div>
                           </div>
                         ))}

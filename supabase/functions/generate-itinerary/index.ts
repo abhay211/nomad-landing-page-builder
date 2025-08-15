@@ -200,6 +200,7 @@ serve(async (req) => {
     const { data: trip, error: tripError } = await supabase
       .from('trips')
       .insert({
+        user_id: '00000000-0000-0000-0000-000000000000', // Temporary user ID for public access
         destination: formData.destination,
         start_date: formData.startDate,
         end_date: formData.endDate,
@@ -208,9 +209,11 @@ serve(async (req) => {
         activities: formData.activities,
         group_style: formData.groupStyle,
         special_requests: formData.specialRequests,
-        accessibility_needs: formData.accessibilityNeeds,
+        accessibility_needs: formData.accessibilityNeeds ? [formData.accessibilityNeeds] : [],
         origin_city: formData.originCity,
-        itinerary_data: itineraryData
+        form_payload: formData,
+        itinerary_data: itineraryData,
+        status: 'completed'
       })
       .select()
       .single();

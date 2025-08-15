@@ -44,11 +44,14 @@ export type Database = {
       trips: {
         Row: {
           accessibility_needs: string[] | null
+          activities: string[] | null
+          budget: number | null
           budget_tier: string | null
           created_at: string
           decision_mode: string | null
           destination: string
           duration_days: number | null
+          end_date: string | null
           form_payload: Json
           group_preferences: Json | null
           group_size: number | null
@@ -57,6 +60,7 @@ export type Database = {
           itinerary_data: Json | null
           origin_city: string | null
           special_requests: string | null
+          start_date: string | null
           status: string | null
           travel_month: string | null
           travel_year: number | null
@@ -65,11 +69,14 @@ export type Database = {
         }
         Insert: {
           accessibility_needs?: string[] | null
+          activities?: string[] | null
+          budget?: number | null
           budget_tier?: string | null
           created_at?: string
           decision_mode?: string | null
           destination: string
           duration_days?: number | null
+          end_date?: string | null
           form_payload: Json
           group_preferences?: Json | null
           group_size?: number | null
@@ -78,6 +85,7 @@ export type Database = {
           itinerary_data?: Json | null
           origin_city?: string | null
           special_requests?: string | null
+          start_date?: string | null
           status?: string | null
           travel_month?: string | null
           travel_year?: number | null
@@ -86,11 +94,14 @@ export type Database = {
         }
         Update: {
           accessibility_needs?: string[] | null
+          activities?: string[] | null
+          budget?: number | null
           budget_tier?: string | null
           created_at?: string
           decision_mode?: string | null
           destination?: string
           duration_days?: number | null
+          end_date?: string | null
           form_payload?: Json
           group_preferences?: Json | null
           group_size?: number | null
@@ -99,6 +110,7 @@ export type Database = {
           itinerary_data?: Json | null
           origin_city?: string | null
           special_requests?: string | null
+          start_date?: string | null
           status?: string | null
           travel_month?: string | null
           travel_year?: number | null

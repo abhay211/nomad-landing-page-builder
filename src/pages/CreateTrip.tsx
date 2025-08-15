@@ -161,10 +161,56 @@ const CreateTrip = () => {
       }
 
       console.log('Trip saved successfully:', trip);
+      
+      // Now generate the itinerary using the edge function
       toast({
-        title: "Trip saved!",
-        description: "Your trip details have been saved successfully.",
+        title: "Generating itinerary...",
+        description: "Creating your personalized travel plan.",
       });
+
+      try {
+        // Prepare data for the edge function
+        const startDate = new Date(parseInt(travelYear), new Date(`${travelMonth} 1`).getMonth()).toISOString().split('T')[0];
+        const endDate = new Date(parseInt(travelYear), new Date(`${travelMonth} 1`).getMonth(), durationDays).toISOString().split('T')[0];
+        
+        const formData = {
+          destination,
+          startDate,
+          endDate,
+          groupSize,
+          budget: budget[0] * 1000, // Convert to actual budget amount
+          activities: mustHaveActivities,
+          groupStyle: experienceStyle,
+          specialRequests,
+          accessibilityNeeds,
+          originCity
+        };
+
+        const { data: itineraryData, error: itineraryError } = await supabase.functions.invoke('generate-itinerary', {
+          body: formData
+        });
+
+        if (itineraryError) {
+          console.error('Error generating itinerary:', itineraryError);
+          toast({
+            title: "Error generating itinerary",
+            description: "We saved your trip but couldn't generate the itinerary. You can generate it later.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Itinerary generated!",
+            description: "Your personalized travel plan is ready.",
+          });
+        }
+      } catch (itineraryError) {
+        console.error('Error generating itinerary:', itineraryError);
+        toast({
+          title: "Error generating itinerary",
+          description: "We saved your trip but couldn't generate the itinerary. You can generate it later.",
+          variant: "destructive",
+        });
+      }
 
       // Navigate to itinerary with trip ID
       navigate(`/itinerary/${trip.id}`);
