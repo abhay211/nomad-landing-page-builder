@@ -14,7 +14,107 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      trips: {
+        Row: {
+          accessibility_needs: string[] | null
+          budget_tier: string | null
+          created_at: string
+          decision_mode: string | null
+          destination: string
+          duration_days: number | null
+          form_payload: Json
+          group_preferences: Json | null
+          group_size: number | null
+          group_style: string | null
+          id: string
+          itinerary_data: Json | null
+          origin_city: string | null
+          special_requests: string | null
+          status: string | null
+          travel_month: string | null
+          travel_year: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accessibility_needs?: string[] | null
+          budget_tier?: string | null
+          created_at?: string
+          decision_mode?: string | null
+          destination: string
+          duration_days?: number | null
+          form_payload: Json
+          group_preferences?: Json | null
+          group_size?: number | null
+          group_style?: string | null
+          id?: string
+          itinerary_data?: Json | null
+          origin_city?: string | null
+          special_requests?: string | null
+          status?: string | null
+          travel_month?: string | null
+          travel_year?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accessibility_needs?: string[] | null
+          budget_tier?: string | null
+          created_at?: string
+          decision_mode?: string | null
+          destination?: string
+          duration_days?: number | null
+          form_payload?: Json
+          group_preferences?: Json | null
+          group_size?: number | null
+          group_style?: string | null
+          id?: string
+          itinerary_data?: Json | null
+          origin_city?: string | null
+          special_requests?: string | null
+          status?: string | null
+          travel_month?: string | null
+          travel_year?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trips_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
