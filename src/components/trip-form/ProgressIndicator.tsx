@@ -22,7 +22,7 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
           const isCompleted = stepNumber < currentStep;
           
           return (
-            <React.Fragment key={i}>
+            <div key={i} className="flex items-center">
               <div className="flex flex-col items-center">
                 <div
                   className={cn(
@@ -64,7 +64,7 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
                   />
                 </div>
               )}
-            </React.Fragment>
+            </div>
           );
         })}
       </div>

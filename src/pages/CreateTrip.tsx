@@ -90,6 +90,7 @@ const CreateTrip = () => {
     try {
       // Get current user (nullable if not authenticated)
       const { data: { user } } = await supabase.auth.getUser();
+      const userId = user?.id || '00000000-0000-0000-0000-000000000000'; // Default for public access
       
       // Calculate duration in days
       const durationDays = tripDuration.type === 'custom' && tripDuration.customDays 
@@ -98,7 +99,7 @@ const CreateTrip = () => {
 
       // Prepare trip data in the requested format
       const tripData = {
-        user_id: user?.id || null,
+        user_id: userId,
         destination,
         travel_month: travelMonth,
         travel_year: parseInt(travelYear) || new Date().getFullYear(),
@@ -127,7 +128,7 @@ const CreateTrip = () => {
       const { data: trip, error } = await supabase
         .from('trips')
         .insert({
-          user_id: user?.id || null,
+          user_id: userId,
           destination,
           travel_month: travelMonth,
           travel_year: parseInt(travelYear) || new Date().getFullYear(),
