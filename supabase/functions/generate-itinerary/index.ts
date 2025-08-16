@@ -254,9 +254,15 @@ Please create a detailed itinerary in JSON format with this exact structure:
     });
 
     const data = await response.json();
+    console.log('OpenAI API response status:', response.status);
+    console.log('OpenAI API response data:', JSON.stringify(data, null, 2));
+    
+    if (!response.ok) {
+      throw new Error(`OpenAI API error: ${response.status} - ${JSON.stringify(data)}`);
+    }
     
     if (!data.choices || !data.choices[0]) {
-      throw new Error('Invalid OpenAI response');
+      throw new Error('Invalid OpenAI response structure');
     }
 
     const content = data.choices[0].message.content;
