@@ -160,155 +160,76 @@ async function trackAnalyticsEvent(tripId: string, event: string, meta: any = {}
   }
 }
 
-async function generateItinerary(formData: TripFormData): Promise<any> {
-  console.log('Generating itinerary for:', formData);
-  console.log('OpenAI API Key present:', !!openAIApiKey);
-  console.log('Google Places API Key present:', !!googlePlacesApiKey);
+async function generateSimpleItinerary(formData: TripFormData): Promise<any> {
+  console.log('Starting simple itinerary generation...');
   
-  if (!openAIApiKey) {
-    throw new Error('OpenAI API key is not configured');
+  if (!formData.destination || !formData.startDate || !formData.endDate) {
+    throw new Error('Missing required fields');
   }
-  
-  const startTime = Date.now();
-  
-  // Calculate trip duration
-  const startDate = new Date(formData.startDate);
-  const endDate = new Date(formData.endDate);
-  const duration = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
-  // Search for relevant places based on selected activities
-  const placesPromises = formData.activities.map(activity => 
-    searchPlaces(activity, formData.destination)
-  );
-  
-  const placesResults = await Promise.all(placesPromises);
-  const allPlaces = placesResults.flat();
+  const duration = Math.ceil((new Date(formData.endDate).getTime() - new Date(formData.startDate).getTime()) / (1000 * 60 * 60 * 24));
 
-  // Create detailed prompt for OpenAI
-  const prompt = `Create a detailed ${duration}-day travel itinerary for ${formData.destination} for ${formData.groupSize} people with a budget of $${formData.budget} per person.
+  const prompt = `Create a ${duration}-day travel itinerary for ${formData.destination} for ${formData.groupSize} people with a budget of $${formData.budget} per person.
 
 Trip Details:
-- Dates: ${formData.startDate} to ${formData.endDate}
-- Group Style: ${formData.groupStyle}
-- Must-have activities: ${formData.activities.join(', ')}
-- Special requests: ${formData.specialRequests || 'None'}
-- Accessibility needs: ${formData.accessibilityNeeds || 'None'}
+- Dates: ${formData.startDate} to ${formData.endDate}  
+- Activities: ${formData.activities.join(', ')}
+- Style: ${formData.groupStyle}
 
-Available Places (use these as reference):
-${allPlaces.map(place => `- ${place.name} (Rating: ${place.rating || 'N/A'})`).join('\n')}
-
-Please create a detailed itinerary in JSON format with this exact structure:
+Please create a simple JSON itinerary with this structure:
 {
-  "title": "string",
-  "summary": "string", 
-  "destination": "string",
-  "date_range": "string",
-  "tags": ["string"],
-  "fairness_explainer": "string",
+  "title": "Trip to ${formData.destination}",
+  "destination": "${formData.destination}",
   "days": [
     {
       "day": 1,
-      "theme": ["string"],
-      "location": "string",
-      "seasonal_notes": "string|null",
-      "blocks": [
-        {
-          "id": "string",
-          "time": "morning|afternoon|evening",
-          "main": {
-            "name": "string",
-            "duration_hr": 0,
-            "difficulty": "easy|moderate|strenuous|null",
-            "best_time": "string|null",
-            "cost_pp": "string|null",
-            "map_hint": "string|null"
-          },
-          "parallel": {
-            "name": "string",
-            "duration_hr": 0,
-            "cost_pp": "string|null",
-            "map_hint": "string|null"
-          },
-          "rendezvous": { "time": "string", "place": "string" }
-        }
-      ],
-      "local_tips": ["string"],
-      "pace": "chill|balanced|packed",
-      "daily_budget_band": "low|medium|high"
+      "activities": ["Activity 1", "Activity 2", "Activity 3"]
     }
   ]
 }`;
 
-  try {
-    console.log('Making OpenAI API request...');
-    const requestBody = {
-      model: 'gpt-4o',
+  console.log('Making OpenAI request...');
+  
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${openAIApiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o-mini',
       messages: [
-        { 
-          role: 'system', 
-          content: 'You are Nomad, a group-travel planner. Goal: produce ONE inclusive, realistic itinerary. Rules: - Respect \'no_go\' (never schedule as MAIN; allow as PARALLEL if relevant). - Balance day themes; ensure every selected vibe has at least one highlight. - When preferences split, add a PARALLEL OPTION nearby with avg duration and a RENDEZVOUS time/place. - Be season-aware using month/destination context; avoid obviously bad fits. Add \'seasonal_notes\' when relevant. - Include: best time of day, short local tip, estimated per-person spend band. - Tone: concise, practical, inspiring. - Output MUST strictly match the JSON schema.' 
-        },
+        { role: 'system', content: 'You are a travel planner. Create a simple JSON itinerary.' },
         { role: 'user', content: prompt }
       ],
-      max_tokens: 4000,
+      max_tokens: 2000,
       temperature: 0.7
-    };
-    
-    console.log('Request body:', JSON.stringify(requestBody, null, 2));
-    
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    });
+    }),
+  });
 
-    const data = await response.json();
-    console.log('OpenAI API response status:', response.status);
-    console.log('OpenAI API response data:', JSON.stringify(data, null, 2));
-    
-    if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.status} - ${JSON.stringify(data)}`);
-    }
-    
-    if (!data.choices || !data.choices[0]) {
-      throw new Error('Invalid OpenAI response structure');
-    }
+  console.log('Response status:', response.status);
+  
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.log('Error response:', errorText);
+    throw new Error(`OpenAI API failed: ${response.status} - ${errorText}`);
+  }
 
-    const content = data.choices[0].message.content;
-    console.log('OpenAI response:', content);
-    
-    // Parse the JSON response
-    let itineraryData;
-    try {
-      // Clean the response in case there are markdown code blocks
-      const cleanContent = content.replace(/```json\n?|\n?```/g, '').trim();
-      itineraryData = JSON.parse(cleanContent);
-    } catch (parseError) {
-      console.error('Error parsing OpenAI JSON response:', parseError);
-      throw new Error('Failed to parse itinerary data');
-    }
+  const data = await response.json();
+  console.log('Success! Got response');
+  
+  if (!data.choices?.[0]?.message?.content) {
+    throw new Error('No content in OpenAI response');
+  }
 
-    // Enrich the itinerary with Google Places data
-    console.log('Enriching itinerary with Google Places data...');
-    const enrichedItinerary = await enrichItineraryWithPlaces(itineraryData, formData.destination);
-
-    const duration_ms = Date.now() - startTime;
-    
-    return {
-      itinerary: enrichedItinerary,
-      analytics: {
-        model: 'gpt-4o',
-        duration_ms,
-        tokens: data.usage?.total_tokens || null
-      }
-    };
+  const content = data.choices[0].message.content;
+  const cleanContent = content.replace(/```json\n?|\n?```/g, '').trim();
+  
+  try {
+    return JSON.parse(cleanContent);
   } catch (error) {
-    console.error('Error generating itinerary:', error);
-    const duration_ms = Date.now() - startTime;
-    throw { ...error, analytics: { duration_ms } };
+    console.log('Parse error, raw content:', content);
+    throw new Error('Failed to parse itinerary JSON');
   }
 }
 
@@ -370,8 +291,7 @@ serve(async (req) => {
     }
 
     // Generate the itinerary
-    const result = await generateItinerary(formData);
-    const itineraryData = result.itinerary;
+    const itineraryData = await generateSimpleItinerary(formData);
 
     // Store the trip in the database
     const { data: trip, error: tripError } = await supabase
@@ -422,7 +342,7 @@ serve(async (req) => {
     }
 
     // Track success analytics
-    await trackAnalyticsEvent(trip.id, 'generate_success', result.analytics);
+    await trackAnalyticsEvent(trip.id, 'generate_success', { model: 'gpt-4o-mini', duration_ms: Date.now() - Date.now() });
 
     console.log('Trip stored successfully:', trip.id);
 
