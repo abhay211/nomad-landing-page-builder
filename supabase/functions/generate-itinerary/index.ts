@@ -162,6 +162,13 @@ async function trackAnalyticsEvent(tripId: string, event: string, meta: any = {}
 
 async function generateItinerary(formData: TripFormData): Promise<any> {
   console.log('Generating itinerary for:', formData);
+  console.log('OpenAI API Key present:', !!openAIApiKey);
+  console.log('Google Places API Key present:', !!googlePlacesApiKey);
+  
+  if (!openAIApiKey) {
+    throw new Error('OpenAI API key is not configured');
+  }
+  
   const startTime = Date.now();
   
   // Calculate trip duration
@@ -233,24 +240,29 @@ Please create a detailed itinerary in JSON format with this exact structure:
 }`;
 
   try {
+    console.log('Making OpenAI API request...');
+    const requestBody = {
+      model: 'gpt-4o',
+      messages: [
+        { 
+          role: 'system', 
+          content: 'You are Nomad, a group-travel planner. Goal: produce ONE inclusive, realistic itinerary. Rules: - Respect \'no_go\' (never schedule as MAIN; allow as PARALLEL if relevant). - Balance day themes; ensure every selected vibe has at least one highlight. - When preferences split, add a PARALLEL OPTION nearby with avg duration and a RENDEZVOUS time/place. - Be season-aware using month/destination context; avoid obviously bad fits. Add \'seasonal_notes\' when relevant. - Include: best time of day, short local tip, estimated per-person spend band. - Tone: concise, practical, inspiring. - Output MUST strictly match the JSON schema.' 
+        },
+        { role: 'user', content: prompt }
+      ],
+      max_tokens: 4000,
+      temperature: 0.7
+    };
+    
+    console.log('Request body:', JSON.stringify(requestBody, null, 2));
+    
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${openAIApiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model: 'gpt-4o',
-        messages: [
-          { 
-            role: 'system', 
-            content: 'You are Nomad, a group-travel planner. Goal: produce ONE inclusive, realistic itinerary. Rules: - Respect \'no_go\' (never schedule as MAIN; allow as PARALLEL if relevant). - Balance day themes; ensure every selected vibe has at least one highlight. - When preferences split, add a PARALLEL OPTION nearby with avg duration and a RENDEZVOUS time/place. - Be season-aware using month/destination context; avoid obviously bad fits. Add \'seasonal_notes\' when relevant. - Include: best time of day, short local tip, estimated per-person spend band. - Tone: concise, practical, inspiring. - Output MUST strictly match the JSON schema.' 
-          },
-          { role: 'user', content: prompt }
-        ],
-        max_tokens: 4000,
-        temperature: 0.7
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     const data = await response.json();
