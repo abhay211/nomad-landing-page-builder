@@ -319,6 +319,42 @@ serve(async (req) => {
   }
 
   try {
+    // First, test if OpenAI API key works with a simple request
+    if (!openAIApiKey) {
+      return new Response(
+        JSON.stringify({ error: 'OpenAI API key is not configured in Supabase secrets' }), 
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    // Quick test of OpenAI API
+    const testResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openAIApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [{ role: 'user', content: 'Say "API working"' }],
+        max_tokens: 10
+      }),
+    });
+
+    if (!testResponse.ok) {
+      const errorData = await testResponse.json();
+      return new Response(
+        JSON.stringify({ error: 'OpenAI API authentication failed', details: errorData }), 
+        { 
+          status: 500, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
     const formData: TripFormData = await req.json();
     console.log('Received form data:', formData);
 
