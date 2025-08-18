@@ -170,13 +170,14 @@ const CreateTrip = () => {
 
       try {
         // Prepare data for the edge function
-        const startDate = new Date(parseInt(travelYear), new Date(`${travelMonth} 1`).getMonth(), 1).toISOString().split('T')[0];
-        const endDate = new Date(parseInt(travelYear), new Date(`${travelMonth} 1`).getMonth(), 1 + durationDays).toISOString().split('T')[0];
+        const monthIndex = new Date(`${travelMonth} 1, ${travelYear}`).getMonth();
+        const startDate = new Date(parseInt(travelYear), monthIndex, 1);
+        const endDate = new Date(startDate.getTime() + (durationDays * 24 * 60 * 60 * 1000));
         
         const formData = {
           destination,
-          startDate,
-          endDate,
+          startDate: startDate.toISOString().split('T')[0],
+          endDate: endDate.toISOString().split('T')[0],
           groupSize,
           budget: budget[0] * 1000, // Convert to actual budget amount
           activities: mustHaveActivities,
