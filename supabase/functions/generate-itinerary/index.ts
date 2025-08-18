@@ -13,36 +13,14 @@ serve(async (req) => {
   }
 
   try {
-    // Try multiple ways to access the OpenAI key
-    const allEnvVars = Deno.env.toObject();
-    let openAIKey = allEnvVars['OPENAI_API_KEY'] || 
-                    allEnvVars['OPENAI_API_KEY_BACKUP'] || 
-                    Deno.env.get('OPENAI_API_KEY') || 
-                    Deno.env.get('OPENAI_API_KEY_BACKUP');
+    // Get OpenAI API key
+    const openAIKey = Deno.env.get('OPENAI_API_KEY');
     
-    console.log('🔍 Trying multiple access methods:');
-    console.log('- Method 1 (allEnvVars OPENAI_API_KEY):', allEnvVars['OPENAI_API_KEY'] ? 'exists' : 'null');
-    console.log('- Method 2 (allEnvVars BACKUP):', allEnvVars['OPENAI_API_KEY_BACKUP'] ? 'exists' : 'null');
-    console.log('- Method 3 (Deno.env.get):', Deno.env.get('OPENAI_API_KEY') ? 'exists' : 'null');
-    console.log('- Method 4 (Deno.env.get BACKUP):', Deno.env.get('OPENAI_API_KEY_BACKUP') ? 'exists' : 'null');
-    console.log('- Final key selected:', openAIKey ? `exists (${openAIKey.length} chars)` : 'null');
-
-    if (!openAIKey || openAIKey.trim() === '') {
+    if (!openAIKey) {
+      console.error('❌ No OpenAI API key found');
       return new Response(
-        JSON.stringify({ 
-          error: 'All OpenAI API key access methods failed',
-          debug: {
-            method1: !!allEnvVars['OPENAI_API_KEY'],
-            method2: !!allEnvVars['OPENAI_API_KEY_BACKUP'],
-            method3: !!Deno.env.get('OPENAI_API_KEY'),
-            method4: !!Deno.env.get('OPENAI_API_KEY_BACKUP'),
-            allEnvKeys: Object.keys(allEnvVars)
-          }
-        }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
+        JSON.stringify({ error: 'OpenAI API key not configured' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -50,45 +28,22 @@ serve(async (req) => {
     const formData = await req.json();
     console.log('📝 Generating itinerary for:', formData.destination);
 
-    // Test OpenAI API with the key we found
-    const testResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openAIKey.trim()}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-5-mini-2025-08-07',
-        messages: [{ role: 'user', content: 'Reply with just "OK"' }],
-        max_completion_tokens: 5
-      }),
-    });
+    // Calculate duration
+    const startDate = new Date(formData.startDate);
+    const endDate = new Date(formData.endDate);
+    const durationDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
-    if (!testResponse.ok) {
-      const errorData = await testResponse.json();
-      console.error('❌ OpenAI API test failed:', errorData);
-      return new Response(
-        JSON.stringify({ 
-          error: 'OpenAI API authentication failed', 
-          details: errorData,
-          keyInfo: `Key length: ${openAIKey.length}, starts with: ${openAIKey.substring(0, 7)}...`
-        }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    console.log('✅ OpenAI API test successful');
-
-    // Generate the itinerary
+    // Create the prompt
     const prompt = `Create a detailed JSON itinerary for ${formData.destination}.
 
 Trip Details:
 - Destination: ${formData.destination}
 - Dates: ${formData.startDate} to ${formData.endDate}
+- Duration: ${durationDays} days
 - Group Size: ${formData.groupSize} people
-- Budget: ${formData.budget} USD
+- Budget: $${formData.budget} USD
 - Style: ${formData.groupStyle}
-- Must-have Activities: ${formData.activities?.join(', ') || 'None'}
+- Activities: ${formData.activities?.join(', ') || 'None specified'}
 - Special Requests: ${formData.specialRequests || 'None'}
 
 Return ONLY a valid JSON object with this exact structure:
@@ -126,29 +81,33 @@ Return ONLY a valid JSON object with this exact structure:
   ]
 }
 
-Create ${Math.ceil((new Date(formData.endDate).getTime() - new Date(formData.startDate).getTime()) / (1000 * 60 * 60 * 24))} days total.`;
+Create exactly ${durationDays} days. Each day should have 3-4 activities (morning, afternoon, evening, and optionally night). Make it detailed and specific to the destination.`;
 
+    // Call OpenAI API
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openAIKey.trim()}`,
+        'Authorization': `Bearer ${openAIKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-5-mini-2025-08-07',
+        model: 'gpt-5-2025-08-07',
         messages: [
-          { role: 'system', content: 'You are a travel expert. Return only valid JSON.' },
+          { role: 'system', content: 'You are a travel expert. Return only valid JSON with no markdown formatting.' },
           { role: 'user', content: prompt }
         ],
-        max_completion_tokens: 3000
+        max_completion_tokens: 4000
       }),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('❌ Itinerary generation failed:', errorData);
+      console.error('❌ OpenAI API error:', errorData);
       return new Response(
-        JSON.stringify({ error: 'Failed to generate itinerary', details: errorData }),
+        JSON.stringify({ 
+          error: 'OpenAI API error', 
+          details: errorData 
+        }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -157,15 +116,18 @@ Create ${Math.ceil((new Date(formData.endDate).getTime() - new Date(formData.sta
     let itinerary;
     
     try {
-      itinerary = JSON.parse(result.choices[0].message.content);
+      const content = result.choices[0].message.content.trim();
+      // Remove any markdown formatting if present
+      const jsonContent = content.replace(/```json\n?/, '').replace(/```$/, '');
+      itinerary = JSON.parse(jsonContent);
     } catch (parseError) {
-      console.error('❌ Failed to parse JSON:', parseError);
-      console.log('Raw response:', result.choices[0].message.content);
+      console.error('❌ JSON parse error:', parseError);
+      console.log('Raw content:', result.choices[0].message.content);
       
       // Create a fallback itinerary
       itinerary = {
         title: `${formData.destination} Adventure`,
-        summary: `A ${Math.ceil((new Date(formData.endDate).getTime() - new Date(formData.startDate).getTime()) / (1000 * 60 * 60 * 24))}-day trip to ${formData.destination}`,
+        summary: `A ${durationDays}-day trip to ${formData.destination}`,
         days: [
           {
             day: 1,
@@ -177,6 +139,20 @@ Create ${Math.ceil((new Date(formData.endDate).getTime() - new Date(formData.sta
                 description: "Arrive at destination and check into hotel",
                 duration: "2 hours",
                 location: formData.destination
+              },
+              {
+                time: "afternoon",
+                title: "Local Exploration",
+                description: "Explore the local area and get oriented",
+                duration: "3 hours",
+                location: formData.destination
+              },
+              {
+                time: "evening",
+                title: "Welcome Dinner",
+                description: "Enjoy local cuisine at a recommended restaurant",
+                duration: "2 hours",
+                location: formData.destination
               }
             ]
           }
@@ -186,32 +162,37 @@ Create ${Math.ceil((new Date(formData.endDate).getTime() - new Date(formData.sta
 
     console.log('✅ Itinerary generated successfully');
 
-    // Save to database
-    const supabaseUrl = allEnvVars['SUPABASE_URL'];
-    const supabaseServiceKey = allEnvVars['SUPABASE_SERVICE_ROLE_KEY'];
+    // Save to database if Supabase is available
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
     
     if (supabaseUrl && supabaseServiceKey) {
-      const supabase = createClient(supabaseUrl, supabaseServiceKey);
-      
-      // Find existing trip and update it
-      const { data: existingTrip } = await supabase
-        .from('trips')
-        .select('id')
-        .eq('destination', formData.destination)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
-
-      if (existingTrip) {
-        await supabase
-          .from('trips')
-          .update({ 
-            itinerary_data: itinerary,
-            status: 'generated'
-          })
-          .eq('id', existingTrip.id);
+      try {
+        const supabase = createClient(supabaseUrl, supabaseServiceKey);
         
-        console.log('✅ Updated existing trip:', existingTrip.id);
+        // Find existing trip and update it
+        const { data: existingTrip } = await supabase
+          .from('trips')
+          .select('id')
+          .eq('destination', formData.destination)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single();
+
+        if (existingTrip) {
+          await supabase
+            .from('trips')
+            .update({ 
+              itinerary_data: itinerary,
+              status: 'generated'
+            })
+            .eq('id', existingTrip.id);
+          
+          console.log('✅ Updated existing trip:', existingTrip.id);
+        }
+      } catch (dbError) {
+        console.error('⚠️ Database update failed:', dbError);
+        // Continue anyway - we have the itinerary
       }
     }
 
