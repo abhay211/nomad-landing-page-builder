@@ -243,10 +243,23 @@ serve(async (req) => {
   }
 
   try {
+    // Debug: Log environment variables (without exposing the key)
+    console.log('Environment check:', {
+      hasOpenAIKey: !!openAIApiKey,
+      openAIKeyLength: openAIApiKey?.length || 0,
+      hasGoogleKey: !!googlePlacesApiKey,
+      hasSupabaseUrl: !!supabaseUrl,
+      hasSupabaseServiceKey: !!supabaseServiceKey
+    });
+    
     // First, test if OpenAI API key works with a simple request
     if (!openAIApiKey) {
+      console.error('OpenAI API key not found in environment variables');
       return new Response(
-        JSON.stringify({ error: 'OpenAI API key is not configured in Supabase secrets' }), 
+        JSON.stringify({ 
+          error: 'OpenAI API key is not configured in Supabase secrets',
+          debug: 'Environment variable OPENAI_API_KEY not found'
+        }), 
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
