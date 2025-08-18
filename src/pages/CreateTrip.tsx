@@ -187,15 +187,20 @@ const CreateTrip = () => {
           originCity
         };
 
+        console.log('Sending form data to generate-itinerary:', formData);
+        
         const { data: itineraryData, error: itineraryError } = await supabase.functions.invoke('generate-itinerary', {
           body: formData
         });
 
+        console.log('Response from generate-itinerary:', { itineraryData, itineraryError });
+
         if (itineraryError) {
           console.error('Error generating itinerary:', itineraryError);
+          console.error('Full error details:', JSON.stringify(itineraryError, null, 2));
           toast({
             title: "Error generating itinerary",
-            description: "We saved your trip but couldn't generate the itinerary. You can generate it later.",
+            description: `Error: ${itineraryError.message || 'Unknown error'}`,
             variant: "destructive",
           });
         } else {
