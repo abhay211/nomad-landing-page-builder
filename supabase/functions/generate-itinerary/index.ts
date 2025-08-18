@@ -13,23 +13,29 @@ serve(async (req) => {
   }
 
   try {
-    // Debug environment variables more thoroughly
+    // Try multiple ways to access the OpenAI key
     const allEnvVars = Deno.env.toObject();
-    const openAIKey = allEnvVars['OPENAI_API_KEY'];
+    let openAIKey = allEnvVars['OPENAI_API_KEY'] || 
+                    allEnvVars['OPENAI_API_KEY_BACKUP'] || 
+                    Deno.env.get('OPENAI_API_KEY') || 
+                    Deno.env.get('OPENAI_API_KEY_BACKUP');
     
-    console.log('🔍 Debug environment access:');
-    console.log('- All env keys:', Object.keys(allEnvVars));
-    console.log('- OPENAI_API_KEY from allEnvVars:', openAIKey ? `exists (${openAIKey.length} chars)` : 'null');
-    console.log('- OPENAI_API_KEY from Deno.env.get:', Deno.env.get('OPENAI_API_KEY') ? 'exists' : 'null');
+    console.log('🔍 Trying multiple access methods:');
+    console.log('- Method 1 (allEnvVars OPENAI_API_KEY):', allEnvVars['OPENAI_API_KEY'] ? 'exists' : 'null');
+    console.log('- Method 2 (allEnvVars BACKUP):', allEnvVars['OPENAI_API_KEY_BACKUP'] ? 'exists' : 'null');
+    console.log('- Method 3 (Deno.env.get):', Deno.env.get('OPENAI_API_KEY') ? 'exists' : 'null');
+    console.log('- Method 4 (Deno.env.get BACKUP):', Deno.env.get('OPENAI_API_KEY_BACKUP') ? 'exists' : 'null');
+    console.log('- Final key selected:', openAIKey ? `exists (${openAIKey.length} chars)` : 'null');
 
     if (!openAIKey || openAIKey.trim() === '') {
       return new Response(
         JSON.stringify({ 
-          error: 'OpenAI API key is empty or invalid',
+          error: 'All OpenAI API key access methods failed',
           debug: {
-            hasKey: !!openAIKey,
-            keyLength: openAIKey?.length || 0,
-            keyPreview: openAIKey ? openAIKey.substring(0, 10) + '...' : 'null',
+            method1: !!allEnvVars['OPENAI_API_KEY'],
+            method2: !!allEnvVars['OPENAI_API_KEY_BACKUP'],
+            method3: !!Deno.env.get('OPENAI_API_KEY'),
+            method4: !!Deno.env.get('OPENAI_API_KEY_BACKUP'),
             allEnvKeys: Object.keys(allEnvVars)
           }
         }),
