@@ -246,32 +246,22 @@ Please create a simple JSON itinerary with this structure:
 }
 
 serve(async (req) => {
-  console.log('🚀 Edge function called at:', new Date().toISOString());
-  console.log('🔍 Request method:', req.method);
-  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    console.log('✅ CORS preflight handled');
     return new Response(null, { headers: corsHeaders });
   }
 
-  console.log('🔧 Environment variables debug:');
-  console.log('- All env keys:', Object.keys(Deno.env.toObject()));
-  console.log('- Has OPENAI_API_KEY:', !!openAIApiKey);
-  console.log('- OPENAI_API_KEY length:', openAIApiKey?.length || 0);
-  console.log('- Has GOOGLE_PLACES_API_KEY:', !!googlePlacesApiKey);
-  console.log('- Has SUPABASE_URL:', !!supabaseUrl);
-  console.log('- Has SUPABASE_SERVICE_ROLE_KEY:', !!supabaseServiceKey);
-
   try {
+    console.log('🚀 Generate itinerary function called');
+    console.log('🔑 Environment check - Has OpenAI key:', !!openAIApiKey);
     
     // First, test if OpenAI API key works with a simple request
     if (!openAIApiKey) {
-      console.error('OpenAI API key not found in environment variables');
+      console.error('❌ OpenAI API key not found');
       return new Response(
         JSON.stringify({ 
           error: 'OpenAI API key is not configured in Supabase secrets',
-          debug: 'Environment variable OPENAI_API_KEY not found'
+          debug: 'OPENAI_API_KEY environment variable is missing'
         }), 
         { 
           status: 400, 
@@ -279,6 +269,8 @@ serve(async (req) => {
         }
       );
     }
+
+    console.log('✅ OpenAI API key found, length:', openAIApiKey.length);
 
     // Quick test of OpenAI API
     const testResponse = await fetch('https://api.openai.com/v1/chat/completions', {

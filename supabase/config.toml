@@ -2,3 +2,12 @@ project_id = "eekxczdsxmysszprqzeg"
 
 [functions.generate-itinerary]
 verify_jwt = false
+
+[functions.refine-itinerary] 
+verify_jwt = false
+
+[functions.generate-static-map]
+verify_jwt = false
+
+[functions.fetch-unsplash-image]
+verify_jwt = false
