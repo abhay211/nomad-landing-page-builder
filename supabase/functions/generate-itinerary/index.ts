@@ -2,6 +2,15 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.55.0';
 
+// Log all available environment variables (without exposing sensitive data)
+console.log('🔍 Available environment variables:', {
+  allEnvKeys: Object.keys(Deno.env.toObject()),
+  hasOpenAIKey: !!Deno.env.get('OPENAI_API_KEY'),
+  hasGooglePlacesKey: !!Deno.env.get('GOOGLE_PLACES_API_KEY'),
+  hasSupabaseUrl: !!Deno.env.get('SUPABASE_URL'),
+  hasSupabaseServiceKey: !!Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+});
+
 const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 const googlePlacesApiKey = Deno.env.get('GOOGLE_PLACES_API_KEY');
 const supabaseUrl = Deno.env.get('SUPABASE_URL');
