@@ -13,13 +13,23 @@ serve(async (req) => {
   }
 
   try {
-    // Get OpenAI API key
-    const openAIKey = Deno.env.get('OPENAI_API_KEY');
+    // Get OpenAI API key with better error handling
+    const openAIKey = Deno.env.get('OPENAI_API_KEY') || Deno.env.get('OPENAI_API_KEY_BACKUP');
+    
+    console.log('🔍 Available env vars:', Object.keys(Deno.env.toObject()));
+    console.log('🔑 OpenAI key found:', openAIKey ? `Yes (${openAIKey.length} chars)` : 'No');
     
     if (!openAIKey) {
-      console.error('❌ No OpenAI API key found');
+      console.error('❌ No OpenAI API key found in environment');
       return new Response(
-        JSON.stringify({ error: 'OpenAI API key not configured' }),
+        JSON.stringify({ 
+          error: 'OpenAI API key not configured',
+          debug: {
+            availableKeys: Object.keys(Deno.env.toObject()),
+            hasMainKey: !!Deno.env.get('OPENAI_API_KEY'),
+            hasBackupKey: !!Deno.env.get('OPENAI_API_KEY_BACKUP')
+          }
+        }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
