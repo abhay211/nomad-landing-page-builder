@@ -158,7 +158,13 @@ const Itinerary = () => {
   };
 
   const handleGenerateItinerary = async () => {
-    if (!tripData) return;
+    console.log('🚀 Generate itinerary button clicked!');
+    if (!tripData) {
+      console.error('❌ No trip data available');
+      return;
+    }
+    
+    console.log('📊 Trip data:', tripData);
     
     setLoading(true);
     toast({
@@ -185,9 +191,14 @@ const Itinerary = () => {
         originCity: tripData.origin_city
       };
 
+      console.log('📝 Form data being sent:', formData);
+
       const { data: itineraryData, error: itineraryError } = await supabase.functions.invoke('generate-itinerary', {
         body: formData
       });
+
+      console.log('📥 Response data:', itineraryData);
+      console.log('❌ Response error:', itineraryError);
 
       if (itineraryError) {
         console.error('Error generating itinerary:', itineraryError);
@@ -207,7 +218,7 @@ const Itinerary = () => {
         description: "Your personalized travel plan is ready.",
       });
     } catch (error) {
-      console.error('Error generating itinerary:', error);
+      console.error('❌ Unexpected error in handleGenerateItinerary:', error);
       toast({
         title: "Error generating itinerary",
         description: "An unexpected error occurred. Please try again.",
