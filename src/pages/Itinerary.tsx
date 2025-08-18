@@ -164,8 +164,6 @@ const Itinerary = () => {
       return;
     }
     
-    console.log('📊 Trip data:', tripData);
-    
     setLoading(true);
     toast({
       title: "Generating itinerary...",
@@ -183,7 +181,7 @@ const Itinerary = () => {
         startDate: startDate.toISOString().split('T')[0],
         endDate: endDate.toISOString().split('T')[0],
         groupSize: tripData.group_size,
-        budget: 2000, // Default budget
+        budget: 2000,
         activities: tripData.group_preferences?.must_have || [],
         groupStyle: tripData.group_style || 'balanced',
         specialRequests: tripData.special_requests,
@@ -193,32 +191,55 @@ const Itinerary = () => {
 
       console.log('📝 Form data being sent:', formData);
 
-      const { data: itineraryData, error: itineraryError } = await supabase.functions.invoke('generate-itinerary', {
+      const { data: response, error: itineraryError } = await supabase.functions.invoke('generate-itinerary', {
         body: formData
       });
 
-      console.log('📥 Response data:', itineraryData);
-      console.log('❌ Response error:', itineraryError);
+      console.log('📥 Response:', response);
+      console.log('❌ Error:', itineraryError);
 
       if (itineraryError) {
         console.error('Error generating itinerary:', itineraryError);
         toast({
           title: "Error generating itinerary",
-          description: "We couldn't generate the itinerary. Please try again.",
+          description: itineraryError.message || "We couldn't generate the itinerary. Please try again.",
           variant: "destructive",
         });
         return;
       }
 
-      // Reload trip data to get the updated itinerary
-      await fetchTripData();
-      
-      toast({
-        title: "Itinerary generated!",
-        description: "Your personalized travel plan is ready.",
-      });
+      if (response?.success) {
+        // Update the existing trip with the generated itinerary
+        const { error: updateError } = await supabase
+          .from('trips')
+          .update({
+            itinerary_data: response.itinerary,
+            status: 'generated'
+          })
+          .eq('id', tripData.id);
+
+        if (updateError) {
+          console.error('Error updating trip:', updateError);
+          toast({
+            title: "Error saving itinerary",
+            description: "Generated successfully but couldn't save. Please try again.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        // Reload trip data to show the new itinerary
+        await fetchTripData();
+        
+        toast({
+          title: "Itinerary generated!",
+          description: "Your personalized travel plan is ready.",
+        });
+      } else {
+        throw new Error(response?.error || 'Failed to generate itinerary');
+      }
     } catch (error) {
-      console.error('❌ Unexpected error in handleGenerateItinerary:', error);
+      console.error('❌ Unexpected error:', error);
       toast({
         title: "Error generating itinerary",
         description: "An unexpected error occurred. Please try again.",
