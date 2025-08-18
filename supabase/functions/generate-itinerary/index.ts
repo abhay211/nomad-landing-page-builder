@@ -13,26 +13,23 @@ serve(async (req) => {
   }
 
   try {
-    // Get OpenAI API key with better error handling
-    const openAIKey = Deno.env.get('OPENAI_API_KEY') || Deno.env.get('OPENAI_API_KEY_BACKUP');
+    // Get OpenAI API key from Supabase secrets
+    const openAIKey = Deno.env.get('OPENAI_API_KEY');
     
-    console.log('🔍 Available env vars:', Object.keys(Deno.env.toObject()));
-    console.log('🔑 OpenAI key found:', openAIKey ? `Yes (${openAIKey.length} chars)` : 'No');
+    console.log('🔑 Checking OpenAI API key access...');
     
-    if (!openAIKey) {
-      console.error('❌ No OpenAI API key found in environment');
+    if (!openAIKey || openAIKey.trim() === '') {
+      console.error('❌ OpenAI API key not found or empty');
       return new Response(
         JSON.stringify({ 
-          error: 'OpenAI API key not configured',
-          debug: {
-            availableKeys: Object.keys(Deno.env.toObject()),
-            hasMainKey: !!Deno.env.get('OPENAI_API_KEY'),
-            hasBackupKey: !!Deno.env.get('OPENAI_API_KEY_BACKUP')
-          }
+          error: 'OpenAI API key not configured. Please check Supabase secrets configuration.',
+          success: false
         }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+    
+    console.log('✅ OpenAI API key found, proceeding with generation...');
 
     // Parse request
     const formData = await req.json();
