@@ -201,13 +201,12 @@ Please create a simple JSON itinerary with this structure:
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'gpt-4o-mini',
+      model: 'gpt-5-mini-2025-08-07',
       messages: [
         { role: 'system', content: 'You are a travel planner. Create a simple JSON itinerary.' },
         { role: 'user', content: prompt }
       ],
-      max_tokens: 2000,
-      temperature: 0.7
+      max_completion_tokens: 2000
     }),
   });
 
@@ -263,9 +262,9 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-5-mini-2025-08-07',
         messages: [{ role: 'user', content: 'Say "API working"' }],
-        max_tokens: 10
+        max_completion_tokens: 10
       }),
     });
 
