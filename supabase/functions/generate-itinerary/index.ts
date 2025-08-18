@@ -246,20 +246,24 @@ Please create a simple JSON itinerary with this structure:
 }
 
 serve(async (req) => {
+  console.log('🚀 Edge function called at:', new Date().toISOString());
+  console.log('🔍 Request method:', req.method);
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
+    console.log('✅ CORS preflight handled');
     return new Response(null, { headers: corsHeaders });
   }
 
+  console.log('🔧 Environment variables debug:');
+  console.log('- All env keys:', Object.keys(Deno.env.toObject()));
+  console.log('- Has OPENAI_API_KEY:', !!openAIApiKey);
+  console.log('- OPENAI_API_KEY length:', openAIApiKey?.length || 0);
+  console.log('- Has GOOGLE_PLACES_API_KEY:', !!googlePlacesApiKey);
+  console.log('- Has SUPABASE_URL:', !!supabaseUrl);
+  console.log('- Has SUPABASE_SERVICE_ROLE_KEY:', !!supabaseServiceKey);
+
   try {
-    // Debug: Log environment variables (without exposing the key)
-    console.log('Environment check:', {
-      hasOpenAIKey: !!openAIApiKey,
-      openAIKeyLength: openAIApiKey?.length || 0,
-      hasGoogleKey: !!googlePlacesApiKey,
-      hasSupabaseUrl: !!supabaseUrl,
-      hasSupabaseServiceKey: !!supabaseServiceKey
-    });
     
     // First, test if OpenAI API key works with a simple request
     if (!openAIApiKey) {
