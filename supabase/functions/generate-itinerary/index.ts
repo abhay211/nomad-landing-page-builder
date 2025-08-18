@@ -16,8 +16,8 @@ const supabase = createClient(supabaseUrl!, supabaseServiceKey!);
 
 interface TripFormData {
   destination: string;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
   groupSize: number;
   budget: number;
   activities: string[];
@@ -161,13 +161,17 @@ async function trackAnalyticsEvent(tripId: string, event: string, meta: any = {}
 }
 
 async function generateSimpleItinerary(formData: TripFormData): Promise<any> {
-  console.log('Starting simple itinerary generation...');
+  console.log('Starting simple itinerary generation...', formData);
   
-  if (!formData.destination || !formData.startDate || !formData.endDate) {
-    throw new Error('Missing required fields');
+  if (!formData.destination) {
+    throw new Error('Missing destination');
   }
 
-  const duration = Math.ceil((new Date(formData.endDate).getTime() - new Date(formData.startDate).getTime()) / (1000 * 60 * 60 * 24));
+  // Calculate duration from dates if provided, otherwise use default
+  let duration = 7; // Default duration
+  if (formData.startDate && formData.endDate) {
+    duration = Math.ceil((new Date(formData.endDate).getTime() - new Date(formData.startDate).getTime()) / (1000 * 60 * 60 * 24));
+  }
 
   const prompt = `Create a ${duration}-day travel itinerary for ${formData.destination} for ${formData.groupSize} people with a budget of $${formData.budget} per person.
 
@@ -280,9 +284,9 @@ serve(async (req) => {
     console.log('Received form data:', formData);
 
     // Validate required fields
-    if (!formData.destination || !formData.startDate || !formData.endDate) {
+    if (!formData.destination) {
       return new Response(
-        JSON.stringify({ error: 'Missing required fields: destination, startDate, endDate' }), 
+        JSON.stringify({ error: 'Missing required field: destination' }), 
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 

@@ -168,13 +168,14 @@ const Itinerary = () => {
 
     try {
       // Calculate start and end dates
-      const startDate = new Date(tripData.travel_year, new Date(`${tripData.travel_month} 1`).getMonth(), 1).toISOString().split('T')[0];
-      const endDate = new Date(tripData.travel_year, new Date(`${tripData.travel_month} 1`).getMonth(), 1 + tripData.duration_days).toISOString().split('T')[0];
+      const monthIndex = new Date(`${tripData.travel_month} 1, ${tripData.travel_year}`).getMonth();
+      const startDate = new Date(tripData.travel_year, monthIndex, 1);
+      const endDate = new Date(startDate.getTime() + (tripData.duration_days * 24 * 60 * 60 * 1000));
       
       const formData = {
         destination: tripData.destination,
-        startDate,
-        endDate,
+        startDate: startDate.toISOString().split('T')[0],
+        endDate: endDate.toISOString().split('T')[0],
         groupSize: tripData.group_size,
         budget: 2000, // Default budget
         activities: tripData.group_preferences?.must_have || [],
