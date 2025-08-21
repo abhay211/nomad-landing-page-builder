@@ -29,8 +29,8 @@ interface DayData {
   theme: string | string[];
   location: string;
   seasonal_notes?: string;
-  blocks: Block[];
-  local_tips: string[];
+  blocks?: Block[];
+  local_tips?: string[];
   pace: string;
   daily_budget_band: string;
 }
@@ -141,7 +141,7 @@ const ItineraryDay: React.FC<ItineraryDayProps> = ({ dayData, destination, itine
 
       {/* Activities */}
       <div className="space-y-4">
-        {dayData.blocks.map((block) => (
+        {(dayData.blocks || []).map((block) => (
           <div key={block.id} className="bg-card/50 rounded-lg p-4 border">
             <div className="flex items-center gap-2 mb-3">
               <Badge variant="outline" className="text-xs capitalize">
@@ -210,7 +210,7 @@ const ItineraryDay: React.FC<ItineraryDayProps> = ({ dayData, destination, itine
       </div>
 
       {/* Local Tips */}
-      {dayData.local_tips.length > 0 && (
+      {dayData.local_tips && dayData.local_tips.length > 0 && (
         <div className="bg-accent/20 rounded-lg p-3">
           <h4 className="font-medium text-foreground text-sm mb-2">Local Tips</h4>
           <ul className="text-sm text-muted-foreground space-y-1">
