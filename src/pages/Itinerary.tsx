@@ -172,9 +172,18 @@ const Itinerary = () => {
 
     try {
       // Calculate start and end dates
-      const monthIndex = new Date(`${tripData.travel_month} 1, ${tripData.travel_year}`).getMonth();
-      const startDate = new Date(tripData.travel_year, monthIndex, 1);
-      const endDate = new Date(startDate.getTime() + (tripData.duration_days * 24 * 60 * 60 * 1000));
+      let startDate: Date;
+      let endDate: Date;
+      
+      if (tripData.travel_month && tripData.travel_month.trim() !== '') {
+        const monthIndex = new Date(`${tripData.travel_month} 1, ${tripData.travel_year}`).getMonth();
+        startDate = new Date(tripData.travel_year, monthIndex, 1);
+      } else {
+        // Default to January if no month is specified
+        startDate = new Date(tripData.travel_year, 0, 1);
+      }
+      
+      endDate = new Date(startDate.getTime() + (tripData.duration_days * 24 * 60 * 60 * 1000));
       
       const formData = {
         destination: tripData.destination,

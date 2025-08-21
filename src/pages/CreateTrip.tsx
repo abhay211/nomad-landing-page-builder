@@ -170,9 +170,18 @@ const CreateTrip = () => {
 
       try {
         // Prepare data for the edge function
-        const monthIndex = new Date(`${travelMonth} 1, ${travelYear}`).getMonth();
-        const startDate = new Date(parseInt(travelYear), monthIndex, 1);
-        const endDate = new Date(startDate.getTime() + (durationDays * 24 * 60 * 60 * 1000));
+        let startDate: Date;
+        let endDate: Date;
+        
+        if (travelMonth && travelMonth.trim() !== '') {
+          const monthIndex = new Date(`${travelMonth} 1, ${travelYear}`).getMonth();
+          startDate = new Date(parseInt(travelYear), monthIndex, 1);
+        } else {
+          // Default to January if no month is specified
+          startDate = new Date(parseInt(travelYear), 0, 1);
+        }
+        
+        endDate = new Date(startDate.getTime() + (durationDays * 24 * 60 * 60 * 1000));
         
         const formData = {
           destination,
