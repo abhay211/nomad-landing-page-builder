@@ -26,7 +26,7 @@ interface Block {
 
 interface DayData {
   day: number;
-  theme: string[];
+  theme: string | string[];
   location: string;
   seasonal_notes?: string;
   blocks: Block[];
@@ -94,7 +94,9 @@ const ActivityImage: React.FC<{
 };
 
 const ItineraryDay: React.FC<ItineraryDayProps> = ({ dayData, destination, itineraryId }) => {
-  const dayBannerQuery = `${dayData.location} ${dayData.theme[0] || destination}`;
+  // Safely handle theme as either string or array
+  const themeArray = Array.isArray(dayData.theme) ? dayData.theme : [dayData.theme].filter(Boolean);
+  const dayBannerQuery = `${dayData.location} ${themeArray[0] || destination}`;
   const { imageUrl: bannerImage, loading: bannerLoading } = useUnsplashImage(
     dayBannerQuery, 
     itineraryId, 
@@ -108,7 +110,7 @@ const ItineraryDay: React.FC<ItineraryDayProps> = ({ dayData, destination, itine
         {bannerImage && !bannerLoading && (
           <img 
             src={bannerImage} 
-            alt={`Day ${dayData.day} - ${dayData.theme.join(' & ')}`}
+            alt={`Day ${dayData.day} - ${themeArray.join(' & ')}`}
             className="absolute inset-0 w-full h-full object-cover"
           />
         )}
@@ -128,7 +130,7 @@ const ItineraryDay: React.FC<ItineraryDayProps> = ({ dayData, destination, itine
         
         <div className="relative p-6 text-white">
           <h3 className="font-satoshi font-bold text-2xl mb-2">
-            Day {dayData.day} – {dayData.theme.join(' & ')}
+            Day {dayData.day} – {themeArray.join(' & ')}
           </h3>
           <p className="text-white/90 mb-1">{dayData.location}</p>
           {dayData.seasonal_notes && (
