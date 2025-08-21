@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 interface StaticMapThumbnailProps {
   tripId: string;
   dayNumber: number;
-  locationName: string;
+  locationName: string | undefined;
   className?: string;
 }
 

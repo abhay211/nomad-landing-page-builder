@@ -18,7 +18,7 @@ interface UseStaticMapResult {
 export const useStaticMap = (
   tripId: string,
   dayNumber: number,
-  locationName: string,
+  locationName: string | undefined,
   size: string = '300x200'
 ): UseStaticMapResult => {
   const [mapUrl, setMapUrl] = useState<string | null>(null);
@@ -27,7 +27,7 @@ export const useStaticMap = (
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!tripId || !dayNumber || !locationName.trim()) return;
+    if (!tripId || !dayNumber || !locationName || !locationName.trim()) return;
 
     const fetchMap = async () => {
       setLoading(true);
@@ -38,7 +38,7 @@ export const useStaticMap = (
           body: { 
             tripId, 
             dayNumber, 
-            locationName: locationName.trim(),
+            locationName: locationName?.trim() || '',
             size 
           }
         });
