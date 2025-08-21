@@ -136,8 +136,12 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  let tripId: string = '';
+  
   try {
-    const { tripId, directionText } = await req.json();
+    const requestBody = await req.json();
+    tripId = requestBody.tripId;
+    const directionText = requestBody.directionText;
     
     if (!tripId || !directionText) {
       return new Response(
@@ -252,8 +256,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in refine-itinerary function:', error);
     
-    // Track error analytics
-    const { tripId } = await req.clone().json().catch(() => ({}));
+    // Track error analytics using the stored tripId
     if (tripId && error.analytics) {
       await trackAnalyticsEvent(tripId, 'refine_error', error.analytics);
     }

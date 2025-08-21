@@ -55,40 +55,54 @@ Trip Details:
 
 Return ONLY a valid JSON object with this exact structure:
 {
-  "title": "Bangkok Adventure",
-  "summary": "A 7-day relaxing trip focusing on beaches and wellness",
+  "title": "7-Day Bali Adventure",
+  "summary": "A perfect blend of culture, nature, and relaxation in beautiful Bali",
   "days": [
     {
       "day": 1,
       "theme": "Arrival & Exploration",
-      "activities": [
+      "location": "Ubud, Bali",
+      "seasonal_notes": "Perfect weather for outdoor activities",
+      "blocks": [
         {
+          "id": "day1-morning",
           "time": "morning",
-          "title": "Hotel Check-in",
-          "description": "Arrive and settle into your accommodation",
-          "duration": "2 hours",
-          "location": "Bangkok City Center"
-        },
-        {
-          "time": "afternoon", 
-          "title": "Temple Visit",
-          "description": "Visit Wat Pho temple for cultural immersion",
-          "duration": "3 hours",
-          "location": "Wat Pho Temple"
-        },
-        {
-          "time": "evening",
-          "title": "Welcome Dinner",
-          "description": "Traditional Thai cuisine at a local restaurant",
-          "duration": "2 hours", 
-          "location": "Khao San Road"
+          "main": {
+            "name": "Hotel Check-in & Welcome Breakfast",
+            "duration_hr": 2,
+            "difficulty": "easy",
+            "best_time": "9:00 AM",
+            "cost_pp": "$25",
+            "map_hint": "Ubud center",
+            "rating": 4.5,
+            "price_level": "$$"
+          },
+          "parallel": {
+            "name": "Spa & Wellness Introduction (alternative)",
+            "duration_hr": 2,
+            "difficulty": "easy",
+            "cost_pp": "$40",
+            "rating": 4.7,
+            "price_level": "$$$"
+          },
+          "rendezvous": {
+            "time": "12:00 PM",
+            "place": "Hotel Lobby"
+          }
         }
-      ]
+      ],
+      "local_tips": [
+        "Try the local warung for authentic flavors",
+        "Bargain politely at traditional markets",
+        "Dress modestly when visiting temples"
+      ],
+      "pace": "relaxed",
+      "daily_budget_band": "mid-range"
     }
   ]
 }
 
-Create exactly ${durationDays} days. Each day should have 3-4 activities (morning, afternoon, evening, and optionally night). Make it detailed and specific to the destination.`;
+Create exactly ${durationDays} days. Each day should have 3-4 blocks (morning, afternoon, evening, and optionally night). Include specific locations, realistic durations, costs, and local tips. Make activities specific to ${formData.destination}.`;
 
     // Call OpenAI API
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -131,7 +145,7 @@ Create exactly ${durationDays} days. Each day should have 3-4 activities (mornin
       console.error('❌ JSON parse error:', parseError);
       console.log('Raw content:', result.choices[0].message.content);
       
-      // Create a fallback itinerary
+      // Create a fallback itinerary with correct structure
       itinerary = {
         title: `${formData.destination} Adventure`,
         summary: `A ${durationDays}-day trip to ${formData.destination}`,
@@ -139,29 +153,45 @@ Create exactly ${durationDays} days. Each day should have 3-4 activities (mornin
           {
             day: 1,
             theme: "Arrival & Exploration",
-            activities: [
+            location: formData.destination,
+            seasonal_notes: "Weather permitting",
+            blocks: [
               {
+                id: "day1-morning",
                 time: "morning",
-                title: "Arrival",
-                description: "Arrive at destination and check into hotel",
-                duration: "2 hours",
-                location: formData.destination
+                main: {
+                  name: "Arrival & Check-in",
+                  duration_hr: 2,
+                  difficulty: "easy",
+                  best_time: "10:00 AM",
+                  cost_pp: "$0",
+                  map_hint: "Hotel location",
+                  rating: 4.0,
+                  price_level: "$"
+                }
               },
               {
+                id: "day1-afternoon",
                 time: "afternoon",
-                title: "Local Exploration",
-                description: "Explore the local area and get oriented",
-                duration: "3 hours",
-                location: formData.destination
-              },
-              {
-                time: "evening",
-                title: "Welcome Dinner",
-                description: "Enjoy local cuisine at a recommended restaurant",
-                duration: "2 hours",
-                location: formData.destination
+                main: {
+                  name: "Local Area Exploration",
+                  duration_hr: 3,
+                  difficulty: "easy",
+                  best_time: "2:00 PM",
+                  cost_pp: "$20",
+                  map_hint: "City center",
+                  rating: 4.2,
+                  price_level: "$$"
+                }
               }
-            ]
+            ],
+            local_tips: [
+              "Try local cuisine",
+              "Always carry some cash",
+              "Respect local customs"
+            ],
+            pace: "relaxed",
+            daily_budget_band: "mid-range"
           }
         ]
       };
