@@ -17,6 +17,7 @@ serve(async (req) => {
     const openAIKey = Deno.env.get('OPENAI_API_KEY');
     
     console.log('🔑 Checking OpenAI API key access...');
+    console.log('🔧 Function redeployed with updated secrets');
     
     if (!openAIKey || openAIKey.trim() === '') {
       console.error('❌ OpenAI API key not found or empty');
