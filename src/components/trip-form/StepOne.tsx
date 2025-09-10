@@ -47,6 +47,17 @@ const StepOne: React.FC<StepOneProps> = ({
   onNext
 }) => {
   const [showDestinationSuggestions, setShowDestinationSuggestions] = useState(false);
+  const [currentCard, setCurrentCard] = useState(0);
+
+  // Initialize smart defaults
+  React.useEffect(() => {
+    const currentYear = new Date().getFullYear();
+    if (!travelYear) setTravelYear(currentYear.toString());
+    if (!groupSize) setGroupSize(2);
+    if (!budgetTier) setBudgetTier('mid-range');
+    if (!decisionMode) setDecisionMode('fair');
+    
+  }, []);
 
   const popularDestinations = [
     'Paris, France', 'Tokyo, Japan', 'Bali, Indonesia', 'New York, USA',
@@ -87,240 +98,310 @@ const StepOne: React.FC<StepOneProps> = ({
   const isValid = destination && travelMonth && travelYear && groupSize > 0 && 
                   (tripDuration.value || tripDuration.customDays) && budgetTier && decisionMode;
 
+  const cards = [
+    { id: 'destination', title: 'Where to?', subtitle: 'Pick your dream destination' },
+    { id: 'dates', title: 'When?', subtitle: 'Choose your travel dates' },
+    { id: 'group', title: 'Who?', subtitle: 'Tell us about your group' },
+    { id: 'style', title: 'How?', subtitle: 'What kind of trip do you want?' }
+  ];
+
   return (
     <div className="space-y-8 animate-fade-in">
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-gray-900">Plan Your Trip</h2>
-        <p className="text-gray-600">Let's start with the basics</p>
+      <div className="text-center space-y-3">
+        <h2 className="text-3xl font-bold text-gray-900">Let's plan something amazing ✨</h2>
+        <p className="text-gray-600 text-lg">Just a few quick questions to get started</p>
+        
+        {/* Progress dots */}
+        <div className="flex justify-center gap-2 mt-4">
+          {cards.map((_, index) => (
+            <div
+              key={index}
+              className={cn(
+                "w-2 h-2 rounded-full transition-all duration-300",
+                index <= currentCard ? "bg-primary" : "bg-gray-300"
+              )}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Destination Field */}
-      <div className="space-y-4">
-        <label className="text-lg font-medium text-gray-900 flex items-center gap-2">
-          <MapPin className="w-5 h-5 text-primary" />
-          Destination
-        </label>
-        <div className="relative">
-          <Input
-            value={destination}
-            onChange={(e) => {
-              setDestination(e.target.value);
-              setShowDestinationSuggestions(true);
-            }}
-            onBlur={() => setTimeout(() => setShowDestinationSuggestions(false), 200)}
-            placeholder="Where do you want to go?"
-            className="h-12 text-base"
-          />
-          {showDestinationSuggestions && destination && destination.trim() && filteredDestinations.length > 0 && (
-            <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
-              {filteredDestinations.slice(0, 6).map((dest) => (
-                <button
-                  key={dest}
-                  onClick={() => {
-                    setDestination(dest);
-                    setShowDestinationSuggestions(false);
-                  }}
-                  className="w-full px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
-                >
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-gray-400" />
-                    <span>{dest}</span>
-                  </div>
-                </button>
-              ))}
+      {/* Card-based Progressive Disclosure */}
+      <div className="space-y-6">
+        {/* Destination Card */}
+        <div className={cn(
+          "p-6 rounded-2xl border-2 transition-all duration-300 cursor-pointer",
+          currentCard >= 0 ? "border-primary bg-primary/5" : "border-gray-200 hover:border-primary/50"
+        )} onClick={() => setCurrentCard(Math.max(currentCard, 0))}>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+              <MapPin className="w-4 h-4 text-primary" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900">Where to? 🌍</h3>
+              <p className="text-gray-600">Pick your dream destination</p>
+            </div>
+          </div>
+          
+          <div className="relative">
+            <Input
+              value={destination}
+              onChange={(e) => {
+                setDestination(e.target.value);
+                setShowDestinationSuggestions(true);
+                setCurrentCard(Math.max(currentCard, 1));
+              }}
+              onBlur={() => setTimeout(() => setShowDestinationSuggestions(false), 200)}
+              placeholder="Start typing a city or country..."
+              className="h-14 text-lg border-2 border-gray-200 focus:border-primary rounded-xl"
+            />
+            {showDestinationSuggestions && destination && destination.trim() && filteredDestinations.length > 0 && (
+              <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl z-10 mt-2 max-h-64 overflow-y-auto">
+                {filteredDestinations.slice(0, 8).map((dest) => (
+                  <button
+                    key={dest}
+                    onClick={() => {
+                      setDestination(dest);
+                      setShowDestinationSuggestions(false);
+                      setCurrentCard(Math.max(currentCard, 1));
+                    }}
+                    className="w-full px-6 py-4 text-left hover:bg-primary/10 border-b border-gray-100 last:border-b-0 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <MapPin className="w-5 h-5 text-primary" />
+                      <span className="text-gray-900 font-medium">{dest}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          
+          {/* Popular suggestions */}
+          {!destination && (
+            <div className="mt-4">
+              <p className="text-sm text-gray-500 mb-3">Popular destinations:</p>
+              <div className="flex flex-wrap gap-2">
+                {popularDestinations.slice(0, 6).map((dest) => (
+                  <button
+                    key={dest}
+                    onClick={() => {
+                      setDestination(dest);
+                      setCurrentCard(Math.max(currentCard, 1));
+                    }}
+                    className="px-3 py-2 text-sm bg-gray-100 hover:bg-primary/10 hover:text-primary rounded-full transition-colors"
+                  >
+                    {dest}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>
-      </div>
 
-      {/* Travel Month and Year */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-3">
-          <label className="text-lg font-medium text-gray-900 flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-primary" />
-            Travel Month
-          </label>
-          <Select value={travelMonth} onValueChange={setTravelMonth}>
-            <SelectTrigger className="h-12">
-              <SelectValue placeholder="Select month" />
-            </SelectTrigger>
-            <SelectContent>
-              {months.map((month) => (
-                <SelectItem key={month} value={month}>
-                  {month}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-3">
-          <label className="text-lg font-medium text-gray-900">Year</label>
-          <Select value={travelYear} onValueChange={setTravelYear}>
-            <SelectTrigger className="h-12">
-              <SelectValue placeholder="Select year" />
-            </SelectTrigger>
-            <SelectContent>
-              {years.map((year) => (
-                <SelectItem key={year} value={year.toString()}>
-                  {year}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {/* Origin City (Optional) */}
-      <div className="space-y-4">
-        <label className="text-lg font-medium text-gray-900 flex items-center gap-2">
-          <Plane className="w-5 h-5 text-primary" />
-          Departure City <span className="text-sm text-gray-500 font-normal">(Optional)</span>
-        </label>
-        <Input
-          value={originCity}
-          onChange={(e) => setOriginCity(e.target.value)}
-          placeholder="Where are you departing from?"
-          className="h-12 text-base"
-        />
-      </div>
-
-      {/* Group Size with Numeric Stepper */}
-      <div className="space-y-4">
-        <label className="text-lg font-medium text-gray-900 flex items-center gap-2">
-          <Users className="w-5 h-5 text-primary" />
-          Group Size
-        </label>
-        <div className="flex items-center gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            onClick={() => setGroupSize(Math.max(1, groupSize - 1))}
-            disabled={groupSize <= 1}
-            className="h-12 w-12"
-          >
-            <Minus className="w-4 h-4" />
-          </Button>
-          <div className="flex-1 text-center">
-            <div className="text-2xl font-bold text-gray-900">{groupSize}</div>
-            <div className="text-sm text-gray-500">
-              {groupSize === 1 ? 'person' : 'people'}
+        {/* When Card */}
+        {destination && (
+          <div className={cn(
+            "p-6 rounded-2xl border-2 transition-all duration-300 cursor-pointer",
+            currentCard >= 1 ? "border-primary bg-primary/5" : "border-gray-200 hover:border-primary/50"
+          )} onClick={() => setCurrentCard(Math.max(currentCard, 1))}>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                <Calendar className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900">When? 📅</h3>
+                <p className="text-gray-600">Choose your travel time</p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Select 
+                  value={travelMonth} 
+                  onValueChange={(value) => {
+                    setTravelMonth(value);
+                    setCurrentCard(Math.max(currentCard, 2));
+                  }}
+                >
+                  <SelectTrigger className="h-12 border-2 border-gray-200 focus:border-primary rounded-xl">
+                    <SelectValue placeholder="Month" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {months.map((month) => (
+                      <SelectItem key={month} value={month}>
+                        {month}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Select 
+                  value={travelYear} 
+                  onValueChange={(value) => {
+                    setTravelYear(value);
+                    setCurrentCard(Math.max(currentCard, 2));
+                  }}
+                >
+                  <SelectTrigger className="h-12 border-2 border-gray-200 focus:border-primary rounded-xl">
+                    <SelectValue placeholder="Year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {years.map((year) => (
+                      <SelectItem key={year} value={year.toString()}>
+                        {year}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            onClick={() => setGroupSize(Math.min(20, groupSize + 1))}
-            disabled={groupSize >= 20}
-            className="h-12 w-12"
-          >
-            <Plus className="w-4 h-4" />
-          </Button>
-        </div>
-      </div>
+        )}
 
-      {/* Trip Duration */}
-      <div className="space-y-4">
-        <label className="text-lg font-medium text-gray-900 flex items-center gap-2">
-          <Clock className="w-5 h-5 text-primary" />
-          When & How Long?
-        </label>
-        
-        {/* Predefined Duration Options */}
-        <div className="grid grid-cols-3 gap-3 mb-4">
-          {tripDurationOptions.map((option) => (
-            <button
-              key={option.value}
-              onClick={() => setTripDuration({ type: 'predefined', value: option.value })}
-              className={cn(
-                "p-3 rounded-lg border-2 transition-all duration-200",
-                "flex flex-col items-center justify-center text-center",
-                tripDuration.type === 'predefined' && tripDuration.value === option.value
-                  ? "border-primary bg-primary/5"
-                  : "border-gray-200 hover:border-primary/50"
-              )}
-            >
-              <span className="text-lg mb-1">{option.emoji}</span>
-              <span className="font-medium text-sm">{option.label}</span>
-              <span className="text-xs text-gray-500">{option.description}</span>
-            </button>
-          ))}
-        </div>
-
-        <div className="text-center text-gray-500 text-sm">or</div>
-
-        {/* Custom Duration Input */}
-        <div className="flex items-center gap-3">
-          <Input
-            type="number"
-            min="1"
-            max="365"
-            value={tripDuration.customDays || ''}
-            onChange={(e) => setTripDuration({ 
-              type: 'custom', 
-              value: 'custom', 
-              customDays: parseInt(e.target.value) || 0 
-            })}
-            placeholder="Enter days"
-            className="h-12 text-base"
-          />
-          <span className="text-gray-600 font-medium">days</span>
-        </div>
-      </div>
-
-      {/* Budget Tier */}
-      <div className="space-y-4">
-        <label className="text-lg font-medium text-gray-900">Budget Tier</label>
-        <div className="grid grid-cols-3 gap-3">
-          {budgetTiers.map((tier) => (
-            <button
-              key={tier.value}
-              onClick={() => setBudgetTier(tier.value)}
-              className={cn(
-                "p-4 rounded-lg border-2 transition-all duration-200",
-                "flex flex-col items-center justify-center text-center",
-                budgetTier === tier.value
-                  ? "border-primary bg-primary/5"
-                  : "border-gray-200 hover:border-primary/50"
-              )}
-            >
-              <span className="font-medium text-sm">{tier.label}</span>
-              <span className="text-xs text-gray-500 mt-1">{tier.description}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Decision Mode */}
-      <div className="space-y-4">
-        <label className="text-lg font-medium text-gray-900 flex items-center gap-2">
-          <Target className="w-5 h-5 text-primary" />
-          Decision Mode
-        </label>
-        <RadioGroup value={decisionMode} onValueChange={setDecisionMode} className="space-y-3">
-          {decisionModes.map((mode) => (
-            <div key={mode.value} className="flex items-start space-x-3">
-              <RadioGroupItem value={mode.value} id={mode.value} className="mt-1" />
-              <Label htmlFor={mode.value} className="flex-1 cursor-pointer">
-                <div className="font-medium text-gray-900">{mode.label}</div>
-                <div className="text-sm text-gray-500">{mode.description}</div>
-              </Label>
+        {/* Group Card */}
+        {travelMonth && travelYear && (
+          <div className={cn(
+            "p-6 rounded-2xl border-2 transition-all duration-300 cursor-pointer",
+            currentCard >= 2 ? "border-primary bg-primary/5" : "border-gray-200 hover:border-primary/50"
+          )} onClick={() => setCurrentCard(Math.max(currentCard, 2))}>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                <Users className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900">Who's going? 👥</h3>
+                <p className="text-gray-600">Tell us about your group</p>
+              </div>
             </div>
-          ))}
-        </RadioGroup>
+            
+            <div className="space-y-4">
+              {/* Group Size Stepper */}
+              <div className="flex items-center justify-center gap-6 p-4 bg-gray-50 rounded-xl">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => {
+                    setGroupSize(Math.max(1, groupSize - 1));
+                    setCurrentCard(Math.max(currentCard, 3));
+                  }}
+                  disabled={groupSize <= 1}
+                  className="h-12 w-12 rounded-full border-2"
+                >
+                  <Minus className="w-5 h-5" />
+                </Button>
+                <div className="text-center min-w-[120px]">
+                  <div className="text-3xl font-bold text-primary">{groupSize}</div>
+                  <div className="text-sm text-gray-600">
+                    {groupSize === 1 ? 'Solo traveler' : `${groupSize} people`}
+                  </div>
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => {
+                    setGroupSize(Math.min(20, groupSize + 1));
+                    setCurrentCard(Math.max(currentCard, 3));
+                  }}
+                  disabled={groupSize >= 20}
+                  className="h-12 w-12 rounded-full border-2"
+                >
+                  <Plus className="w-5 h-5" />
+                </Button>
+              </div>
+              
+              {/* Origin City */}
+              <div>
+                <Input
+                  value={originCity}
+                  onChange={(e) => setOriginCity(e.target.value)}
+                  placeholder="Departure city (optional)"
+                  className="h-12 border-2 border-gray-200 focus:border-primary rounded-xl"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Trip Style Card */}
+        {travelMonth && travelYear && groupSize && (
+          <div className={cn(
+            "p-6 rounded-2xl border-2 transition-all duration-300",
+            currentCard >= 3 ? "border-primary bg-primary/5" : "border-gray-200"
+          )}>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                <Clock className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900">How long & what style? ⏰</h3>
+                <p className="text-gray-600">Choose your trip duration and vibe</p>
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              {/* Duration Options */}
+              <div>
+                <p className="text-sm font-medium text-gray-700 mb-3">Trip length:</p>
+                <div className="grid grid-cols-3 gap-3">
+                  {tripDurationOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => setTripDuration({ type: 'predefined', value: option.value })}
+                      className={cn(
+                        "p-4 rounded-xl border-2 transition-all duration-200",
+                        "flex flex-col items-center justify-center text-center hover:scale-105",
+                        tripDuration.type === 'predefined' && tripDuration.value === option.value
+                          ? "border-primary bg-primary/10 shadow-md"
+                          : "border-gray-200 hover:border-primary/50"
+                      )}
+                    >
+                      <span className="text-2xl mb-2">{option.emoji}</span>
+                      <span className="font-semibold text-sm">{option.label}</span>
+                      <span className="text-xs text-gray-500">{option.description}</span>
+                    </button>
+                  ))}
+                </div>
+                
+                <div className="text-center text-gray-400 text-sm my-3">or custom</div>
+                
+                <div className="flex items-center gap-3">
+                  <Input
+                    type="number"
+                    min="1"
+                    max="365"
+                    value={tripDuration.customDays || ''}
+                    onChange={(e) => setTripDuration({ 
+                      type: 'custom', 
+                      value: 'custom', 
+                      customDays: parseInt(e.target.value) || 0 
+                    })}
+                    placeholder="Custom days"
+                    className="h-12 border-2 border-gray-200 focus:border-primary rounded-xl"
+                  />
+                  <span className="text-gray-600 font-medium">days</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Continue Button */}
-      <Button
-        onClick={onNext}
-        disabled={!isValid}
-        className="w-full h-12 text-lg font-semibold rounded-xl"
-        size="lg"
-      >
-        Continue to Interests
-        <span className="ml-2">✨</span>
-      </Button>
+      {destination && travelMonth && travelYear && groupSize && (tripDuration.value || tripDuration.customDays) && (
+        <div className="sticky bottom-6 pt-6">
+          <Button
+            onClick={onNext}
+            className="w-full h-14 text-lg font-semibold rounded-2xl bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+            size="lg"
+          >
+            Perfect! Let's talk interests
+            <span className="ml-2">✨</span>
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

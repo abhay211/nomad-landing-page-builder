@@ -33,10 +33,14 @@ const StepTwo: React.FC<StepTwoProps> = ({
   onBack
 }) => {
   const [currentMember, setCurrentMember] = useState(0);
-  const [isFlexible, setIsFlexible] = useState(false);
+  const [isFlexible, setIsFlexible] = useState(true);
   const [customInterest, setCustomInterest] = useState('');
   const [memberPreferences, setMemberPreferences] = useState<MemberPreferences[]>([]);
   const [customInterests, setCustomInterests] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [showSurpriseMe, setShowSurpriseMe] = useState(false);
+  
+  const INTERESTS_PER_PAGE = 4;
 
   const interests = [
     { value: 'relax', label: 'Relax', icon: Leaf, emoji: '🏖️', description: 'Beach days, spa treatments, and peaceful moments' },
@@ -111,228 +115,195 @@ const StepTwo: React.FC<StepTwoProps> = ({
     }
   };
 
+  const handleLikeInterest = (interestValue: string) => {
+    if (selectedInterests.includes(interestValue)) {
+      setSelectedInterests(selectedInterests.filter(i => i !== interestValue));
+    } else {
+      setSelectedInterests([...selectedInterests, interestValue]);
+    }
+  };
+
+  const handleSurpriseMe = () => {
+    const randomInterests = interests
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3)
+      .map(i => i.value);
+    setSelectedInterests(randomInterests);
+    setShowSurpriseMe(true);
+  };
+
+  const currentInterests = allInterests.slice(
+    currentPage * INTERESTS_PER_PAGE,
+    (currentPage + 1) * INTERESTS_PER_PAGE
+  );
+
+  const totalPages = Math.ceil(allInterests.length / INTERESTS_PER_PAGE);
+
   return (
     <TooltipProvider>
       <div className="space-y-8 animate-fade-in">
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold text-gray-900">What's your group's vibe?</h2>
-          <p className="text-gray-600">Rate each interest for every member</p>
-        </div>
-
-        {/* Member Selection for Groups */}
-        {groupSizeNum > 1 && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <label className="font-medium text-gray-900">Setting preferences for:</label>
-              <Select value={currentMember.toString()} onValueChange={(value) => setCurrentMember(parseInt(value))}>
-                <SelectTrigger className="w-48">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {Array.from({ length: groupSizeNum }, (_, i) => (
-                    <SelectItem key={i} value={i.toString()}>
-                      Member {i + 1}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Member Visual Indicators */}
-            <div className="flex justify-center gap-2">
-              {Array.from({ length: Math.min(groupSizeNum, 6) }, (_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentMember(i)}
-                  className={cn(
-                    "w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all",
-                    currentMember === i
-                      ? "border-primary bg-primary text-white"
-                      : "border-gray-300 bg-white hover:border-primary"
-                  )}
-                >
-                  <User className="w-5 h-5" />
-                </button>
-              ))}
-              {groupSizeNum > 6 && (
-                <div className="w-12 h-12 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center text-sm">
-                  +{groupSizeNum - 6}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Flexible Toggle */}
-        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-          <div className="flex items-center gap-3">
-            <Info className="w-5 h-5 text-primary" />
-            <span className="font-medium">Flexible / Explore More Options</span>
-          </div>
-          <Switch checked={isFlexible} onCheckedChange={setIsFlexible} />
-        </div>
-
-        {/* Custom Interest Input */}
-        <div className="space-y-3">
-          <label className="font-medium text-gray-900">Add Custom Interest</label>
-          <div className="flex gap-2">
-            <Input
-              value={customInterest}
-              onChange={(e) => setCustomInterest(e.target.value)}
-              placeholder="e.g., Photography, Food tours..."
-              className="flex-1"
-              onKeyPress={(e) => e.key === 'Enter' && addCustomInterest()}
-            />
-            <Button 
-              onClick={addCustomInterest}
-              disabled={!customInterest.trim()}
-              size="sm"
-              variant="outline"
-            >
-              <Plus className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Interests Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {allInterests.map((interest) => {
-            const currentPreference = memberPreferences[currentMember]?.[interest.value];
-            return (
-              <div key={interest.value} className="space-y-3">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                      <div className="text-2xl">{interest.emoji}</div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900">{interest.label}</h3>
-                        <p className="text-sm text-gray-600 truncate">{interest.description}</p>
-                      </div>
-                      <interest.icon className="w-5 h-5 text-gray-400" />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="max-w-xs">{interest.description}</p>
-                  </TooltipContent>
-                </Tooltip>
-
-                {/* Preference Buttons */}
-                <div className="grid grid-cols-3 gap-2">
-                  <button
-                    onClick={() => setMemberPreference(interest.value, 'must-have')}
-                    className={cn(
-                      "p-3 rounded-lg border-2 transition-all flex flex-col items-center gap-1",
-                      currentPreference === 'must-have'
-                        ? "border-green-500 bg-green-50"
-                        : "border-gray-200 hover:border-green-300"
-                    )}
-                  >
-                    <Check className="w-5 h-5 text-green-600" />
-                    <span className="text-xs font-medium">Must-have</span>
-                  </button>
-                  <button
-                    onClick={() => setMemberPreference(interest.value, 'okay-with')}
-                    className={cn(
-                      "p-3 rounded-lg border-2 transition-all flex flex-col items-center gap-1",
-                      currentPreference === 'okay-with'
-                        ? "border-yellow-500 bg-yellow-50"
-                        : "border-gray-200 hover:border-yellow-300"
-                    )}
-                  >
-                    <Smile className="w-5 h-5 text-yellow-600" />
-                    <span className="text-xs font-medium">Okay with</span>
-                  </button>
-                  <button
-                    onClick={() => setMemberPreference(interest.value, 'no-go')}
-                    className={cn(
-                      "p-3 rounded-lg border-2 transition-all flex flex-col items-center gap-1",
-                      currentPreference === 'no-go'
-                        ? "border-red-500 bg-red-50"
-                        : "border-gray-200 hover:border-red-300"
-                    )}
-                  >
-                    <X className="w-5 h-5 text-red-600" />
-                    <span className="text-xs font-medium">No-go</span>
-                  </button>
-                </div>
-
-                {/* Group Summary for multi-member trips */}
-                {groupSizeNum > 1 && (
-                  <div className="flex gap-2 text-xs">
-                    {(() => {
-                      const summary = getGroupSummary(interest.value);
-                      return (
-                        <>
-                          {summary['must-have'] > 0 && (
-                            <Badge variant="outline" className="text-green-700 border-green-300">
-                              {summary['must-have']} ✅
-                            </Badge>
-                          )}
-                          {summary['okay-with'] > 0 && (
-                            <Badge variant="outline" className="text-yellow-700 border-yellow-300">
-                              {summary['okay-with']} 🙂
-                            </Badge>
-                          )}
-                          {summary['no-go'] > 0 && (
-                            <Badge variant="outline" className="text-red-700 border-red-300">
-                              {summary['no-go']} 🚫
-                            </Badge>
-                          )}
-                        </>
-                      );
-                    })()}
-                  </div>
+        <div className="text-center space-y-3">
+          <h2 className="text-3xl font-bold text-gray-900">What do you love? 💝</h2>
+          <p className="text-gray-600 text-lg">Just tap what sounds fun - we'll make it work!</p>
+          
+          {/* Progress indicator */}
+          <div className="flex justify-center gap-2 mt-4">
+            {Array.from({ length: totalPages }, (_, i) => (
+              <div
+                key={i}
+                className={cn(
+                  "w-2 h-2 rounded-full transition-all duration-300",
+                  i === currentPage ? "bg-primary" : "bg-gray-300"
                 )}
-              </div>
-            );
-          })}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* Group Preference Summary Bar */}
-        {groupSizeNum > 1 && (
-          <div className="p-4 bg-primary/5 rounded-xl border border-primary/20">
-            <h3 className="font-medium text-gray-900 mb-3">Group Preference Summary</h3>
-            <div className="space-y-2 max-h-32 overflow-y-auto">
-              {allInterests.map((interest) => {
-                const summary = getGroupSummary(interest.value);
-                const hasAnyPreference = summary['must-have'] + summary['okay-with'] + summary['no-go'] > 0;
-                if (!hasAnyPreference) return null;
-                
+        {/* Surprise Me Option */}
+        <div className="text-center">
+          <Button
+            onClick={handleSurpriseMe}
+            variant="outline"
+            className="mb-6 h-12 px-8 rounded-full border-2 border-primary/30 hover:border-primary text-primary hover:bg-primary/10 transition-all duration-300"
+          >
+            ✨ Surprise me with great ideas
+          </Button>
+          {showSurpriseMe && (
+            <p className="text-sm text-primary animate-fade-in">Perfect! We picked some amazing activities for you 🎉</p>
+          )}
+        </div>
+
+        {/* Selected Interests Summary */}
+        {selectedInterests.length > 0 && (
+          <div className="p-4 bg-primary/5 rounded-2xl border border-primary/20">
+            <p className="text-sm font-medium text-primary mb-2">You're excited about:</p>
+            <div className="flex flex-wrap gap-2">
+              {selectedInterests.map((interest) => {
+                const interestInfo = allInterests.find(i => i.value === interest);
                 return (
-                  <div key={interest.value} className="flex items-center justify-between text-sm">
-                    <span className="font-medium">{interest.emoji} {interest.label}</span>
-                    <div className="flex gap-2">
-                      {summary['must-have'] > 0 && (
-                        <span className="text-green-700 font-medium">{summary['must-have']} must-have</span>
-                      )}
-                      {summary['okay-with'] > 0 && (
-                        <span className="text-yellow-700 font-medium">{summary['okay-with']} okay</span>
-                      )}
-                      {summary['no-go'] > 0 && (
-                        <span className="text-red-700 font-medium">{summary['no-go']} no-go</span>
-                      )}
-                    </div>
-                  </div>
+                  <Badge
+                    key={interest}
+                    variant="secondary"
+                    className="bg-primary/10 text-primary border-primary/20 px-3 py-1"
+                  >
+                    {interestInfo?.emoji} {interestInfo?.label}
+                  </Badge>
                 );
               })}
             </div>
           </div>
         )}
 
+        {/* Current Interests Display */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {currentInterests.map((interest) => {
+            const isSelected = selectedInterests.includes(interest.value);
+            return (
+              <Tooltip key={interest.value}>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={() => handleLikeInterest(interest.value)}
+                    className={cn(
+                      "group p-6 rounded-2xl border-2 transition-all duration-300 text-left",
+                      "hover:scale-105 hover:shadow-lg min-h-[140px]",
+                      isSelected
+                        ? "border-primary bg-primary/10 shadow-md transform scale-105"
+                        : "border-gray-200 hover:border-primary/50 hover:bg-primary/5"
+                    )}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="text-3xl">{interest.emoji}</div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h3 className={cn(
+                            "font-semibold text-lg",
+                            isSelected ? "text-primary" : "text-gray-900"
+                          )}>
+                            {interest.label}
+                          </h3>
+                          {isSelected && (
+                            <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center">
+                              <Check className="w-4 h-4" />
+                            </div>
+                          )}
+                        </div>
+                        <p className="text-sm text-gray-600 leading-relaxed">
+                          {interest.description}
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="max-w-xs">{interest.description}</p>
+                </TooltipContent>
+              </Tooltip>
+            );
+          })}
+        </div>
+
+        {/* Navigation between interest pages */}
+        {totalPages > 1 && (
+          <div className="flex justify-center gap-4">
+            <Button
+              onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
+              disabled={currentPage === 0}
+              variant="outline"
+              size="sm"
+              className="rounded-full"
+            >
+              ← Previous
+            </Button>
+            <Button
+              onClick={() => setCurrentPage(Math.min(totalPages - 1, currentPage + 1))}
+              disabled={currentPage === totalPages - 1}
+              variant="outline"
+              size="sm"
+              className="rounded-full"
+            >
+              Next →
+            </Button>
+          </div>
+        )}
+
+        {/* Add Custom Interest */}
+        <div className="text-center">
+          <div className="flex gap-2 max-w-md mx-auto">
+            <Input
+              value={customInterest}
+              onChange={(e) => setCustomInterest(e.target.value)}
+              placeholder="Add your own interest..."
+              className="flex-1 h-12 border-2 border-gray-200 focus:border-primary rounded-xl"
+              onKeyPress={(e) => e.key === 'Enter' && addCustomInterest()}
+            />
+            <Button 
+              onClick={addCustomInterest}
+              disabled={!customInterest.trim()}
+              size="sm"
+              className="h-12 px-4 rounded-xl"
+            >
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+
+
         {/* Navigation */}
-        <div className="flex gap-4">
+        <div className="flex gap-4 sticky bottom-6 pt-6">
           <Button
             onClick={onBack}
             variant="outline"
-            className="flex-1 h-12 text-lg font-semibold rounded-xl"
+            className="flex-1 h-14 text-lg font-semibold rounded-2xl border-2"
           >
-            Back
+            ← Back
           </Button>
           <Button
             onClick={onNext}
-            className="flex-1 h-12 text-lg font-semibold rounded-xl"
+            disabled={selectedInterests.length === 0}
+            className="flex-1 h-14 text-lg font-semibold rounded-2xl bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50"
           >
-            Continue to Budget
+            Looks great! Continue
             <span className="ml-2">💰</span>
           </Button>
         </div>

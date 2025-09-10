@@ -51,9 +51,17 @@ const CreateTrip = () => {
   const [experienceStyle, setExperienceStyle] = useState('');
   const [accessibilityNeeds, setAccessibilityNeeds] = useState('');
 
-  // Scroll to top on component mount
+  // Initialize smart defaults and scroll to top
   useEffect(() => {
     window.scrollTo(0, 0);
+    
+    // Set smart defaults
+    const currentYear = new Date().getFullYear();
+    if (!travelYear) setTravelYear(currentYear.toString());
+    if (!groupSize) setGroupSize(2);
+    if (!budgetTier) setBudgetTier('mid-range');
+    if (!decisionMode) setDecisionMode('fair');
+    
   }, []);
 
   const stepLabels = ['Basics', 'Interests', 'Budget'];
